@@ -24,3 +24,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+use App\Http\Controllers\EmployerController;
+
+Route::get('/register/employer', [EmployerController::class, 'showRegistrationForm']);
+Route::post('/register/employer', [EmployerController::class, 'register']);
