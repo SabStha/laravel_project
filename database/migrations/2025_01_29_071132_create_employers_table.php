@@ -10,15 +10,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('employers', function (Blueprint $table) {
+        // Schema::table('employers', function (Blueprint $table) {
      
-            if (!Schema::hasColumn('employers', 'id')) {
-                $table->id(); 
-            }
+        //     if (!Schema::hasColumn('employers', 'id')) {
+        //         $table->id(); 
+        //     }
 
-            if (!Schema::hasColumn('employers', 'user_id')) {
-                $table->integer('user_id')->unsigned(); 
-            }
+        //     if (!Schema::hasColumn('employers', 'user_id')) {
+        //         $table->integer('user_id')->unsigned(); 
+        //     }
+        // });
+
+        Schema::create('employers', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
         });
     }
 
@@ -27,15 +32,17 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('employers', function (Blueprint $table) {
+        // Schema::table('employers', function (Blueprint $table) {
 
-            if (Schema::hasColumn('employers', 'user_id')) {
-                $table->dropColumn('user_id');
-            }
+        //     if (Schema::hasColumn('employers', 'user_id')) {
+        //         $table->dropColumn('user_id');
+        //     }
 
-            if (Schema::hasColumn('employers', 'id')) {
-                $table->dropColumn('id');
-            }
-        });
+        //     if (Schema::hasColumn('employers', 'id')) {
+        //         $table->dropColumn('id');
+        //     }
+        // });
+
+        Schema::dropIfExists('employers');
     }
 };
