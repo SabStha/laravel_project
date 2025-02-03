@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Primary key, auto-increment
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key
             $table->timestamps(); // created_at, updated_at
+            $table->softDeletes(); // deleted_at for soft delete
         });
     }
 
