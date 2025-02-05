@@ -42,7 +42,7 @@ Route::post('/register/operator', [OperatorController::class, 'register']);
 Route::get('/jobs',[Jobcontroller::class, 'search']);
 Route::get('/jobs/{id}',[Jobcontroller::class,'view']);
 Route::get('/company/jobs/create',[CompanyController::class,'create']);
-Route::post('/company/jobs/create',[CompanyController::class,'create'])
+Route::post('/company/jobs/create',[CompanyController::class,'create']);
 Route::get('/company/jobs/{id}/edit',[CompanyController::class,'edit']);
 Route::post('/company/jobs/{id}/update',[CompanyController::class,'update']);
 Route::get('/company/jobs/{id}/delete',[CompanyController::class,'delete']);
@@ -89,3 +89,27 @@ Route::get('/help',[HelpController::class,'help']);
 Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
 Route::get('/terms',[ContactController::class,'terms']);
+
+
+use App\Http\Controllers\OperatorController; // <-- Add this line
+
+Route::get('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'showRegistrationForm'])
+    ->name('operator.register.form');
+Route::post('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'register'])
+    ->name('operator.register');
+
+Route::get('/operator/dashboard', [OperatorController::class, 'dashboard']) // Now Laravel knows where to find the class
+    ->name('dashboard');
+
+
+Route::get('/employer/register', [App\Http\Controllers\EmployerController::class, 'showRegistrationForm'])->name('employer.register');
+Route::post('/employer/register', [App\Http\Controllers\EmployerController::class, 'register']);
+Route::get('/employer/dashboard', [App\Http\Controllers\EmployerController::class, 'dashboard'])->name('employer.dashboard');   
+
+
+use App\Http\Controllers\JobseekerController;
+
+// Jobseeker Routes
+Route::get('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
+Route::post('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'register']);
+Route::get('/jobseeker/dashboard', [App\Http\Controllers\JobseekerController::class, 'dashboard'])->name('jobseeker.dashboard');

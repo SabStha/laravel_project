@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class EmployerController extends Controller
+class JobseekerController extends Controller
 {
+    // Show the jobseeker registration form
     public function showRegistrationForm()
     {
-        return view('employer_register');
+        return view('jobseeker_register');
     }
 
+    // Handle jobseeker registration
     public function register(Request $request)
     {
         $request->validate([
@@ -25,16 +27,17 @@ class EmployerController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'user_type' => 'employer',
+            'user_type' => 'jobseeker', // Set user type to 'jobseeker'
         ]);
 
         // You can add additional logic here, like sending a welcome email or logging the user in.
 
-        return redirect()->route('employer.dashboard');
+        return redirect()->route('jobseeker.dashboard');
     }
 
+    // Show the jobseeker dashboard
     public function dashboard()
     {
-        return view('employer_dashboard');
+        return view('jobseeker_dashboard');
     }
 }
