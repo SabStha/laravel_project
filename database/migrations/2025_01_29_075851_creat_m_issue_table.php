@@ -9,16 +9,25 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        //
+        if (!Schema::hasTable('issues')) {
+            Schema::create('issues', function (Blueprint $table) {
+                $table->id();
+                $table->text('code');
+                $table->text('issue_name');
+                $table->integer('display_order')->default(10);
+                $table->timestamps();
+            });
+        }
     }
+    
 
-    /**
+    /** 
      * Reverse the migrations.
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('issues');
     }
 };

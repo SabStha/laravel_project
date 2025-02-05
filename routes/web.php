@@ -89,9 +89,3 @@ Route::get('/help',[HelpController::class,'help']);
 Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
 Route::get('/terms',[ContactController::class,'terms']);
-
-
-
-
-
-

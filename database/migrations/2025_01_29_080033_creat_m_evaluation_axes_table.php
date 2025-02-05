@@ -11,7 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('m_evaluation_axes', function (Blueprint $table) {
+            $table->id(); // 主キー（自動採番）
+            $table->string('code', 3)->unique(); // 3文字のアルファベットコード（例：SND, RKAなど）
+            $table->string('name', 100); // 評価軸の名称（日本語）
+            $table->timestamp('created_at')->useCurrent(); // レコード作成日時（デフォルトで現在時刻）
+            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate(); // レコード更新日時（更新時に自動更新）
+        });
     }
 
     /**
@@ -19,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('m_evaluation_axes');
     }
 };
