@@ -17,6 +17,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::get('jobseeker-register', [JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -28,12 +29,22 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 use App\Http\Controllers\EmployerController;
 
 Route::get('/register/employer', [EmployerController::class, 'showRegistrationForm']);
-Route::post('/register/employer', [EmployerController::class, 'register']);
+Route::post('/register/employer', [EmployerController::class, 'employer.register'])->name('employer.register');
+Route::get('/employer/dashboard',[EmployerController::class,'dashboard'])->name('employer.dashboard');
+
+use App\Http\Controllers\JobseekerController;
+
+// Jobseeker Routes
+// Route::get('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
+// Route::post('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'register']);
 
 //User Registeration
-Route::get('/register/jobseeker', [JobseekerController::class, 'showRegistrationForm']);
+Route::get('/register/jobseeker', [JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
 Route::post('/register/jobseeker', [JobseekerController::class, 'register']);
+Route::get('/jobseeker/dashboard', [JobseekerController::class, 'dashboard'])->name('jobseeker.dashboard');
 
+
+use App\Http\Controllers\OperatorController;
 //Operator Registeration
 Route::get('/register/operator', [OperatorController::class, 'showRegistrationForm']);
 Route::post('/register/operator', [OperatorController::class, 'register']);
@@ -63,7 +74,7 @@ Route::get('/operator/jobseeker',[OperatorController::class,'checkjobseeker']);
 Route::get('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'evaluate']);
 Route::post('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'update']);
 
-//Edit ,Update 
+//Edit ,Update
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'profile']);
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'edit_profile']);
 Route::post('/profile/jobseeker/{user_id}',[JobseekerController::class,'update_profile']);
@@ -90,26 +101,16 @@ Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
 Route::get('/terms',[ContactController::class,'terms']);
 
+ // <-- Add this line
 
-use App\Http\Controllers\OperatorController; // <-- Add this line
-
-Route::get('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'showRegistrationForm'])
-    ->name('operator.register.form');
-Route::post('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'register'])
-    ->name('operator.register');
-
-Route::get('/operator/dashboard', [OperatorController::class, 'dashboard']) // Now Laravel knows where to find the class
-    ->name('dashboard');
+// Route::get('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'showRegistrationForm'])
+//     ->name('operator.register.form');
+// Route::post('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'register'])
+//     ->name('operator.register');
+// Route::get('/operator/dashboard', [OperatorController::class, 'dashboard']) // Now Laravel knows where to find the class
+//     ->name('dashboard');
 
 
-Route::get('/employer/register', [App\Http\Controllers\EmployerController::class, 'showRegistrationForm'])->name('employer.register');
-Route::post('/employer/register', [App\Http\Controllers\EmployerController::class, 'register']);
-Route::get('/employer/dashboard', [App\Http\Controllers\EmployerController::class, 'dashboard'])->name('employer.dashboard');   
-
-
-use App\Http\Controllers\JobseekerController;
-
-// Jobseeker Routes
-Route::get('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
-Route::post('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'register']);
-Route::get('/jobseeker/dashboard', [App\Http\Controllers\JobseekerController::class, 'dashboard'])->name('jobseeker.dashboard');
+// Route::get('/employer/register', [App\Http\Controllers\EmployerController::class, 'showRegistrationForm'])->name('employer.register');
+// Route::post('/employer/register', [App\Http\Controllers\EmployerController::class, 'register']);
+// Route::get('/employer/dashboard', [App\Http\Controllers\EmployerController::class, 'dashboard'])->name('employer.dashboard');

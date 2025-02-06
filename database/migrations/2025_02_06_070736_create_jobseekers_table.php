@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jobseekers', function (Blueprint $table) {
-            $table->id(); // Primary key, auto-increment
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key, không có auto-increment
+            $table->id();
             $table->timestamps();
         });
     }

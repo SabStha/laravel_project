@@ -12,6 +12,10 @@ class OperatorController extends Controller
         $this->middleware('operator');
     }
 
+    public function showRegistrationForm(){
+        return view('operator_register.blade');
+    }
+
     public function dashboard()
     {
         return view('dashboard');
