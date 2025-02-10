@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
+use App\Models\Jobseeker;
+use App\Models\Employeer;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -54,5 +57,19 @@ class User extends Authenticatable
     {
         return $this->hasOne(Jobseeker::class);
     }
+
+    
+
+    public function employer(): HasOne
+    {
+        return $this->hasOne(Employer::class);
+    }
+
+    public function evaluation()
+    {
+        return $this->hasOne(Evaluation::class, 'jobseeker_id'); // Ensure this matches your DB schema
+    }
+
+    
     
 }
