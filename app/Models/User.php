@@ -45,14 +45,30 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function isJobseeker()
+    {
+        return $this->user_type === 'jobseeker';
+    }
+
     public function isEmployer()
     {
-    return $this->user_type === 'employer';
+        return $this->user_type === 'employer';
     }
+
+    public function isOperator()
+    {
+        return $this->user_type === 'operator';
+    }
+
 
     public function jobseeker(): HasOne
     {
         return $this->hasOne(Jobseeker::class);
+    }
+
+    public function employer(): HasOne
+    {
+        return $this->hasOne(Employer::class);
     }
     
 }

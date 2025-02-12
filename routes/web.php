@@ -27,27 +27,25 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 use App\Http\Controllers\EmployerController;
+use App\Http\Controllers\OperatorController;
+use App\Http\Controllers\DashboardController;
 
+
+// Employer Routes
 Route::get('/register/employer', [EmployerController::class, 'showRegistrationForm']);
-Route::post('/register/employer', [EmployerController::class, 'employer.register'])->name('employer.register');
-Route::get('/employer/dashboard',[EmployerController::class,'dashboard'])->name('employer.dashboard');
-
-use App\Http\Controllers\JobseekerController;
+Route::post('/register/employer', [EmployerController::class, 'register'])->name('employer.register');
+Route::get('/employer/dashboard', [DashboardController::class, 'employerDashboard'])->middleware('checkUserType:employer')->name('employer.dashboard');
 
 // Jobseeker Routes
-// Route::get('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
-// Route::post('/jobseeker/register', [App\Http\Controllers\JobseekerController::class, 'register']);
-
-//User Registeration
 Route::get('/register/jobseeker', [JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
 Route::post('/register/jobseeker', [JobseekerController::class, 'register']);
-Route::get('/jobseeker/dashboard', [JobseekerController::class, 'dashboard'])->name('jobseeker.dashboard');
+Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->middleware('checkUserType:jobseeker')->name('jobseeker.dashboard');
 
-
-use App\Http\Controllers\OperatorController;
-//Operator Registeration
+// Operator Routes
 Route::get('/register/operator', [OperatorController::class, 'showRegistrationForm']);
-Route::post('/register/operator', [OperatorController::class, 'register']);
+Route::post('/register/operator', [OperatorController::class, 'register'])->name('operator.register');
+Route::get('/operator/dashboard', [DashboardController::class, 'operatorDashboard'])->middleware('checkUserType:operator')->name('operator.dashboard');
+
 
 //Create,Update and Delete for Job
 Route::get('/jobs',[Jobcontroller::class, 'search']);
