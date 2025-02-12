@@ -70,12 +70,12 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/dashboard', [OperatorController::class, 'dashboard'])->name('operator.dashboard');
     Route::get('/listings', [OperatorController::class, 'viewListings'])->name('operator.viewListings');
     Route::get('/profile', [OperatorController::class, 'manageProfile'])->name('operator.manageProfile');
-    //Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
+    // Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     Route::get('/applications', [OperatorController::class, 'viewApplications'])->name('operator.viewApplications');
     Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     Route::get('/unratedJobSeekers', [OperatorController::class, 'viewUnratedJobSeekers'])->name('operator.viewUnratedJobSeekers');
-
+}); // ✅ FIXED: Changed `);` to `}`
 //Edit ,Update
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'profile']);
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'edit_profile']);
