@@ -131,9 +131,9 @@
                         </a>
 
                         @if (Route::has('register'))
-                            <a href="{{ route('register') }}" class="w-48 px-6 py-3 border-2 border-red-500 text-red-500 rounded-lg hover:bg-red-50 transition duration-300 text-lg font-semibold">
+                        <a href="{{ route('jobseeker.register') }}" class="btn btn-primary">
                                 Register
-                            </a>
+                        </a>
                         @endif
                     @endauth
                 </div>

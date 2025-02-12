@@ -154,23 +154,28 @@ class OperatorController extends Controller
 
     public function submitEvaluation(Request $request, $user_id)
     {
+        // ✅ Step 1: Validate input
         $request->validate([
-            'ratings' => 'required|array',
+            'ratings' => 'required|array|min:1',
             'ratings.*' => 'integer|min:1|max:5'
+        ], [
+            'ratings.required' => 'Please provide at least one rating.',
+            'ratings.*.min' => 'Ratings must be at least 1.',
+            'ratings.*.max' => 'Ratings cannot exceed 5.',
         ]);
 
-        // 🔍 Fetch correct `jobseeker_id` using `user_id`
-        $jobseeker = DB::table('jobseekers')->where('user_id', $user_id)->first();
+        // ✅ Step 2: Fetch jobseeker using user_id
+        $jobseeker = Jobseeker::where('user_id', $user_id)->first();
 
         if (!$jobseeker) {
             return redirect()->back()->with('error', 'Jobseeker not found.');
         }
 
-        // Store evaluations for each axis
+        // ✅ Step 3: Store evaluations
         foreach ($request->input('ratings') as $axis_id => $rating) {
             DB::table('t_jobseeker_evaluations')->updateOrInsert(
                 [
-                    'jobseeker_id' => $jobseeker->id, // Use correct `id`
+                    'jobseeker_id' => $jobseeker->id, // Use correct jobseeker ID
                     'evaluation_axis_id' => $axis_id,
                 ],
                 [
@@ -180,13 +185,10 @@ class OperatorController extends Controller
             );
         }
 
-        // ✅ Update jobseeker's `evaluation` field to 1
-        DB::table('jobseekers')
-            ->where('id', $jobseeker->id)
-            ->update(['evaluation' => 1, 'updated_at' => now()]);
-
-        return redirect()->route('operator.viewEvaluations')->with('status', 'Evaluation submitted successfully.');
+        // ✅ Step 4: Show success message & redirect
+        return redirect()->back()->with('success', 'Evaluation submitted successfully!');
     }
+
 
 
 
@@ -196,8 +198,16 @@ class OperatorController extends Controller
 
     public function evaluate($user_id)
     {
-        // Find the jobseeker using user_id, not id
-        $jobseeker = Jobseeker::where('user_id', $user_id)->firstOrFail();
+        // Find the user first (check if the user exists)
+        $user = User::findOrFail($user_id);
+
+        // Then find the corresponding jobseeker using the user's ID
+        $jobseeker = Jobseeker::where('id', $user->id)->first();
+
+        // If jobseeker is not found, return 404
+        if (!$jobseeker) {
+            abort(404, 'Job Seeker Not Found');
+        }
 
         // Get all evaluation axes
         $evaluation_axes = DB::table('m_evaluation_axes')->get();
@@ -211,6 +221,7 @@ class OperatorController extends Controller
 
         return view('evaluate_form', compact('jobseeker', 'evaluation_axes', 'existingEvaluations'));
     }
+
 
     public function editEvaluation($user_id)
     {
@@ -230,6 +241,7 @@ class OperatorController extends Controller
         return view('evaluate_form', compact('jobseeker', 'evaluation_axes', 'existingEvaluations'));
     }
 
+    
 
 
 

@@ -11,6 +11,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\HelpController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 // Home route
 Route::get('/', function () {
@@ -29,10 +31,6 @@ Route::middleware('guest')->group(function () {
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-use App\Http\Controllers\EmployerController;
-use App\Http\Controllers\OperatorController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\JobseekerController;
 
 
 // Employer Routes
@@ -67,9 +65,16 @@ Route::get('/password/reset/{token}',[PasswordController::class,'edit']);
 Route::post('/password/reset/{token}',[PasswordController::class,'update']);
 
 
-Route::get('/operator/jobseeker',[OperatorController::class,'checkjobseeker']);
-Route::get('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'evaluate']);
-Route::post('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'update']);
+// Operator Routes
+Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
+    Route::get('/dashboard', [OperatorController::class, 'dashboard'])->name('operator.dashboard');
+    Route::get('/listings', [OperatorController::class, 'viewListings'])->name('operator.viewListings');
+    Route::get('/profile', [OperatorController::class, 'manageProfile'])->name('operator.manageProfile');
+    //Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
+    Route::get('/applications', [OperatorController::class, 'viewApplications'])->name('operator.viewApplications');
+    Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
+    Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
+    Route::get('/unratedJobSeekers', [OperatorController::class, 'viewUnratedJobSeekers'])->name('operator.viewUnratedJobSeekers');
 
 //Edit ,Update
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'profile']);
@@ -83,14 +88,19 @@ Route::post('/profile/employer/{user_id}',[EmployerController::class,'update_pro
 Route::get('/jobs/{job_id}/apply',[Jobcontroller::class,'apply']);
 Route::post('/jobs/{job_id}/apply',[Jobcontroller::class,'create']);
 
-Route::get('/employer/applicants',[EmployerController::class,'applicants']);
-Route::get('/messages/jobseeker/{user_id}',[MessageController::class,'message_jobseeker']);
-Route::post('/messages/jobseeker/{user_id}',[MessageController::class,'create_message']);
-Route::get('/messages/employeer/{user_id}',[MessageController::class,'message_employeer']);
-Route::get('/messages/employeer/{user_id}',[MessageController::class,'create_message']);
 
-Route::get('/messages/jobseeker/{message_id',[MessageController::class,'message_view']);
-Route::get('/messages/employeer/{message_id',[MessageController::class,'message_view']);
+// Correct password reset routes
+
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+// Route::get('/password/reset', [ForgotPasswordController::class, 'showLinkRequestForm']);
+// Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
+// Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
+// Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
 
 Route::get('/help',[HelpController::class,'help']);
 
