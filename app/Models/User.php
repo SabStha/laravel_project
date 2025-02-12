@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+
+use App\Models\Jobseeker;
+use App\Models\Employeer;
 
 class User extends Authenticatable
 {
@@ -21,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'user_type',
     ];
 
     /**
@@ -42,4 +47,46 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function isJobseeker()
+    {
+        return $this->user_type === 'jobseeker';
+    }
+
+    public function isEmployer()
+    {
+        return $this->user_type === 'employer';
+    }
+
+    public function isOperator()
+    {
+        return $this->user_type === 'operator';
+    }
+
+
+    public function jobseeker(): HasOne
+    {
+        return $this->hasOne(Jobseeker::class);
+    }
+
+<<<<<<< HEAD
+    
+
+=======
+>>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+    public function employer(): HasOne
+    {
+        return $this->hasOne(Employer::class);
+    }
+<<<<<<< HEAD
+
+    public function evaluation()
+    {
+        return $this->hasOne(Evaluation::class, 'jobseeker_id'); // Ensure this matches your DB schema
+    }
+
+    
+=======
+>>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+    
 }

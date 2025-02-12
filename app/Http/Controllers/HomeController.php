@@ -23,6 +23,17 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user = auth()->user();
+    
+        if ($user->user_type == 'employer') {
+            return redirect()->route('employer.dashboard');
+        } elseif ($user->user_type == 'jobseeker') {
+            return redirect()->route('jobseeker.dashboard');
+        } elseif ($user->user_type == 'operator') {
+            return redirect()->route('operator.dashboard');
+        }
+    
+        return view('welcome'); // Default view if no role is matched
     }
+    
 }

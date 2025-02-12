@@ -4,6 +4,15 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+<<<<<<< HEAD
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request; 
+=======
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+>>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
 
 class LoginController extends Controller
 {
@@ -25,16 +34,41 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function authenticated(Request $request, $user)
+    {
+        // Check the user type and redirect accordingly
+        if ($user->user_type == 'employer') {
+            return redirect()->route('employer.dashboard'); // Redirect to employer dashboard
+        } elseif ($user->user_type == 'jobseeker') {
+            return redirect()->route('jobseeker.dashboard'); // Redirect to jobseeker dashboard
+        } else {
+            return redirect()->route('operator.dashboard'); // Default fallback, you can change this
+        }
+    }
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
+    
+  
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect to home or login page after logout
+        return redirect('/');
+    }
+
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
         $this->middleware('auth')->only('logout');
     }
+
+    // LoginController.php
+
 }
