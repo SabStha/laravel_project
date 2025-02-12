@@ -69,24 +69,9 @@ class User extends Authenticatable
         return $this->hasOne(Jobseeker::class);
     }
 
-<<<<<<< HEAD
-    
-
-=======
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
     public function employer(): HasOne
     {
         return $this->hasOne(Employer::class);
     }
-<<<<<<< HEAD
-
-    public function evaluation()
-    {
-        return $this->hasOne(Evaluation::class, 'jobseeker_id'); // Ensure this matches your DB schema
-    }
-
-    
-=======
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
     
 }
