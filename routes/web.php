@@ -63,12 +63,7 @@ Route::get('/password/reset/sent',[PasswordController::class,'sent']);
 Route::get('/password/reset/{token}',[PasswordController::class,'edit']);
 Route::post('/password/reset/{token}',[PasswordController::class,'update']);
 
-//Dashboard for User,Employer and Operator
-Route::get('/dashboard/jobseeker',[DashboardController::class,'jobseekerDashboard']);
-Route::get('/dashboard/employer',[DashboardController::class,'employerDashboard']);
-Route::get('/dashboard/operator',[DashboardController::class,'operatorDashboard']);
 
-//
 Route::get('/operator/jobseeker',[OperatorController::class,'checkjobseeker']);
 Route::get('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'evaluate']);
 Route::post('/operator/jobseeker/{user_id}/evaluate',[OperatorController::class,'update']);
@@ -99,17 +94,3 @@ Route::get('/help',[HelpController::class,'help']);
 Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
 Route::get('/terms',[ContactController::class,'terms']);
-
- // <-- Add this line
-
-// Route::get('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'showRegistrationForm'])
-//     ->name('operator.register.form');
-// Route::post('/operator/register', [App\Http\Controllers\Auth\OperatorRegisterController::class, 'register'])
-//     ->name('operator.register');
-// Route::get('/operator/dashboard', [OperatorController::class, 'dashboard']) // Now Laravel knows where to find the class
-//     ->name('dashboard');
-
-
-// Route::get('/employer/register', [App\Http\Controllers\EmployerController::class, 'showRegistrationForm'])->name('employer.register');
-// Route::post('/employer/register', [App\Http\Controllers\EmployerController::class, 'register']);
-// Route::get('/employer/dashboard', [App\Http\Controllers\EmployerController::class, 'dashboard'])->name('employer.dashboard');
