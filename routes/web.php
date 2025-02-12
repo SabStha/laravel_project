@@ -29,6 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 use App\Http\Controllers\EmployerController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JobseekerController;
 
 
 // Employer Routes
