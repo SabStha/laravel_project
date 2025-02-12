@@ -46,10 +46,4 @@ class JobseekerController extends Controller
         // After successful registration, redirect to the jobseeker dashboard
         return redirect()->route('jobseeker.dashboard');
     }
-
-    // Show the jobseeker dashboard
-    public function dashboard()
-    {
-        return view('jobseeker_dashboard');
-    }
 }

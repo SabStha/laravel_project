@@ -11,7 +11,11 @@
                 </div>
 
                 <div class="card-body">
+<<<<<<< HEAD
                     @if (session('status'))
+=======
+                    @if   (session('status'))
+>>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
