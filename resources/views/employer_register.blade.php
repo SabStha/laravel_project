@@ -74,6 +74,16 @@
                             @enderror
                         </div>
 
+                        <div class="form-group mb-4">
+                            <label for="company_phone" class="form-label">{{ __('会社電話番号') }}</label>
+                            <input id="company_phone" type="tel" class="form-control @error('company_phone') is-invalid @enderror" name="company_phone" value="{{ old('company_phone') }}" required autocomplete="tel">
+                            @error('company_phone')
+                                <div class="invalid-feedback d-block">
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                            @enderror
+                        </div>
+
                         <!-- Submit Button -->
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary btn-lg w-100 py-3 rounded-pill">

@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 use App\Models\Jobseeker;
-use App\Models\Employeer;
+use App\Models\Employer;
 
 class User extends Authenticatable
 {

@@ -4,14 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-<<<<<<< HEAD
-use App\Models\Employer;  // Ensure you have the Employer model imported
-use Illuminate\Support\Facades\DB;
-=======
 use App\Models\Employer;
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use DB;
 
 class EmployerController extends Controller
 {
@@ -22,58 +17,49 @@ class EmployerController extends Controller
 
     public function register(Request $request)
     {
-<<<<<<< HEAD
-        // Validate the incoming request data and store it in $validated
-=======
-
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+        // Validate the incoming request data
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'company_name' => 'required|string|max:255',
+            'company_address' => 'required|string|max:255',
+            'company_phone' => 'required|string|max:20',
         ]);
 
-<<<<<<< HEAD
-        // Use DB transaction to ensure data integrity
-=======
-        // Use DB transaction to ensure both user and jobseeker records are created
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
-        DB::transaction(function() use ($validated) {
-            // Create the user in the users table
-            $user = User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-<<<<<<< HEAD
-                'user_type' => 'employer', // Set user type to 'employer'
-            ]);
+        // Use DB transaction to ensure both user and employer records are created
+        try {
+            DB::transaction(function() use ($validated, $request) {
+                // Create the user
+                $user = User::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'user_type' => 'employer',
+                ]);
 
-            // Create the employer in the employers table
-            // Assuming you have an `employers` table and Employer model
-            $user->employer()->create([
-                'user_id' => $user->id, // Foreign key to the users table
-                // Add other necessary fields for employer here, such as company name, etc.
-            ]);
-        });
+                // Create the employer profile
+                $employer = Employer::create([
+                    'user_id' => $user->id,
+                    'company_name' => $validated['company_name'],
+                    'company_address' => $validated['company_address'],
+                    'company_phone' => $validated['company_phone'],
+                    'status' => 'pending', // Default status for new employers
+                ]);
+            });
 
-        // Redirect to a specific page after successful registration
-        return redirect()->route('employer.dashboard')->with('status', 'Registration successful');
+            // Redirect with success message
+            return redirect()->route('employer.dashboard')
+                           ->with('success', '登録が完了しました。管理者の承認をお待ちください。');
+        } catch (\Exception $e) {
+            // If something goes wrong, redirect back with error
+            return back()->withInput()
+                        ->withErrors(['error' => '登録に失敗しました。もう一度お試しください。']);
+        }
     }
 
     public function dashboard()
-{
-    return view('employer_dashboard'); // Ensure you have this Blade view
-}
-
-=======
-                'user_type' => 'employer',
-            ]);
-            
-            $user->employer()->create([
-                'user_id' => $user->id, // Foreign key to the users table
-            ]);
-        });
-        return redirect()->route('employer.dashboard');
+    {
+        return view('employer_dashboard'); // Ensure you have this Blade view
     }
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
 }

@@ -4,15 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-<<<<<<< HEAD
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Http\Request; 
-=======
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -30,45 +24,56 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected function authenticated(Request $request, $user)
-    {
-        // Check the user type and redirect accordingly
-        if ($user->user_type == 'employer') {
-            return redirect()->route('employer.dashboard'); // Redirect to employer dashboard
-        } elseif ($user->user_type == 'jobseeker') {
-            return redirect()->route('jobseeker.dashboard'); // Redirect to jobseeker dashboard
-        } else {
-            return redirect()->route('operator.dashboard'); // Default fallback, you can change this
-        }
-    }
-
-    /**
      * Create a new controller instance.
      *
      * @return void
      */
-    
-  
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        switch ($user->user_type) {
+            case 'employer':
+                return redirect()->route('employer.dashboard');
+            case 'jobseeker':
+                return redirect()->route('jobseeker.dashboard');
+            case 'operator':
+                return redirect()->route('operator.dashboard');
+            default:
+                return redirect('/home');
+        }
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'email';
+    }
+
+    /**
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        // Redirect to home or login page after logout
-        return redirect('/');
+        return redirect('/login');
     }
-
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
-    }
-
-    // LoginController.php
-
 }

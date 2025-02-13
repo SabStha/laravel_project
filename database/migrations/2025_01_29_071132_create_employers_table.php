@@ -12,10 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('employers', function (Blueprint $table) {
-            $table->id(); // Primary key, auto-increment
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // Foreign key
-            $table->timestamps(); // created_at, updated_at
-            $table->softDeletes(); // deleted_at for soft delete
+            $table->id();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('company_name');
+            $table->string('company_address');
+            $table->string('company_phone', 20);
+            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->text('company_description')->nullable();
+            $table->string('website')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

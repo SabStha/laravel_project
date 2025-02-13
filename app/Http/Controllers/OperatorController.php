@@ -2,35 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User; // Ensure you import the User model
-use Illuminate\Http\Request;
-<<<<<<< HEAD
-use App\Models\Evaluation;  // Add this line to import the Evaluation modeluse App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Evaluation;
 use App\Models\Jobseeker;
 use App\Models\EvaluationAxis;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
-
-=======
-use Illuminate\Support\Facades\Hash; // Import the Hash facade
-use Illuminate\Support\Facades\Auth; // Import Auth for redirect after registration
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class OperatorController extends Controller
-
 {
-<<<<<<< HEAD
-
     use RegistersUsers;
 
-    // Set the redirection after successful registration
-    protected $redirectTo = '/operator/dashboard';  // Redirect to operator dashboard
+    protected $redirectTo = '/operator/dashboard';
 
-    // Validate the registration data
+    public function __construct()
+    {
+        $this->middleware('auth')->except(['showRegistrationForm', 'register']);
+        $this->middleware('operator')->except(['showRegistrationForm', 'register']);
+    }
+
     protected function validator(array $data)
     {
         return Validator::make($data, [
@@ -40,76 +34,84 @@ class OperatorController extends Controller
         ]);
     }
 
-    // Create the new operator user
     protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'user_type' => 'operator', // Ensure the user type is 'operator'
+            'user_type' => 'operator',
         ]);
     }
 
-    // Show the registration form
     public function showRegistrationForm()
     {
-        return view('auth.operator_register');  // Render the operator registration view
+        return view('operator.register');
     }
-
 
     public function dashboard()
-=======
-    public function showRegistrationForm()
     {
-        return view('operator_register'); // Return the registration view
-    }
-
-    public function register(Request $request)
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
-    {
-        // Validate the incoming request data
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        // Create a new user with the validated data
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'user_type' => 'operator', // Set user type as operator
-        ]);
-
-        // Log the user in after registration (optional)
-        Auth::login($user);
-
-        // Redirect the user to the operator dashboard or another page
-        return redirect()->route('operator.dashboard');
+        return view('operator.dashboard');
     }
 
     public function viewListings()
     {
-        return view('operator.listings'); // Create the view for listings
+        return view('operator.listings');
     }
 
     public function manageProfile()
     {
-        return view('operator.profile'); // Create the view for profile management
+        return view('operator.profile');
     }
 
-    // public function viewEvaluations()
-    // {
-    //     // Fetch the evaluations for the logged-in operator
-    //     $evaluations = Evaluation::where('operator_id', auth()->id())
-    //                               ->orderBy('created_at', 'desc')
-    //                               ->get();
+    public function evaluate($user_id)
+    {
+        $jobseeker = Jobseeker::with('user')->where('user_id', $user_id)->firstOrFail();
+        $evaluationAxes = EvaluationAxis::all();
+        
+        return view('operator.evaluate', [
+            'jobseeker' => $jobseeker,
+            'evaluationAxes' => $evaluationAxes
+        ]);
+    }
 
-    //     // Pass the evaluations to the view
-    //     return view('evaluations', compact('evaluations'));
-    // }
+    public function submitEvaluation(Request $request, $user_id)
+    {
+        $validated = $request->validate([
+            'evaluation_axis_id' => 'required|exists:m_evaluation_axes,id',
+            'score' => 'required|integer|min:1|max:5',
+            'comment' => 'nullable|string|max:1000'
+        ]);
+
+        try {
+            DB::transaction(function() use ($validated, $user_id) {
+                $evaluation = Evaluation::create([
+                    'jobseeker_id' => $user_id,
+                    'evaluation_axis_id' => $validated['evaluation_axis_id'],
+                    'score' => $validated['score'],
+                    'comment' => $validated['comment'] ?? null,
+                    'evaluator_id' => Auth::id()
+                ]);
+            });
+
+            return redirect()->back()->with('success', '評価が正常に保存されました。');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                           ->withInput()
+                           ->withErrors(['error' => '評価の保存に失敗しました。もう一度お試しください。']);
+        }
+    }
+
+    public function editEvaluation($user_id)
+    {
+        $jobseeker = Jobseeker::with(['user', 'evaluations'])->where('user_id', $user_id)->firstOrFail();
+        $evaluationAxes = EvaluationAxis::all();
+        
+        return view('operator.edit_evaluation', [
+            'jobseeker' => $jobseeker,
+            'evaluationAxes' => $evaluationAxes
+        ]);
+    }
 
     public function viewEvaluations()
     {
@@ -128,111 +130,42 @@ class OperatorController extends Controller
         return view('evaluations', compact('jobseekers'));
     }
 
-
-
-
     public function viewApplications()
     {
-        return view('operator.applications'); // Create the view for applications
+        return view('operator.applications'); 
     }
 
     public function notifications()
     {
-        return view('operator.notifications'); // Create the view for notifications
+        return view('operator.notifications'); 
     }
 
     public function viewJobseekers()
     {
-        // Fetch all jobseekers along with their evaluation status
         $jobseekers = User::where('user_type', 'jobseeker')
-            ->with('evaluation') // Ensure this relationship exists in the User model
+            ->with('evaluation') 
             ->get();
 
-        // Pass the jobseekers to the view
         return view('evaluations', compact('jobseekers'));
     }
 
-    public function submitEvaluation(Request $request, $user_id)
+    public function register(Request $request)
     {
-        $request->validate([
-            'ratings' => 'required|array',
-            'ratings.*' => 'integer|min:1|max:5'
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        // 🔍 Fetch correct `jobseeker_id` using `user_id`
-        $jobseeker = DB::table('jobseekers')->where('user_id', $user_id)->first();
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'user_type' => 'operator', 
+        ]);
 
-        if (!$jobseeker) {
-            return redirect()->back()->with('error', 'Jobseeker not found.');
-        }
+        Auth::login($user);
 
-        // Store evaluations for each axis
-        foreach ($request->input('ratings') as $axis_id => $rating) {
-            DB::table('t_jobseeker_evaluations')->updateOrInsert(
-                [
-                    'jobseeker_id' => $jobseeker->id, // Use correct `id`
-                    'evaluation_axis_id' => $axis_id,
-                ],
-                [
-                    'rating' => $rating,
-                    'updated_at' => now(),
-                ]
-            );
-        }
-
-        // ✅ Update jobseeker's `evaluation` field to 1
-        DB::table('jobseekers')
-            ->where('id', $jobseeker->id)
-            ->update(['evaluation' => 1, 'updated_at' => now()]);
-
-        return redirect()->route('operator.viewEvaluations')->with('status', 'Evaluation submitted successfully.');
+        return redirect()->route('operator.dashboard');
     }
-
-
-
-    
-
-
-
-    public function evaluate($user_id)
-    {
-        // Find the jobseeker using user_id, not id
-        $jobseeker = Jobseeker::where('user_id', $user_id)->firstOrFail();
-
-        // Get all evaluation axes
-        $evaluation_axes = DB::table('m_evaluation_axes')->get();
-
-        // Fetch existing evaluations for the jobseeker
-        $existingEvaluations = DB::table('t_jobseeker_evaluations')
-            ->join('m_evaluation_axes', 't_jobseeker_evaluations.evaluation_axis_id', '=', 'm_evaluation_axes.id')
-            ->where('t_jobseeker_evaluations.jobseeker_id', $jobseeker->id) // Use jobseeker.id instead of user_id
-            ->select('m_evaluation_axes.name as axis_name', 't_jobseeker_evaluations.rating')
-            ->get();
-
-        return view('evaluate_form', compact('jobseeker', 'evaluation_axes', 'existingEvaluations'));
-    }
-
-    public function editEvaluation($user_id)
-    {
-        // Get jobseeker
-        $jobseeker = Jobseeker::findOrFail($user_id);
-
-        // Get all evaluation axes
-        $evaluation_axes = DB::table('m_evaluation_axes')->get();
-
-        // Fetch existing evaluations
-        $existingEvaluations = DB::table('t_jobseeker_evaluations')
-            ->join('m_evaluation_axes', 't_jobseeker_evaluations.evaluation_axis_id', '=', 'm_evaluation_axes.id')
-            ->where('t_jobseeker_evaluations.jobseeker_id', $user_id)
-            ->select('m_evaluation_axes.name as axis_name', 't_jobseeker_evaluations.rating')
-            ->get();
-
-        return view('evaluate_form', compact('jobseeker', 'evaluation_axes', 'existingEvaluations'));
-    }
-
-
-
-
-
-
 }
