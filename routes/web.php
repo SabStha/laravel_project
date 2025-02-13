@@ -65,6 +65,7 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     
+    Route::get('/operator/jobseeker/{user_id}/edit-evaluation', [OperatorController::class, 'editEvaluation'])->name('operator.editEvaluation');
 
     Route::post('/logout', function () {
         Auth::logout();
