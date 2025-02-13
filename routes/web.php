@@ -51,14 +51,21 @@ Route::get('/edit-profile', [JobseekerController::class, 'editProfile'])->name('
 Route::get('/save-jobs', [JobseekerController::class, 'saveJobs'])->name('jobseeker.saveJobs');
 
 // Operator Routes
-Route::get('/register/operator', [OperatorController::class, 'showRegistrationForm']);
-Route::post('/register/operator', [OperatorController::class, 'register'])->name('operator.register');
-Route::get('/operator/dashboard', [DashboardController::class, 'operatorDashboard'])->middleware('checkUserType:operator')->name('operator.dashboard');
+Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
+    Route::get('/dashboard', [OperatorController::class, 'dashboard'])->name('operator.dashboard');
+    Route::get('/listings', [OperatorController::class, 'viewListings'])->name('operator.viewListings');
+    Route::get('/profile', [OperatorController::class, 'manageProfile'])->name('operator.manageProfile');
+    //Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
+    Route::get('/applications', [OperatorController::class, 'viewApplications'])->name('operator.viewApplications');
+    Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
+    Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect()->route('login');
-})->name('operator.logout');
+
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('operator.logout');
+});
 
 
 //Create,Update and Delete for Job
