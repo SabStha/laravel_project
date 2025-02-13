@@ -49,6 +49,8 @@ Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->na
 Route::get('/notifications', [JobseekerController::class, 'notifications'])->name('jobseeker.notifications');
 Route::get('/edit-profile', [JobseekerController::class, 'editProfile'])->name('jobseeker.editProfile');
 Route::get('/save-jobs', [JobseekerController::class, 'saveJobs'])->name('jobseeker.saveJobs');
+Route::get('/operator/jobseeker/{user_id}/evaluate', [OperatorController::class, 'evaluate'])
+        ->name('operator.evaluate');
 
 // Operator Routes
 Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
@@ -59,7 +61,7 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/applications', [OperatorController::class, 'viewApplications'])->name('operator.viewApplications');
     Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
-
+    
 
     Route::post('/logout', function () {
         Auth::logout();
