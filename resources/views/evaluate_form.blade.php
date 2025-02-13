@@ -4,10 +4,15 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+
+            <!-- Display Jobseeker's Name at the Very Top -->
+            <div class="text-center mb-4">
+            <h1><span class="text-primary">{{ $jobseeker->name  }}</span></h1>
+            </div>
+
             <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-warning text-white py-4">
                     <h3>{{ __('Evaluate Jobseeker') }}</h3>
-                    <p class="lead">{{ __('Evaluating: ') }} {{ $jobseeker->name }}</p>
                 </div>
 
                 <div class="card-body">
@@ -17,7 +22,7 @@
                         </div>
                     @endif
 
-                    <h4 class="mb-3">Previous Evaluations</h4>
+                    <h4 class="mb-3">{{ __('Previous Evaluations') }}</h4>
 
                     @if ($existingEvaluations->isNotEmpty())
                         <table class="table table-striped">
@@ -28,27 +33,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            @if ($existingEvaluations->isNotEmpty())
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ __('Evaluation Axis') }}</th>
-                                            <th>{{ __('Rating') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($existingEvaluations as $evaluation)
-                                            <tr>
-                                                <td>{{ $evaluation->axis_name ?? 'Unknown' }}</td>
-                                                <td>{{ $evaluation->rating ?? 'N/A' }} / 5</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <p class="text-muted">{{ __('No evaluations yet. Please evaluate below.') }}</p>
-                            @endif
-
+                                @foreach ($existingEvaluations as $evaluation)
+                                    <tr>
+                                        <td>{{ $evaluation->axis_name ?? 'Unknown' }}</td>
+                                        <td>{{ $evaluation->rating ?? 'N/A' }} / 5</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     @else
@@ -57,7 +47,7 @@
 
                     <hr>
 
-                    <h4 class="mb-3">Submit a New Evaluation</h4>
+                    <h4 class="mb-3">{{ __('Submit a New Evaluation') }}</h4>
 
                     <form method="POST" action="{{ route('operator.submitEvaluation', ['user_id' => $jobseeker->user_id]) }}">
                         @csrf

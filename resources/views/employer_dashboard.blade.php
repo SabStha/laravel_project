@@ -11,11 +11,7 @@
                 </div>
 
                 <div class="card-body">
-<<<<<<< HEAD
                     @if (session('status'))
-=======
-                    @if   (session('status'))
->>>>>>> 0302e1f94658b32a941265da47d40f5873256a35
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
@@ -30,39 +26,7 @@
                         @endauth
                     </div>
 
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('employer.createListing') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('Create Job Listing') }}
-                            </a>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('employer.viewListings') }}" class="btn btn-secondary w-100 py-3 rounded-pill">
-                                {{ __('View Job Listings') }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('employer.viewApplications') }}" class="btn btn-warning w-100 py-3 rounded-pill">
-                                {{ __('View Job Applications') }}
-                            </a>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('employer.manageProfile') }}" class="btn btn-info w-100 py-3 rounded-pill">
-                                {{ __('Manage Profile') }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="row mt-4">
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('employer.notifications') }}" class="btn btn-success w-100 py-3 rounded-pill">
-                                {{ __('Notifications') }}
-                            </a>
-                        </div>
-
+                    
                         <!-- Logout Form -->
                         <div class="col-md-6 mb-3">
                             <form method="POST" action="{{ route('logout') }}">

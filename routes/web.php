@@ -27,6 +27,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('guest')->group(function () {
     Route::get('/register/employer', [EmployerController::class, 'showRegistrationForm'])->name('employer.register');
     Route::post('/register/employer', [EmployerController::class, 'register']);
+    Route::get('/create-listing', [EmployerController::class, 'createListing'])->name('employer.createListing');
+    Route::get('/view-lisstings', [EmployerController::class, 'viewListings'])->name('employer.viewListings');
+    Route::get('/view-applications', [EmployerController::class, 'viewApplications'])->name('employer.viewApplications');
+    Route::get('/manage-profile', [EmployerController::class, 'manageProfile'])->name('employer.manageProfile');
+    Route::get('/notifications', [EmployerController::class, 'notifications'])->name('employer.notifications');
+    
+
 });
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -56,6 +63,12 @@ Route::get('/operator/jobseeker/{user_id}/evaluate', [OperatorController::class,
         ->name('operator.evaluate');
 
 // Operator Routes
+
+Route::middleware('guest')->group(function () {
+    Route::get('/register/operator', [OperatorController::class, 'showRegistrationForm'])->name('operator.register');
+    Route::post('/register/operator', [OperatorController::class, 'register']);
+});
+
 Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/dashboard', [OperatorController::class, 'dashboard'])->name('operator.dashboard');
     Route::get('/listings', [OperatorController::class, 'viewListings'])->name('operator.viewListings');
