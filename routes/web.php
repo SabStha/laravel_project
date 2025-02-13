@@ -49,6 +49,9 @@ Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->na
 Route::get('/notifications', [JobseekerController::class, 'notifications'])->name('jobseeker.notifications');
 Route::get('/edit-profile', [JobseekerController::class, 'editProfile'])->name('jobseeker.editProfile');
 Route::get('/save-jobs', [JobseekerController::class, 'saveJobs'])->name('jobseeker.saveJobs');
+
+Route::post('/operator/jobseeker/{user_id}/evaluate', [OperatorController::class, 'submitEvaluation'])
+        ->name('operator.submitEvaluation');
 Route::get('/operator/jobseeker/{user_id}/evaluate', [OperatorController::class, 'evaluate'])
         ->name('operator.evaluate');
 
