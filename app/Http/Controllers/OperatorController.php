@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\User; // Ensure you import the User model
 use Illuminate\Http\Request;
 use App\Models\Evaluation;  // Add this line to import the Evaluation modeluse App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
