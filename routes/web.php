@@ -55,6 +55,11 @@ Route::get('/register/operator', [OperatorController::class, 'showRegistrationFo
 Route::post('/register/operator', [OperatorController::class, 'register'])->name('operator.register');
 Route::get('/operator/dashboard', [DashboardController::class, 'operatorDashboard'])->middleware('checkUserType:operator')->name('operator.dashboard');
 
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect()->route('login');
+})->name('operator.logout');
+
 
 //Create,Update and Delete for Job
 Route::get('/jobs',[Jobcontroller::class, 'search']);
