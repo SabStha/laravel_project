@@ -11,7 +11,7 @@
                 </div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('operator_register') }}">
+                    <form method="POST" action="{{ route('operator.register') }}">
                         @csrf
 
                         <!-- Name -->

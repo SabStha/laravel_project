@@ -46,7 +46,7 @@
                                                     {{ __('Edit Evaluation') }}
                                                 </a>
                                             @else
-                                                <a href="{{ route('operator.evaluate', ['user_id' => $jobseeker->id]) }}" 
+                                                <a href="{{ route('operator.evaluate', ['user_id' => $jobseeker->user_id]) }}" 
                                                 class="btn btn-primary btn-sm">
                                                     {{ __('Evaluate Now') }}
                                                 </a>
