@@ -1,6 +1,6 @@
 # Laravel Specific
 /vendor/
-#.env
+.env
 .env.backup
 .env.example.backup
 /storage/*.key
