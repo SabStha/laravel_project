@@ -7,7 +7,7 @@
 
             <!-- Display Jobseeker's Name at the Very Top -->
             <div class="text-center mb-4">
-            <h1><span class="text-primary">{{ $jobseeker->name  }}</span></h1>
+                <h1><span class="text-primary">{{ $jobseeker->name }}</span></h1>
             </div>
 
             <div class="card shadow-lg rounded-3">
@@ -56,7 +56,12 @@
                         @foreach ($evaluation_axes as $axis)
                             <div class="mb-3">
                                 <label class="form-label">{{ __($axis->name) }}</label>
-                                <input type="number" name="ratings[{{ $axis->id }}]" min="1" max="5" class="form-control" required>
+                                <div class="rating-container">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <input type="radio" id="axis_{{ $axis->id }}_{{ $i }}" name="ratings[{{ $axis->id }}]" value="{{ $i }}" required>
+                                        <label for="axis_{{ $axis->id }}_{{ $i }}">{{ $i }}</label>
+                                    @endfor
+                                </div>
                             </div>
                         @endforeach
 
@@ -75,4 +80,62 @@
         </div>
     </div>
 </div>
+
+<!-- CSS Styling -->
+<style>
+    .rating-container {
+        display: flex;
+        justify-content: center; /* Center-align ratings */
+        gap: 10px;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .rating-container input[type="radio"] {
+        display: none; /* Hide the default radio button */
+    }
+
+    /* Style the label to look like a clickable button */
+    .rating-container label {
+        background-color: #f1f1f1;
+        padding: 12px 18px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid #ccc;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        min-width: 50px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Change the color when hovered */
+    .rating-container label:hover {
+        background-color: #e0e0e0;
+        border-color: #b5b5b5;
+    }
+
+    /* Selected (Checked) Radio Button */
+    .rating-container input[type="radio"]:checked + label {
+        background-color: #28a745; /* Green for selection */
+        color: white;
+        border-color: #1e7e34;
+        box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
+        transform: scale(1.1); /* Slight pop effect */
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .rating-container {
+            flex-wrap: wrap;
+        }
+
+        .rating-container label {
+            padding: 10px 14px;
+            font-size: 14px;
+            min-width: 40px;
+        }
+    }
+</style>
+
 @endsection

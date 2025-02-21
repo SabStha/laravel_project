@@ -10,7 +10,11 @@ class Jobseeker extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'evaluation'];
+    protected $fillable = [
+        'user_id', 'birthday', 'gender', 'citizenship', 'phone', 'address', 'school', 
+        'image', 'residentcard', 'jlpt', 'expected_to_graduate', 'parttimejob', 
+        'wage', 'time', 'evaluation'
+    ];
 
     public function user()
     {
