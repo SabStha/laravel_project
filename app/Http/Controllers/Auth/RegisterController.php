@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
-class ResetPasswordController extends Controller
+class RegisterController extends Controller
 {
     public function showResetForm($token)
     {
