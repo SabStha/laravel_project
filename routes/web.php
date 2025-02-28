@@ -70,8 +70,8 @@ Route::post('jobseeker/survey/submit', [SurveyController::class, 'submitSurvey']
     ->name('survey.submit');
 
 // Admin View to See Responses (For Admin Users)
-Route::get('/admin/survey-responses', [SurveyController::class, 'viewResponses'])
-    ->middleware(['auth', 'admin']) // Optional: Restrict to Admin Users
+Route::get('/operator/survey-responses', [SurveyController::class, 'viewResponses'])
+    ->middleware(['auth', 'operator']) // Optional: Restrict to Admin Users
     ->name('survey.responses');
 
 Route::get('/view-listings', [JobseekerController::class, 'viewListings'])->name('jobseeker.viewListings');
@@ -103,12 +103,20 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     
     Route::get('/operator/jobseeker/{user_id}/edit-evaluation', [OperatorController::class, 'editEvaluation'])->name('operator.editEvaluation');
+    Route::get('/survey-results', [OperatorController::class, 'viewSurveyResults'])->name('operator.surveyResults');
+    Route::get('/survey-results/{jobseeker_id}', [OperatorController::class, 'viewJobseekerSurvey'])->name('operator.surveyDetail');
+
+    Route::get('/jobseekers', [OperatorController::class, 'viewJobseekers'])->name('operator.viewJobseekers');
+
 
     Route::post('/logout', function () {
         Auth::logout();
         return redirect()->route('login');
     })->name('operator.logout');
 });
+
+
+
 
 
 // //Create,Update and Delete for Job

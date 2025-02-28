@@ -107,16 +107,86 @@ class OperatorController extends Controller
         return view('operator.notifications'); // Create the view for notifications
     }
 
-    public function viewJobseekers()
+    public function viewJobseekers(Request $request)
     {
-        // Fetch all jobseekers along with their evaluation status
-        $jobseekers = User::where('user_type', 'jobseeker')
-            ->with('evaluation') // Ensure this relationship exists in the User model
-            ->get();
+        
+        $graduationDates = Jobseeker::whereNotNull('expected_to_graduate')
+            ->selectRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') as grad_month")
+            ->distinct()
+            ->orderBy('grad_month', 'desc')
+            ->pluck('grad_month');
+        // Fetch unique options dynamically from the database
+        $schools = Jobseeker::whereNotNull('school')->distinct()->pluck('school');
+        $citizenships = Jobseeker::whereNotNull('citizenship')->distinct()->pluck('citizenship');
+        $jlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt');
+        $wages = Jobseeker::whereNotNull('wage')->distinct()->pluck('wage')->sort();
+      
 
-        // Pass the jobseekers to the view
-        return view('evaluations', compact('jobseekers'));
+
+        $query = Jobseeker::with('user');
+    
+        // Filtering logic
+        if ($request->filled('name')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->name . '%');
+            });
+        }
+    
+        if ($request->filled('email')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('email', 'LIKE', '%' . $request->email . '%');
+            });
+        }
+    
+        if ($request->filled('school')) {
+            $query->where('school', $request->school);
+        }
+    
+        if ($request->filled('citizenship')) {
+            $query->where('citizenship', $request->citizenship);
+        }
+    
+        if ($request->filled('jlpt')) {
+            $query->where('jlpt', $request->jlpt);
+        }
+    
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+    
+        if ($request->filled('graduation_date')) {
+            $query->whereRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') = ?", [$request->graduation_date]);
+        }
+        
+    
+        if ($request->filled('age')) {
+            $query->whereNotNull('birthday')
+                  ->whereRaw('TIMESTAMPDIFF(YEAR, birthday, CURDATE()) >= ?', [$request->age]);
+        }
+    
+        if ($request->filled('parttimejob')) {
+            $query->where('parttimejob', $request->parttimejob);
+        }
+    
+        if ($request->filled('wage')) {
+            $query->whereNotNull('wage')
+                  ->where('wage', '>=', $request->wage);
+        }
+    
+        $jobseekers = $query->paginate(100);
+    
+        if ($request->ajax()) {
+            return view('jobseeker_grid_partial', compact('jobseekers'))->render();
+        }
+    
+        // Pass filtering options to the Blade view
+        return view('jobseeker_grid', compact('jobseekers', 'schools', 'citizenships', 'jlptLevels', 'wages', 'graduationDates'));
     }
+    
+
+    
+
+
 
     public function submitEvaluation(Request $request, $user_id)
     {
@@ -195,6 +265,42 @@ class OperatorController extends Controller
 
         return view('evaluate_form', compact('jobseeker', 'evaluation_axes', 'existingEvaluations'));
     }
+
+
+
+
+
+
+
+
+    public function viewSurveyResults()
+    {
+        $jobseekers = DB::table('jobseekers')
+            ->leftJoin('users', 'jobseekers.user_id', '=', 'users.id')
+            ->select('jobseekers.id', 'users.name', 'users.email', 'jobseekers.total_score', 'jobseekers.survey_completed')
+            ->orderByDesc('jobseekers.total_score')
+            ->get();
+
+        return view('survey_results', compact('jobseekers'));
+    }
+
+    public function viewJobseekerSurvey($jobseeker_id)
+    {
+        $jobseeker = DB::table('jobseekers')
+            ->leftJoin('users', 'jobseekers.user_id', '=', 'users.id')
+            ->where('jobseekers.id', $jobseeker_id)
+            ->select('jobseekers.*', 'users.name', 'users.email')
+            ->first();
+
+        $survey_responses = DB::table('jobseeker_survey')
+            ->leftJoin('surveys', 'jobseeker_survey.survey_id', '=', 'surveys.id')
+            ->where('jobseeker_survey.jobseeker_id', $jobseeker_id)
+            ->select('surveys.question_text', 'jobseeker_survey.selected_option', 'jobseeker_survey.score')
+            ->get();
+
+        return view('survey_detail', compact('jobseeker', 'survey_responses'));
+    }
+
 
 
 

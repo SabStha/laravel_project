@@ -17,9 +17,15 @@
                     </div>
 
                     <div class="row mt-4">
+                        
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-primary w-100 py-3 rounded-pill">
+                                {{ __('View All JobseekerList') }}
+                            </a>
+                        </div>
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('operator.viewEvaluations') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('View Jobseeker List') }}
+                                {{ __('View Evaluation Jobseeker List') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">

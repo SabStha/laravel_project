@@ -62,5 +62,16 @@ class SurveyController extends Controller
         return view('survey', compact('surveys'));
     }
 
+    public function viewResponses()
+    {
+        $jobseekers = Jobseeker::leftJoin('users', 'jobseekers.user_id', '=', 'users.id')
+            ->select('jobseekers.id', 'users.name', 'users.email', 'jobseekers.total_score', 'jobseekers.survey_completed')
+            ->orderByDesc('jobseekers.total_score')
+            ->get();
+
+        return view('survey_results', compact('jobseekers'));
+    }
+
+
     
 }

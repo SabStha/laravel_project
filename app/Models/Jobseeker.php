@@ -33,4 +33,15 @@ class Jobseeker extends Model
             ->withTimestamps();
     }
 
+    public static function validationRules()
+{
+    return [
+        'phone' => 'required|string|max:15',
+        'address' => 'required|string|max:255',
+        'custom_citizenship' => 'required|string|max:100',
+        'residentcard' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ];
+}
+
 }
