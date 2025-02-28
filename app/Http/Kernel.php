@@ -72,5 +72,7 @@ class Kernel extends HttpKernel
         'employer' => \App\Http\Middleware\EnsureUserIsEmployer::class,
         'jobseeker' => \App\Http\Middleware\EnsureUserIsJobseeker::class,
         'operator' => \App\Http\Middleware\OperatorMiddleware::class,
+        'ensure.survey.completed' => \App\Http\Middleware\EnsureSurveyCompleted::class,
+
     ];
 }

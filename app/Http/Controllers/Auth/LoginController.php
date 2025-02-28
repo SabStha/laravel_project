@@ -30,15 +30,23 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        // Check the user type and redirect accordingly
+        // Redirect employers to their dashboard
         if ($user->user_type == 'employer') {
-            return redirect()->route('employer.dashboard'); // Redirect to employer dashboard
-        } elseif ($user->user_type == 'jobseeker') {
-            return redirect()->route('jobseeker.dashboard'); // Redirect to jobseeker dashboard
-        } else {
-            return redirect()->route('operator.dashboard'); // Default fallback, you can change this
+            return redirect()->route('employer.dashboard');
         }
+        
+        // Redirect jobseekers to survey if not completed
+        elseif ($user->user_type == 'jobseeker') {
+            if (!$user->jobseeker->survey_completed) {
+                return redirect()->route('survey.show')->with('info', 'Please complete the survey before proceeding.');
+            }
+            return redirect()->route('jobseeker.dashboard');
+        }
+    
+        // Default fallback for operators
+        return redirect()->route('operator.dashboard');
     }
+    
 
     /**
      * Create a new controller instance.
