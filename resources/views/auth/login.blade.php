@@ -54,12 +54,17 @@
                             </button>
                         </div>
 
-                        <!-- Forgot Password Link -->
+                        <!-- Forgot Password Link and Home Button -->
                         <div class="text-center mt-4">
+                            <a class="btn btn-secondary btn-lg w-50 mb-2" href="{{ url('/') }}">
+                                {{ __('Home') }}
+                            </a>
+                            <br>
                             <a class="btn btn-link text-muted" href="{{ url('/forgot-password') }}">
                                 {{ __('Forgot Your Password?') }}
                             </a>
                         </div>
+
                     </form>
                 </div>
             </div>
