@@ -178,6 +178,13 @@ Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('
 // Route::get('/about',[ContactController::class,'about']);
 // Route::get('/terms',[ContactController::class,'terms']);
 
+Route::get('/contact',[ContactController::class,'contactForm']);
+Route::get('/about',[ContactController::class,'about']);
+Route::get('/terms',[ContactController::class,'terms']);
+
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact.submit');
 
 
 
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
