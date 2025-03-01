@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ChatController;
 
 
 // Home route
@@ -188,3 +189,10 @@ Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact
 
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    Route::delete('/chat/delete/{conversationId}', [ChatController::class, 'deleteConversation']);
+});

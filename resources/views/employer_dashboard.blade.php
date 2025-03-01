@@ -26,7 +26,11 @@
                         @endauth
                     </div>
 
-                    
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ route('chat.index') }}" class="btn btn-info w-100 py-3 rounded-pill">
+                                {{ __('Chats') }}
+                            </a>
+                        </div>
                         <!-- Logout Form -->
                         <div class="col-md-6 mb-3">
                             <form method="POST" action="{{ route('logout') }}">
