@@ -27,6 +27,12 @@
                     </div>
 
                         <div class="col-md-6 mb-3">
+                            <a href="{{ route('jobseekers.index') }}" class="btn btn-primary w-100 py-3 rounded-pill">
+                                {{ __('View All Job Seekers') }}
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
                             <a href="{{ route('chat.index') }}" class="btn btn-info w-100 py-3 rounded-pill">
                                 {{ __('Chats') }}
                             </a>

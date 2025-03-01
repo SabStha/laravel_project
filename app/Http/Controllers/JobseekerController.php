@@ -95,4 +95,11 @@ class JobseekerController extends Controller
             return back()->withErrors(['error' => 'Something went wrong. Please check the logs.']);
         }
     }
+
+    public function index()
+    {
+        $jobseekers = JobSeeker::with('user')->get(); // Fetch job seekers with their associated user info
+
+        return view('jobseekerindex', compact('jobseekers'));
+    }
 }

@@ -43,5 +43,41 @@ class ChatController extends Controller
 
         return response()->json($message);
     }
+
+    public function start($id)
+{
+    $recipient = User::findOrFail($id);
+
+    // Check if a conversation exists
+    $conversation = Conversation::where(function ($query) use ($id) {
+        $query->where('employer_id', Auth::id())
+              ->where('jobseeker_id', $id);
+    })->orWhere(function ($query) use ($id) {
+        $query->where('jobseeker_id', Auth::id())
+              ->where('employer_id', $id);
+    })->first();
+
+    // If no conversation exists, create a new one
+    if (!$conversation) {
+        $conversation = Conversation::create([
+            'employer_id' => Auth::id(),
+            'jobseeker_id' => $id,
+        ]);
+    }
+
+    // Fetch all conversations for the current user
+    $conversations = Conversation::where('employer_id', Auth::id())
+        ->orWhere('jobseeker_id', Auth::id())
+        ->with(['employer', 'jobseeker', 'messages'])
+        ->get();
+
+    // Fetch messages of the selected conversation
+    $messages = Message::where('conversation_id', $conversation->id)
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+    return view('index', compact('recipient', 'conversation', 'conversations', 'messages'));
+}
+
 }
 

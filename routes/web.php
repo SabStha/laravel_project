@@ -118,6 +118,9 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
 
 
 
+Route::get('/jobseekers', [JobSeekerController::class, 'index'])->name('jobseekers.index');
+
+
 
 
 // //Create,Update and Delete for Job
@@ -195,4 +198,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
     Route::post('/chat/send', [ChatController::class, 'sendMessage']);
     Route::delete('/chat/delete/{conversationId}', [ChatController::class, 'deleteConversation']);
-});
+    Route::get('/chat/start/{id}', [ChatController::class, 'start'])->name('chat.start');
+}); 
