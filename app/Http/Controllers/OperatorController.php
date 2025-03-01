@@ -177,7 +177,7 @@ class OperatorController extends Controller
                 ->where('wage', '>=', $request->wage);
         }
 
-        $jobseekers = $query->paginate(100);
+        $jobseekers = $query->paginate(20);
 
         // Log final query before execution
         Log::info('Final Jobseekers Query', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
