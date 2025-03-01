@@ -94,7 +94,10 @@
         
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-primary btn-lg">🔎 Search</button>
+                <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-secondary btn-lg ms-2">🔄 Clear Search</a>
             </div>
+           
+            
         </form>
         
         
