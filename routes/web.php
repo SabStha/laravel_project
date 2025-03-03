@@ -13,6 +13,10 @@ use App\Http\Controllers\HelpController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\SurveyController;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ChatController;
+
 
 // Home route
 Route::get('/', function () {
@@ -20,6 +24,9 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
+
+
+// ... previous code remains the same
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -41,7 +48,25 @@ Route::get('/employer/dashboard', [DashboardController::class, 'employerDashboar
 // Jobseeker Routes
 Route::get('/register/jobseeker', [JobseekerController::class, 'showRegistrationForm'])->name('jobseeker.register');
 Route::post('/register/jobseeker', [JobseekerController::class, 'register']);
-Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->middleware('checkUserType:jobseeker')->name('jobseeker.dashboard');
+Route::middleware(['auth', 'checkUserType:jobseeker', 'ensure.survey.completed'])->group(function () {
+    Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->name('jobseeker.dashboard');
+    Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->name('jobseeker.manageProfile');
+    Route::get('/view-applications', [JobseekerController::class, 'viewApplications'])->name('jobseeker.viewApplications');
+});
+//how Survey Form (For Jobseekers)
+Route::get('jobseeker/survey', [SurveyController::class, 'showSurvey'])
+    ->middleware('auth') // Ensure only logged-in users can access
+    ->name('survey.show');
+
+// Submit Survey Responses (Jobseeker Submits Answers)
+Route::post('jobseeker/survey/submit', [SurveyController::class, 'submitSurvey'])
+    ->middleware('auth') // Prevents unauthenticated users from submitting
+    ->name('survey.submit');
+
+// Admin View to See Responses (For Admin Users)
+Route::get('/operator/survey-responses', [SurveyController::class, 'viewResponses'])
+    ->middleware(['auth', 'operator']) // Optional: Restrict to Admin Users
+    ->name('survey.responses');
 
 Route::get('/view-listings', [JobseekerController::class, 'viewListings'])->name('jobseeker.viewListings');
 Route::get('/view-applications', [JobseekerController::class, 'viewApplications'])->name('jobseeker.viewApplications');
@@ -72,6 +97,11 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     
     Route::get('/operator/jobseeker/{user_id}/edit-evaluation', [OperatorController::class, 'editEvaluation'])->name('operator.editEvaluation');
+    Route::get('/survey-results', [OperatorController::class, 'viewSurveyResults'])->name('operator.surveyResults');
+    Route::get('/survey-results/{jobseeker_id}', [OperatorController::class, 'viewJobseekerSurvey'])->name('operator.surveyDetail');
+
+    Route::get('/jobseekers', [OperatorController::class, 'viewJobseekers'])->name('operator.viewJobseekers');
+
 
     Route::post('/logout', function () {
         Auth::logout();
@@ -80,20 +110,26 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
 });
 
 
-//Create,Update and Delete for Job
-Route::get('/jobs',[Jobcontroller::class, 'search']);
-Route::get('/jobs/{id}',[Jobcontroller::class,'view']);
-Route::get('/company/jobs/create',[CompanyController::class,'create']);
-Route::post('/company/jobs/create',[CompanyController::class,'create']);
-Route::get('/company/jobs/{id}/edit',[CompanyController::class,'edit']);
-Route::post('/company/jobs/{id}/update',[CompanyController::class,'update']);
-Route::get('/company/jobs/{id}/delete',[CompanyController::class,'delete']);
 
-//Password reset and update
-Route::get('/password/reset',[PasswordController::class,'reset']);
-Route::get('/password/reset/sent',[PasswordController::class,'sent']);
-Route::get('/password/reset/{token}',[PasswordController::class,'edit']);
-Route::post('/password/reset/{token}',[PasswordController::class,'update']);
+Route::get('/jobseekers', [JobSeekerController::class, 'index'])->name('jobseekers.index');
+
+
+
+
+// //Create,Update and Delete for Job
+// Route::get('/jobs',[Jobcontroller::class, 'search']);
+// Route::get('/jobs/{id}',[Jobcontroller::class,'view']);
+// Route::get('/company/jobs/create',[CompanyController::class,'create']);
+// Route::post('/company/jobs/create',[CompanyController::class,'create']);
+// Route::get('/company/jobs/{id}/edit',[CompanyController::class,'edit']);
+// Route::post('/company/jobs/{id}/update',[CompanyController::class,'update']);
+// Route::get('/company/jobs/{id}/delete',[CompanyController::class,'delete']);
+
+// //Password reset and update
+// Route::get('/password/reset',[PasswordController::class,'reset']);
+// Route::get('/password/reset/sent',[PasswordController::class,'sent']);
+// Route::get('/password/reset/{token}',[PasswordController::class,'edit']);
+// Route::post('/password/reset/{token}',[PasswordController::class,'update']);
 
 
 // Operator Routes
@@ -116,8 +152,8 @@ Route::get('/profile/employer/{user_id}',[EmployerController::class,'profile']);
 Route::get('/profile/employer/{user_id}',[EmployerController::class,'edit_profile']);
 Route::post('/profile/employer/{user_id}',[EmployerController::class,'update_profile']);
 
-Route::get('/jobs/{job_id}/apply',[Jobcontroller::class,'apply']);
-Route::post('/jobs/{job_id}/apply',[Jobcontroller::class,'create']);
+// Route::get('/jobs/{job_id}/apply',[Jobcontroller::class,'apply']);
+// Route::post('/jobs/{job_id}/apply',[Jobcontroller::class,'create']);
 
 
 
@@ -135,7 +171,11 @@ Route::post('reset-password', [ResetPasswordController::class, 'reset'])->name('
 // Route::get('/password/reset/{token}', [ResetPasswordController::class, 'showResetForm']);
 // Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
 
-Route::get('/help',[HelpController::class,'help']);
+// Route::get('/help',[HelpController::class,'help']);
+
+// Route::get('/contact',[ContactController::class,'contactForm']);
+// Route::get('/about',[ContactController::class,'about']);
+// Route::get('/terms',[ContactController::class,'terms']);
 
 Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
@@ -150,3 +190,17 @@ Route::get('/jobs', [JobController::class, 'create'])->name('jobs_create')->midd
 
 Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
 
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
+Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact.submit');
+
+
+
+Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    Route::delete('/chat/delete/{conversationId}', [ChatController::class, 'deleteConversation']);
+    Route::get('/chat/start/{id}', [ChatController::class, 'start'])->name('chat.start');
+}); 

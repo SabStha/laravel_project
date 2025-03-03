@@ -1,0 +1,133 @@
+<?php
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class SurveySeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('surveys')->insert([
+            [
+                'question_text' => '街で偶然、以前アルバイトでお世話になった店のオーナーに会いました。あなたは？',
+                'option_a' => '駆け寄って挨拶をし、近況を報告する。',
+                'option_b' => '軽く会釈だけして通り過ぎる。',
+                'option_c' => '遠くから見ているだけで、声をかけない。',
+                'option_d' => '友人に気づかれないように隠れる。',
+                'explanation_a' => '社交的で、人間関係を大切にするタイプです。',
+                'explanation_b' => '自立心があり、適度な距離感を保つタイプです。',
+                'explanation_c' => '内向的で、人見知りするタイプです。',
+                'explanation_d' => '不安を感じやすく、過去の失敗を気にしやすいタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '図書館で勉強していたら、隣の人が電話を始めました。あなたは？',
+                'option_a' => '注意して電話をやめてもらう。',
+                'option_b' => '我慢して勉強を続ける。',
+                'option_c' => '場所を変えて勉強する。',
+                'option_d' => '他の人に注意してもらう。',
+                'explanation_a' => '正義感があり、自分の意見をしっかり言えるタイプです。',
+                'explanation_b' => '忍耐強く、周りの状況に合わせられるタイプです。',
+                'explanation_c' => '協調性があり、争いごとを避けたいタイプです。',
+                'explanation_d' => '依存心があり、人に頼ることが多いタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '友達と遊ぶ約束をしていた日に、急用ができてしまいました。あなたは？',
+                'option_a' => '友達に事情を説明し、別の日に遊ぶ提案をする。',
+                'option_b' => '友達に連絡せず、急用を優先する。',
+                'option_c' => '友達に嘘をついて、急用を片付ける。',
+                'option_d' => 'どちらも選びきれず、悩んでしまう。',
+                'explanation_a' => '誠実で、責任感があるタイプです。',
+                'explanation_b' => '自己中心的な傾向があるかもしれません。',
+                'explanation_c' => '柔軟性があり、状況に応じて対応できるタイプです。',
+                'explanation_d' => '優柔不断で、決断力に欠けるタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => 'コンビニでお弁当を買ったら、お箸が入っていませんでした。あなたは？',
+                'option_a' => '店に戻ってお箸をもらう。',
+                'option_b' => '家にあるお箸を使う。',
+                'option_c' => '他のもので代用する。',
+                'option_d' => '諦めて、手で食べる。',
+                'explanation_a' => '主張力があり、自分の要求をきちんと伝えられるタイプです。',
+                'explanation_b' => '自立心があり、自分で解決できることは自分で解決するタイプです。',
+                'explanation_c' => '適応力があり、臨機応変に対応できるタイプです。',
+                'explanation_d' => '受容性があり、多少の不便は気にしないタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '電車の中で、気分が悪くなっている人がいます。あなたは？',
+                'option_a' => '声をかけて、手を差し伸べる。',
+                'option_b' => '様子を見て、必要があれば声をかける。',
+                'option_c' => '知らないふりをする。',
+                'option_d' => '他の人に助けを求める。',
+                'explanation_a' => '親切で、困っている人を助けたいという気持ちが強いタイプです。',
+                'explanation_b' => '冷静で、状況を判断できるタイプです。',
+                'explanation_c' => '内向的で、人との関わりを避けたいタイプです。',
+                'explanation_d' => '依存心があり、人に頼ることが多いタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '旅行先で、道に迷ってしまいました。あなたは？',
+                'option_a' => '地図アプリや人に聞いて、道を探す。',
+                'option_b' => 'とりあえず歩いてみる。',
+                'option_c' => '諦めて、近くの施設に入る。',
+                'option_d' => '誰かに助けてもらう。',
+                'explanation_a' => '自立心があり、自分で問題を解決しようとするタイプです。',
+                'explanation_b' => '楽観的で、あまり深く考えないタイプです。',
+                'explanation_c' => '現実的で、状況に応じて対応できるタイプです。',
+                'explanation_d' => '依存心があり、人に頼ることが多いタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '友達の誕生日プレゼントを選ぶことになりました。あなたは？',
+                'option_a' => '友達の好みや欲しいものを事前にリサーチする。',
+                'option_b' => '自分が良いと思うものを贈る。',
+                'option_c' => '予算内で適当なものを選ぶ。',
+                'option_d' => '友達と一緒に選びに行く。',
+                'explanation_a' => '思いやりがあり、相手のことを考えるタイプです。',
+                'explanation_b' => '自己中心的な傾向があるかもしれません。',
+                'explanation_c' => '実用性を重視するタイプです。',
+                'explanation_d' => '協調性があり、友達と一緒に楽しみたいタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => '会社の飲み会で、上司がスピーチをしています。あなたは？',
+                'option_a' => '熱心に話を聞き、共感する姿勢を見せる。',
+                'option_b' => '興味なさそうにしている。',
+                'option_c' => '他の参加者と話している。',
+                'option_d' => '早く終わらないかなと思っている。',
+                'explanation_a' => '社交的で、周囲に気を配れるタイプです。',
+                'explanation_b' => '率直で、自分の気持ちを隠さないタイプです。',
+                'explanation_c' => '協調性があり、周りの人とコミュニケーションを取りたいタイプです。',
+                'explanation_d' => '我慢強く、早く自由になりたいと思っているタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'question_text' => 'プレゼンテーションで、緊張して言葉が出てこなくなりました。あなたは？',
+                'option_a' => '深呼吸をして、落ち着いて話す。',
+                'option_b' => '資料やカンペを見ながら話す。',
+                'option_c' => '途中で諦めてしまう。',
+                'option_d' => '他の人に助けを求める。',
+                'explanation_a' => '冷静で、自己コントロールができるタイプです。',
+                'explanation_b' => '慎重で、準備をしっかりするタイプです。',
+                'explanation_c' => 'ストレスに弱く、プレッシャーに弱いタイプです。',
+                'explanation_d' => '依存心があり、人に頼ることが多いタイプです。',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            
+        ]);
+    }
+}
+
