@@ -188,3 +188,10 @@ Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact
 
 
 Route::get('/contacts', [ContactController::class, 'index'])->name('contacts');
+
+
+Route::get('/about', [CompanyController::class, 'showCompanyInfo'])->name('about');
+
+use App\Http\Controllers\TermsController;
+
+Route::get('/terms', [TermsController::class, 'index'])->name('terms');
