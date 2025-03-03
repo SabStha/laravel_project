@@ -20,6 +20,7 @@
                     <div class="text-center">
                         @auth
                             <h4>Welcome, {{ Auth::user()->name }}!</h4>
+                            <a href="{{ route('jobs_create') }}" class="btn btn-primary">Create Job</a>
                             <p>You're successfully logged in as an Employer. Here you can manage your job listings and view applicants.</p>
                         @else
                             <p>You need to log in to access this page.</p>

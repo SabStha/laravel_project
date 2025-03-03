@@ -17,7 +17,7 @@ class EmployerController extends Controller
 
     public function register(Request $request)
     {
-        // Validate the incoming request data
+        // Validate the incoming request data and store it in $validated
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -27,16 +27,16 @@ class EmployerController extends Controller
             'company_phone' => 'required|string|max:20',
         ]);
 
-        // Use DB transaction to ensure both user and employer records are created
-        try {
-            DB::transaction(function() use ($validated, $request) {
-                // Create the user
-                $user = User::create([
-                    'name' => $validated['name'],
-                    'email' => $validated['email'],
-                    'password' => Hash::make($validated['password']),
-                    'user_type' => 'employer',
-                ]);
+        try{
+        // Use DB transaction to ensure data integrity
+        DB::transaction(function() use ($validated) {
+            // Create the user in the users table
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'user_type' => 'employer', // Set user type to 'employer'
+            ]);
 
                 // Create the employer profile
                 $employer = Employer::create([
@@ -50,8 +50,8 @@ class EmployerController extends Controller
 
             // Redirect with success message
             return redirect()->route('employer.dashboard')
-                           ->with('success', '登録が完了しました。管理者の承認をお待ちください。');
-        } catch (\Exception $e) {
+                        ->with('success', '登録が完了しました。管理者の承認をお待ちください。');
+        } catch (Exception $e) {
             // If something goes wrong, redirect back with error
             return back()->withInput()
                         ->withErrors(['error' => '登録に失敗しました。もう一度お試しください。']);
@@ -59,7 +59,8 @@ class EmployerController extends Controller
     }
 
     public function dashboard()
-    {
-        return view('employer_dashboard'); // Ensure you have this Blade view
-    }
+        {
+            return view('employer_dashboard'); // Ensure you have this Blade view
+        }
+
 }
