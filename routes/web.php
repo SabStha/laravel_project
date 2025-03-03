@@ -15,6 +15,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\ChatController;
 
 
 // Home route
@@ -29,21 +30,14 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-// Employer Routes
-Route::middleware('guest')->group(function () {
-    Route::get('/register/employer', [EmployerController::class, 'showRegistrationForm'])->name('employer.register');
-    Route::post('/register/employer', [EmployerController::class, 'register']);
-    Route::get('/create-listing', [EmployerController::class, 'createListing'])->name('employer.createListing');
-    Route::get('/view-lisstings', [EmployerController::class, 'viewListings'])->name('employer.viewListings');
-    Route::get('/view-applications', [EmployerController::class, 'viewApplications'])->name('employer.viewApplications');
-    Route::get('/manage-profile', [EmployerController::class, 'manageProfile'])->name('employer.manageProfile');
-    Route::get('/notifications', [EmployerController::class, 'notifications'])->name('employer.notifications');
-    
 
-});
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// use App\Http\Controllers\EmployerController;
+// use App\Http\Controllers\OperatorController;
+// use App\Http\Controllers\DashboardController;
+// use App\Http\Controllers\JobseekerController;
 
 
 // Employer Routes
@@ -117,6 +111,9 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
 
 
 
+Route::get('/jobseekers', [JobSeekerController::class, 'index'])->name('jobseekers.index');
+
+
 
 
 // //Create,Update and Delete for Job
@@ -159,6 +156,8 @@ Route::post('/profile/employer/{user_id}',[EmployerController::class,'update_pro
 // Route::post('/jobs/{job_id}/apply',[Jobcontroller::class,'create']);
 
 
+
+
 // Correct password reset routes
 
 Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
@@ -182,6 +181,15 @@ Route::get('/contact',[ContactController::class,'contactForm']);
 Route::get('/about',[ContactController::class,'about']);
 Route::get('/terms',[ContactController::class,'terms']);
 
+// Route::get('/jobview', function() {
+//     return view('jobformview');
+// });
+
+Route::get('/jobs', [JobController::class, 'create'])->name('jobs_create')->middleware('auth');
+
+
+Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact.submit');
 
@@ -195,3 +203,10 @@ Route::get('/about', [CompanyController::class, 'showCompanyInfo'])->name('about
 use App\Http\Controllers\TermsController;
 
 Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages']);
+    Route::post('/chat/send', [ChatController::class, 'sendMessage']);
+    Route::delete('/chat/delete/{conversationId}', [ChatController::class, 'deleteConversation']);
+    Route::get('/chat/start/{id}', [ChatController::class, 'start'])->name('chat.start');
+}); 

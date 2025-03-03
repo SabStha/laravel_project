@@ -143,10 +143,23 @@
                         </div>
 
                         <!-- 卒業見込みの日付 (Expected Graduation Date) -->
+                       <!-- 卒業見込み年月 (Expected Graduation Year & Month) -->
+                        <!-- 卒業見込みの年 (Expected Graduation Year) -->
                         <div class="form-group mb-3">
-                            <label class="font-weight-bold">卒業見込みの日付 (Expected Graduation Date) *</label>
-                            <input type="date" name="expected_to_graduate" class="form-control" required>
+                            <label class="font-weight-bold">卒業見込みの年 (Expected Graduation Year) *</label>
+                            <div>
+                                @foreach(range(date('Y'), date('Y') + 6) as $year)
+                                    <div class="form-check">
+                                        <input type="radio" name="expected_to_graduate" id="grad_year_{{ $year }}" 
+                                            value="{{ $year }}" class="form-check-input" required
+                                            {{ old('expected_to_graduate') == $year ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="grad_year_{{ $year }}">{{ $year }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
+
+
 
                         <!-- Submit Button -->
                         <div class="form-group text-center">

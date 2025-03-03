@@ -20,13 +20,24 @@
                     <div class="text-center">
                         @auth
                             <h4>Welcome, {{ Auth::user()->name }}!</h4>
+                            <a href="{{ route('jobs_create') }}" class="btn btn-primary">Create Job</a>
                             <p>You're successfully logged in as an Employer. Here you can manage your job listings and view applicants.</p>
                         @else
                             <p>You need to log in to access this page.</p>
                         @endauth
                     </div>
 
-                    
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ route('jobseekers.index') }}" class="btn btn-primary w-100 py-3 rounded-pill">
+                                {{ __('View All Job Seekers') }}
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <a href="{{ route('chat.index') }}" class="btn btn-info w-100 py-3 rounded-pill">
+                                {{ __('Chats') }}
+                            </a>
+                        </div>
                         <!-- Logout Form -->
                         <div class="col-md-6 mb-3">
                             <form method="POST" action="{{ route('logout') }}">

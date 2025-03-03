@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Models\Jobseeker;
 use App\Models\EvaluationAxis;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 
 
@@ -109,120 +110,124 @@ class OperatorController extends Controller
 
     public function viewJobseekers(Request $request)
     {
-        
+        Log::info('View Jobseekers - Request Parameters', $request->all());
+
+        // Log raw queries being executed
+        DB::listen(function ($query) {
+            Log::info('SQL Query', ['sql' => $query->sql, 'bindings' => $query->bindings]);
+        });
+
         $graduationDates = Jobseeker::whereNotNull('expected_to_graduate')
             ->selectRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') as grad_month")
             ->distinct()
             ->orderBy('grad_month', 'desc')
             ->pluck('grad_month');
-        // Fetch unique options dynamically from the database
+
         $schools = Jobseeker::whereNotNull('school')->distinct()->pluck('school');
         $citizenships = Jobseeker::whereNotNull('citizenship')->distinct()->pluck('citizenship');
         $jlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt');
         $wages = Jobseeker::whereNotNull('wage')->distinct()->pluck('wage')->sort();
-      
-
 
         $query = Jobseeker::with('user');
-    
+
         // Filtering logic
         if ($request->filled('name')) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('name', 'LIKE', '%' . $request->name . '%');
             });
         }
-    
+
         if ($request->filled('email')) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('email', 'LIKE', '%' . $request->email . '%');
             });
         }
-    
+
         if ($request->filled('school')) {
             $query->where('school', $request->school);
         }
-    
+
         if ($request->filled('citizenship')) {
             $query->where('citizenship', $request->citizenship);
         }
-    
+
         if ($request->filled('jlpt')) {
             $query->where('jlpt', $request->jlpt);
         }
-    
+
         if ($request->filled('gender')) {
             $query->where('gender', $request->gender);
         }
-    
+
         if ($request->filled('graduation_date')) {
             $query->whereRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') = ?", [$request->graduation_date]);
         }
-        
-    
+
         if ($request->filled('age')) {
             $query->whereNotNull('birthday')
-                  ->whereRaw('TIMESTAMPDIFF(YEAR, birthday, CURDATE()) >= ?', [$request->age]);
+                ->whereRaw('TIMESTAMPDIFF(YEAR, birthday, CURDATE()) >= ?', [$request->age]);
         }
-    
+
         if ($request->filled('parttimejob')) {
             $query->where('parttimejob', $request->parttimejob);
         }
-    
+
         if ($request->filled('wage')) {
             $query->whereNotNull('wage')
-                  ->where('wage', '>=', $request->wage);
+                ->where('wage', '>=', $request->wage);
         }
-    
-        $jobseekers = $query->paginate(100);
-    
+
+        $jobseekers = $query->paginate(20);
+
+        // Log final query before execution
+        Log::info('Final Jobseekers Query', ['query' => $query->toSql(), 'bindings' => $query->getBindings()]);
+
         if ($request->ajax()) {
             return view('jobseeker_grid_partial', compact('jobseekers'))->render();
         }
-    
-        // Pass filtering options to the Blade view
+
         return view('jobseeker_grid', compact('jobseekers', 'schools', 'citizenships', 'jlptLevels', 'wages', 'graduationDates'));
     }
-    
 
-    
-
+        
 
 
-    public function submitEvaluation(Request $request, $user_id)
-    {
-        $request->validate([
-            'ratings' => 'required|array',
-            'ratings.*' => 'integer|min:1|max:5'
-        ]);
 
-        // 🔍 Fetch correct `jobseeker_id` using `user_id`
-        $jobseeker = DB::table('jobseekers')->where('user_id', $user_id)->first();
+        public function submitEvaluation(Request $request, $user_id)
+        {
+            $request->validate([
+                'ratings' => 'required|array',
+                'ratings.*' => 'integer|min:1|max:5'
+            ]);
 
-        if (!$jobseeker) {
-            return redirect()->back()->with('error', 'Jobseeker not found.');
+            // 🔍 Fetch correct `jobseeker_id` using `user_id`
+            $jobseeker = DB::table('jobseekers')->where('user_id', $user_id)->first();
+
+            if (!$jobseeker) {
+                return redirect()->back()->with('error', 'Jobseeker not found.');
+            }
+
+            // Store evaluations for each axis
+            foreach ($request->input('ratings') as $axis_id => $rating) {
+                DB::table('t_jobseeker_evaluations')->updateOrInsert(
+                    [
+                        'jobseeker_id' => $jobseeker->id, // Use correct `id`
+                        'evaluation_axis_id' => $axis_id,
+                    ],
+                    [
+                        'rating' => $rating,
+                        'updated_at' => now(),
+                    ]
+                );
+            }
+
+            // ✅ Update jobseeker's `evaluation` field to 1
+            DB::table('jobseekers')
+                ->where('id', $jobseeker->id)
+                ->update(['evaluation' => 1, 'updated_at' => now()]);
+
+            return redirect()->route('operator.viewEvaluations')->with('status', 'Evaluation submitted successfully.');
         }
-
-        // Store evaluations for each axis
-        foreach ($request->input('ratings') as $axis_id => $rating) {
-            DB::table('t_jobseeker_evaluations')->updateOrInsert(
-                [
-                    'jobseeker_id' => $jobseeker->id, // Use correct `id`
-                    'evaluation_axis_id' => $axis_id,
-                ],
-                [
-                    'rating' => $rating,
-                    'updated_at' => now(),
-                ]
-            );
-        }
-
-        // ✅ Update jobseeker's `evaluation` field to 1
-        DB::table('jobseekers')
-            ->where('id', $jobseeker->id)
-            ->update(['evaluation' => 1, 'updated_at' => now()]);
-
-        return redirect()->route('operator.viewEvaluations')->with('status', 'Evaluation submitted successfully.');
-    }
 
 
 

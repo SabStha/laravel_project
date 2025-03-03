@@ -15,24 +15,29 @@
 
 <div class="container">
         <!-- Search and Filter Form -->
-        <form id="filterForm" class="row g-3 mb-4">
+        <form id="filterForm" class="row g-3 mb-4" method="GET" action="{{ route('operator.viewJobseekers') }}">
             <div class="col-md-3">
                 <label class="form-label">🔍 Search by Name</label>
-                <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name">
+                <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" 
+                       value="{{ request('name') }}">
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">📧 Search by Email</label>
-                <input type="text" name="email" class="form-control" placeholder="Enter email address">
+                <input type="text" name="email" class="form-control" placeholder="Enter email address" 
+                       value="{{ request('email') }}">
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">⚧ Gender</label>
                 <select name="gender" class="form-control">
                     <option value="">All</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                    <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
                 </select>
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">🎓 Graduation Year-Month</label>
                 <select name="graduation_date" class="form-control">
@@ -42,33 +47,39 @@
                     @endforeach
                 </select>
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">🏫 School</label>
                 <select name="school" class="form-control">
                     <option value="">Select School</option>
                     @foreach($schools as $school)
-                        <option value="{{ $school }}">{{ $school }}</option>
+                        <option value="{{ $school }}" {{ request('school') == $school ? 'selected' : '' }}>{{ $school }}</option>
                     @endforeach
                 </select>
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">🌎 Citizenship</label>
                 <select name="citizenship" class="form-control">
                     <option value="">Select Citizenship</option>
                     @foreach($citizenships as $citizenship)
-                        <option value="{{ $citizenship }}">{{ $citizenship }}</option>
+                        <option value="{{ $citizenship }}" {{ request('citizenship') == $citizenship ? 'selected' : '' }}>
+                            {{ $citizenship }}
+                        </option>
                     @endforeach
                 </select>
             </div>
+        
             <div class="col-md-3">
                 <label class="form-label">📜 JLPT Level</label>
                 <select name="jlpt" class="form-control">
                     <option value="">Select Level</option>
                     @foreach($jlptLevels as $level)
-                        <option value="{{ $level }}">{{ $level }}</option>
+                        <option value="{{ $level }}" {{ request('jlpt') == $level ? 'selected' : '' }}>{{ $level }}</option>
                     @endforeach
                 </select>
             </div>
+        
             <div class="col-md-3">
                 <label for="wage" class="form-label">💰 Minimum Wage</label>
                 <select name="wage" class="form-control">
@@ -80,11 +91,15 @@
                     @endforeach
                 </select>
             </div>
-            
+        
             <div class="col-md-12 text-center">
                 <button type="submit" class="btn btn-primary btn-lg">🔎 Search</button>
+                <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-secondary btn-lg ms-2">🔄 Clear Search</a>
             </div>
+           
+            
         </form>
+        
         
         
     

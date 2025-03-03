@@ -48,7 +48,7 @@ class JobseekerController extends Controller
                 'custom_citizenship' => 'nullable|string|max:255',
                 'school' => 'required|string|in:愛和外語学院,九州ビジネス専門学校,国際アニメーション専門学校,愛和システムエンジニア専門学校,グローバルクリエイター専門学校',
                 'jlpt' => 'required|in:N1,N2,N3,N4,N5,なし',
-                'expected_to_graduate' => 'required|date|after_or_equal:today',
+                'expected_to_graduate' => 'required|integer|digits:4|min:' . date('Y') . '|max:' . (date('Y') + 6),
                 'parttimejob' => 'required|boolean',
                 'wage' => 'nullable|in:800,900,1000,1100,1200,1300,1400,1500',
                 'time' => $request->parttimejob == '1' ? 'required|integer|min:1|max:28' : 'nullable|integer',
@@ -77,11 +77,12 @@ class JobseekerController extends Controller
                     'custom_citizenship' => $customCitizenship, // Stores user input separately
                     'school' => $validated['school'],
                     'jlpt' => $validated['jlpt'],
-                    'expected_to_graduate' => date('Y-m-d', strtotime($validated['expected_to_graduate'])),
+                    'expected_to_graduate' => $validated['expected_to_graduate'], // Store as YYYY-MM
                     'parttimejob' => $validated['parttimejob'],
                     'wage' =>  $validated['wage'],
                     'time' => $validated['time'],
                 ]);
+                
 
 
 
@@ -93,5 +94,12 @@ class JobseekerController extends Controller
             Log::error('Error during jobseeker registration', ['error' => $e->getMessage()]);
             return back()->withErrors(['error' => 'Something went wrong. Please check the logs.']);
         }
+    }
+
+    public function index()
+    {
+        $jobseekers = JobSeeker::with('user')->get(); // Fetch job seekers with their associated user info
+
+        return view('jobseekerindex', compact('jobseekers'));
     }
 }
