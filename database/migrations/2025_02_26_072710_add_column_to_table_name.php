@@ -12,9 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('jobs', function (Blueprint $table) {
-            $table->String('image');
-            $table->json('working_days');
-            $table->String('working_hours');
+            if (!Schema::hasColumn('jobs', 'image')) {
+                $table->string('image');
+            }
+            if (!Schema::hasColumn('jobs', 'working_days')) {
+                $table->json('working_days');
+            }
+            if (!Schema::hasColumn('jobs', 'working_hours')) {
+                $table->string('working_hours');
+            }
         });
     }
 
@@ -24,8 +30,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('jobs', function (Blueprint $table) {
-            //
+            $table->dropColumn(['image', 'working_days', 'working_hours']);
         });
     }
 };
-

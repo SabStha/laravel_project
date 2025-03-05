@@ -75,5 +75,77 @@ class JobController extends Controller
         }
     }
 
+    public function index()
+    {
+        $user = auth()->user();
+
+        if (!$user->employer || $user->employer->status !== 'registered') {
+            return redirect()->route('employer.completeRegistrationForm')
+                ->with('error', 'You must complete registration before viewing jobs.');
+        }
+
+        // Fetch jobs only created by this employer
+        $jobs = $user->employer->jobs()->latest()->paginate(10);
+
+        return view('viewJobsindex', compact('jobs'));
+    }
+
+    public function show($id)
+    {
+        $job = Job::findOrFail($id);
+
+        return view('jobsShow', compact('job'));
+    }
+
+    public function edit($id)
+{
+    $job = Job::findOrFail($id);
+    
+    // Ensure only the employer who posted the job can edit
+    if (auth()->user()->id !== $job->employer_id) {
+        return redirect()->route('jobs.index')->with('error', 'You are not authorized to edit this job.');
+    }
+
+    return view('jobsEdit', compact('job'));
+}
+
+public function update(Request $request, $id)
+{
+    $job = Job::findOrFail($id);
+
+    if (auth()->user()->id !== $job->employer_id) {
+        return redirect()->route('jobs.index')->with('error', 'You are not authorized to update this job.');
+    }
+
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'location' => 'required|string|max:255',
+        'salary' => 'nullable|string|max:255',
+    ]);
+
+    $job->update($request->all());
+
+    return redirect()->route('viewJobsindex')->with('success', 'Job updated successfully.');
+}
+
+public function destroy($id)
+{
+    $job = Job::findOrFail($id);
+
+    // Ensure only the employer who posted the job can delete it
+    if (auth()->user()->id !== $job->employer_id) {
+        return redirect()->route('jobs.index')->with('error', 'You are not authorized to delete this job.');
+    }
+
+    $job->delete();
+
+    return redirect()->route('jobs.index')->with('success', 'Job deleted successfully.');
+}
+
+
+
+
+
 
 }

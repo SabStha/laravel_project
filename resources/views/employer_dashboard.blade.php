@@ -1,176 +1,68 @@
 @extends('layouts.header')
 
 @section('content')
-<div class="container">
+<div class="container my-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg rounded-3">
+        <div class="col-md-10">
+            <div class="card shadow-lg rounded-4">
                 <div class="card-header text-center bg-primary text-white py-4">
-                    <h3>{{ __('Employer Dashboard') }}</h3>
-                    <p class="lead">Welcome to your dashboard! Manage your company listings and more.</p>
+                    <h2 class="fw-bold">{{ __('Employer Dashboard') }}</h2>
+                    <p class="lead mb-0">Welcome to your dashboard! Manage your company listings and more.</p>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body text-center">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
                     @endif
 
-                    <div class="text-center">
-                        @auth
-                            <h4>Welcome, {{ Auth::user()->name }}!</h4>
-                            <a href="{{ route('jobs_create') }}" class="btn btn-primary">Create Job</a>
-                            <p>You're successfully logged in as an Employer. Here you can manage your job listings and view applicants.</p>
-                        @else
-                            <p>You need to log in to access this page.</p>
-                        @endauth
-                    </div>
+                    <h4>Welcome, {{ Auth::user()->name }}!</h4>
+                    <p>You're successfully logged in as an Employer.</p>
 
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('jobseekers.index') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('View All Job Seekers') }}
-                            </a>
-                        </div>
+                    <!-- Check if employer has completed registration -->
+                    @if(Auth::user()->employer && Auth::user()->employer->status === 'registered')
+                        <!-- Show "Edit Registration" button if already registered -->
+                        <a href="{{ route('employer.editRegistrationForm') }}" class="btn btn-warning w-50 py-3 rounded-pill mb-3">
+                            {{ __('Edit Registration') }}
+                        </a>
+                    @else
+                        <!-- Show "Complete Registration" button if not registered -->
+                        <a href="{{ route('employer.completeRegistrationForm') }}" class="btn btn-danger w-50 py-3 rounded-pill mb-3">
+                            {{ __('Complete Registration') }}
+                        </a>
+                    @endif
 
-                        <div class="col-md-6 mb-3">
-                            <a href="{{ route('chat.index') }}" class="btn btn-info w-100 py-3 rounded-pill">
-                                {{ __('Chats') }}
-                            </a>
-                        </div>
-                        <!-- Logout Form -->
-                        <div class="col-md-6 mb-3">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" class="btn btn-danger w-100 py-3 rounded-pill">
-                                    {{ __('Logout') }}
-                                </button>
-                            </form>
-                        </div>
-                    </div>
+                    <!-- Jobs Section -->
+                    @if(Auth::user()->employer && Auth::user()->employer->status === 'registered')
+                        <a href="{{ route('jobs_create') }}" class="btn btn-success w-50 py-3 rounded-pill mb-3">
+                            {{ __('Create Job') }}
+                        </a>
+                        <a href="{{ route('jobs.index') }}" class="btn btn-primary w-50 py-3 rounded-pill mb-3">
+                            {{ __('View Jobs') }}
+                        </a>
+                    @endif
+
+                    <!-- View Job Seekers -->
+                    <a href="{{ route('jobseekers.index') }}" class="btn btn-primary w-50 py-3 rounded-pill mb-3">
+                        {{ __('View All Job Seekers') }}
+                    </a>
+
+                    <!-- Chat -->
+                    <a href="{{ route('chat.index') }}" class="btn btn-info w-50 py-3 rounded-pill mb-3">
+                        {{ __('Chats') }}
+                    </a>
+
+                    <!-- Logout -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn btn-danger w-50 py-3 rounded-pill">
+                            {{ __('Logout') }}
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
-
-@section('styles')
-<style>
-    /* General Styles */
-    body {
-        background: url('{{ asset('images/homeimg.jpg') }}') no-repeat center center/cover;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        font-family: 'Noto Sans JP', sans-serif;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-    }
-
-    .container {
-        max-width: 1200px;
-        width: 100%;
-    }
-
-    .card {
-        border-radius: 15px;
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-        background: linear-gradient(135deg, #007bff, #00d4ff);
-        color: white;
-        border-radius: 15px 15px 0 0;
-        padding: 40px 20px;
-    }
-
-    .card-header h3 {
-        font-size: 2rem;
-        font-weight: 600;
-    }
-
-    .card-body {
-        padding: 30px 40px;
-        background-color: rgba(255, 255, 255, 0.85);
-        border-radius: 15px;
-    }
-
-    /* Button Styling */
-    .btn {
-        font-size: 1.2rem;
-        font-weight: bold;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-primary {
-        background-color: #007bff;
-        border-color: #007bff;
-    }
-
-    .btn-primary:hover {
-        background-color: #0056b3;
-        border-color: #0056b3;
-    }
-
-    .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
-    }
-
-    .btn-secondary:hover {
-        background-color: #5a6268;
-        border-color: #545b62;
-    }
-
-    .btn-warning {
-        background-color: #ffc107;
-        border-color: #ffc107;
-    }
-
-    .btn-warning:hover {
-        background-color: #e0a800;
-        border-color: #d39e00;
-    }
-
-    .btn-info {
-        background-color: #17a2b8;
-        border-color: #17a2b8;
-    }
-
-    .btn-info:hover {
-        background-color: #138496;
-        border-color: #117a8b;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-        border-color: #bd2130;
-    }
-
-    .alert {
-        font-size: 1.1rem;
-        margin-top: 15px;
-        border-radius: 10px;
-    }
-
-    /* Welcome Message */
-    .text-center h4 {
-        font-size: 1.5rem;
-        color: #333;
-    }
-
-    .text-center p {
-        font-size: 1.1rem;
-        color: #666;
-    }
-</style>
 @endsection

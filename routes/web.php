@@ -185,10 +185,25 @@ Route::get('/terms',[ContactController::class,'terms']);
 //     return view('jobformview');
 // });
 
-Route::get('/jobs', [JobController::class, 'create'])->name('jobs_create')->middleware('auth');
+
+Route::middleware(['auth', 'ensure.employer.registered'])->group(function () {
+    Route::get('/jobs', [JobController::class, 'create'])->name('jobs_create');
 
 
-Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+    Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
+
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/jobsview', [JobController::class, 'index'])->name('jobs.index');
+    Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show'); // ✅ Add this line
+
+    Route::get('/jobs/{id}/edit', [JobController::class, 'edit'])->name('jobs.edit'); // ✅ Add this line
+    Route::put('/jobs/{id}', [JobController::class, 'update'])->name('jobs.update'); // ✅ Add update route
+    Route::delete('/jobs/{id}', [JobController::class, 'destroy'])->name('jobs.destroy');
+});
+
+
 
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact.form');
 Route::post('/contact', [ContactController::class, 'handleForm'])->name('contact.submit');
@@ -204,3 +219,20 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/chat/delete/{conversationId}', [ChatController::class, 'deleteConversation']);
     Route::get('/chat/start/{id}', [ChatController::class, 'start'])->name('chat.start');
 }); 
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/employer/complete-registration', [EmployerController::class, 'showCompleteRegistration'])
+        ->name('employer.completeRegistrationForm');
+
+    Route::post('/employer/complete-registration', [EmployerController::class, 'storeCompleteRegistration'])
+        ->name('employer.completeRegistration');
+
+    Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
+    Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
+
+
+});
+
+
+
+
