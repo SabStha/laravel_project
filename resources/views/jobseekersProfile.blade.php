@@ -43,7 +43,20 @@
         <!-- Survey Completion Status -->
         <h4>📊 Survey Status</h4>
         <p class="fw-bold">
-            {{ $jobseeker->survey_completed ? '✅ Completed' : '❌ Not Completed' }}
+            @if($jobseeker->surveyResponses->count() > 0)
+            <ul>
+                @foreach($jobseeker->surveyResponses as $response)
+                    <li>
+                        <strong>Q:</strong> {{ $response->survey->question_text }} <br>
+                        <strong>Selected Answer:</strong> {{ $response->selected_option }} <br>
+                        <strong>Score:</strong> {{ $response->score }}
+                    </li>
+                @endforeach
+            </ul>
+        @else
+            <p>No survey responses recorded.</p>
+        @endif
+        
         </p>
 
         <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">Back to Jobseekers</a>
