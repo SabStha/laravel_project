@@ -4,8 +4,9 @@
             <div class="card-body">
                 <!-- Profile Image (Still Centered) -->
                 <div class="text-center">
-                    <img src="{{ $jobseeker->image ? asset('storage/' . $jobseeker->image) : asset('images/placeholder-shadow.png') }}" 
-                         class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="120" height="120" alt="Profile Image">
+                    <img src="{{ $jobseeker->image && file_exists(public_path('images/' . $jobseeker->image)) ? asset('images/' . $jobseeker->image) : asset('images/placeholder-shadow.png') }}" 
+                        class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="120" height="120" alt="Profile Image">
+
                 </div>
 
                 <!-- Jobseeker Details (Left-Aligned) -->
@@ -23,6 +24,10 @@
                 <p class="fw-bold text-success mt-2">
                     {{ $jobseeker->survey_completed ? '✅ Survey Completed' : '❌ Survey Not Completed' }}
                 </p>
+                <a href="{{ route('jobseekers.show', $jobseeker->id) }}" class="fw-bold text-primary">
+                    {{ ucfirst($jobseeker->user->name) }}
+                </a>
+                
             </div>
         </div>
     </div>

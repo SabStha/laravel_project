@@ -102,4 +102,13 @@ class JobseekerController extends Controller
 
         return view('jobseekerindex', compact('jobseekers'));
     }
+
+    public function show($id)
+{
+    $jobseeker = Jobseeker::with(['user'])->findOrFail($id);
+
+    return view('jobseekersProfile', compact('jobseeker'));
+}
+
+
 }

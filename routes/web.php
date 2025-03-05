@@ -112,6 +112,7 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
 
 
 Route::get('/jobseekers', [JobSeekerController::class, 'index'])->name('jobseekers.index');
+Route::get('/jobseekers/{id}', [JobseekerController::class, 'show'])->name('jobseekers.show');
 
 
 

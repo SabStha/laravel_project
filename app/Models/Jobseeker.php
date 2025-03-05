@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\JobseekerSurve;
 
 class Jobseeker extends Model
 {
@@ -43,5 +44,12 @@ class Jobseeker extends Model
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
     ];
 }
+
+public function surveyResponses()
+{
+    return $this->hasMany(JobseekerSurvey::class, 'jobseeker_id');
+}
+
+
 
 }

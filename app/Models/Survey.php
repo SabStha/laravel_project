@@ -17,4 +17,9 @@ class Survey extends Model
             ->withPivot('selected_option', 'score')
             ->withTimestamps();
     }
+
+    public function survey()
+    {
+        return $this->belongsTo(Survey::class);
+    }
 }
