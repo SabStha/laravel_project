@@ -36,24 +36,27 @@
                         <input type="hidden" name="jobseeker_id" value="{{ $jobseeker->id }}">
 
                         @foreach ($evaluation_axes as $axis)
-                        <div class="mb-3">
-                            <label class="form-label">{{ __($axis->name) }}</label>
-                            <div class="rating-container">
-                                @for ($i = 1; $i <= 5; $i++)
+                            <div class="mb-3">
+                                <label class="form-label">{{ __($axis->name) }}</label>
+                                <div class="rating-container">
                                     @php
-                                        $previousRating = $existingEvaluations->where('axis_id', $axis->id)->first()->rating ?? null;
-                                        $highlightClass = ($previousRating == $i) ? 'highlighted' : '';
+                                        // Match using axis_name instead of axis_id
+                                        $previousRating = optional($existingEvaluations->firstWhere('axis_name', $axis->name))->rating;
                                     @endphp
-                    
-                                    <input type="radio" id="axis_{{ $axis->id }}_{{ $i }}" 
-                                           name="ratings[{{ $axis->id }}]" 
-                                           value="{{ $i }}" 
-                                           {{ $previousRating == $i ? 'checked' : '' }}>
-                                    <label for="axis_{{ $axis->id }}_{{ $i }}" class="{{ $highlightClass }}">{{ $i }}</label>
-                                @endfor
+                        
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <input type="radio" id="axis_{{ $axis->id }}_{{ $i }}" 
+                                            name="ratings[{{ $axis->id }}]" 
+                                            value="{{ $i }}" 
+                                            {{ $previousRating == $i ? 'checked' : '' }}>
+                                        <label for="axis_{{ $axis->id }}_{{ $i }}" class="{{ $previousRating == $i ? 'highlighted' : '' }}">{{ $i }}</label>
+                                    @endfor
+                                </div>
                             </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    
+
+                   
                     
 
 
@@ -76,59 +79,19 @@
 <!-- CSS Styling -->
 <style>
     .rating-container {
-        display: flex;
-        justify-content: center; /* Center-align ratings */
-        gap: 10px;
-        align-items: center;
-        padding: 10px 0;
-    }
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 0;
+}
 
-    .rating-container input[type="radio"] {
-        display: none; /* Hide the default radio button */
-    }
+.rating-container input[type="radio"] {
+    display: none; /* Hide default radio button */
+}
 
-    /* Style the label to look like a clickable button */
-    .rating-container label {
-        background-color: #f1f1f1;
-        padding: 12px 18px;
-        border-radius: 50%;
-        cursor: pointer;
-        border: 2px solid #ccc;
-        font-size: 16px;
-        font-weight: bold;
-        text-align: center;
-        min-width: 50px;
-        transition: all 0.3s ease-in-out;
-    }
-
-    /* Change the color when hovered */
-    .rating-container label:hover {
-        background-color: #e0e0e0;
-        border-color: #b5b5b5;
-    }
-
-    /* Selected (Checked) Radio Button */
-    .rating-container input[type="radio"]:checked + label {
-        background-color: #28a745; /* Green for selection */
-        color: white;
-        border-color: #1e7e34;
-        box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
-        transform: scale(1.1); /* Slight pop effect */
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .rating-container {
-            flex-wrap: wrap;
-        }
-
-        .rating-container label {
-            padding: 10px 14px;
-            font-size: 14px;
-            min-width: 40px;
-        }
-
-        .rating-container label {
+/* Default label styling */
+.rating-container label {
     background-color: #f1f1f1;
     padding: 12px 18px;
     border-radius: 50%;
@@ -141,45 +104,85 @@
     transition: all 0.3s ease-in-out;
 }
 
+/* Hover effect */
 .rating-container label:hover {
     background-color: #e0e0e0;
     border-color: #b5b5b5;
 }
 
-/* Style selected rating */
+/* Selected rating (checked) */
 .rating-container input[type="radio"]:checked + label {
     background-color: #28a745; /* Green */
     color: white;
     border-color: #1e7e34;
     box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
+    transform: scale(1.1);
 }
 
-/* Highlight previous ratings */
-.rating-container .highlighted {
-    background-color: #ffcc00 !important; /* Yellow for previous ratings */
+/* Highlight previously selected rating */
+.rating-container label.highlighted {
+    background-color: #ffcc00 !important; /* Yellow */
     color: black !important;
     font-weight: bold;
     border-color: #ff9900;
     box-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .rating-container {
+        flex-wrap: wrap;
     }
+
+    .rating-container label {
+        padding: 10px 14px;
+        font-size: 14px;
+        min-width: 40px;
+    }
+}
+
 </style>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-        let selectedRatings = document.querySelectorAll(".rating-container input:checked");
+        console.log("Highlighting script loaded");
+        // Highlight previously selected ratings on page load
+        let highlightedRatings = document.querySelectorAll(".rating-container .highlighted");
+        
+        highlightedRatings.forEach(label => {
+            label.style.backgroundColor = "#ffcc00"; // Yellow
+            label.style.color = "black";
+            label.style.borderColor = "#ff9900";
+            label.style.boxShadow = "0 0 10px rgba(255, 165, 0, 0.8)";
+        });
     
-        selectedRatings.forEach(radio => {
-            let label = radio.nextElementSibling;
-            label.style.backgroundColor = "#28a745"; // Green background for preselected
-            label.style.color = "white"; // White text for contrast
-            label.style.borderColor = "#1e7e34";
-            label.style.boxShadow = "0 0 10px rgba(0, 128, 0, 0.5)";
-            label.style.transform = "scale(1.1)";
+        // Apply green selection effect when a new radio button is clicked
+        let ratingInputs = document.querySelectorAll(".rating-container input[type='radio']");
+        
+        ratingInputs.forEach(input => {
+            input.addEventListener("change", function () {
+                let allLabels = this.closest(".rating-container").querySelectorAll("label");
+                
+                allLabels.forEach(label => {
+                    label.classList.remove("highlighted"); // Remove previous highlight
+                    label.style.backgroundColor = "#f1f1f1"; // Reset default
+                    label.style.color = "black";
+                    label.style.borderColor = "#ccc";
+                    label.style.boxShadow = "none";
+                });
+    
+                // Apply checked styles
+                let selectedLabel = this.nextElementSibling;
+                selectedLabel.style.backgroundColor = "#28a745"; // Green
+                selectedLabel.style.color = "white";
+                selectedLabel.style.borderColor = "#1e7e34";
+                selectedLabel.style.boxShadow = "0 0 10px rgba(0, 128, 0, 0.5)";
+                selectedLabel.style.transform = "scale(1.1)";
+            });
         });
     });
     </script>
+    
     
 
 @endsection
