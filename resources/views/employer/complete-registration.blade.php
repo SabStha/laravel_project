@@ -2,14 +2,14 @@
 
 @section('content')
 
-@if(auth()->user()->employer && auth()->user()->employer->status === 'registered')
+@if(isset($employer) && $employer->status === 'registered')
     <div class="alert alert-success text-center">
         <h4>✅ You have already registered your business.</h4>
         <p>You cannot register again. If you need to update your details, please contact support.</p>
-        <a href="{{ route('employer.dashboard') }}" class="btn btn-primary mt-3">Go to Dashboard</a>
+        <a href="{{ route('login') }}" class="btn btn-primary mt-3">Go to Login</a>
     </div>
 @else
-    <form action="{{ route('employer.completeRegistration') }}" method="POST">
+    <form action="{{ route('employer.completeRegistration', ['token' => $employer->verification_token]) }}" method="POST">
         @csrf
         <!-- Registration fields here -->
         <button type="submit" class="btn btn-success w-100 py-3 mt-3">
@@ -17,6 +17,8 @@
         </button>
     </form>
 @endif
+
+
 
 
 <div class="container my-5">
@@ -29,7 +31,8 @@
                 </div>
 
                 <div class="card-body p-4">
-                    <form action="{{ route('employer.completeRegistration') }}" method="POST">
+                    <form action="{{ route('employer.completeRegistration', ['token' => $employer->verification_token]) }}" method="POST">
+
                         @csrf
 
                         <div class="row g-3">
@@ -71,7 +74,7 @@
                             </div>
                             <div class="col-md-8">
                                 <label class="fw-bold">住所</label>
-                                <input type="text" name="address" class="form-control" value="{{ old('address') }}" required>
+                                <input type="text" name="company_address" class="form-control" value="{{ old('company_address') }}" required>
                             </div>
                             <div class="col-md-4">
                                 <label class="fw-bold">建物名</label>

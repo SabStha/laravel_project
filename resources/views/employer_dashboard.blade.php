@@ -28,9 +28,11 @@
                         </a>
                     @else
                         <!-- Show "Complete Registration" button if not registered -->
-                        <a href="{{ route('employer.completeRegistrationForm') }}" class="btn btn-danger w-50 py-3 rounded-pill mb-3">
+                        <a href="{{ route('employer.completeRegistrationForm', ['token' => Auth()->user()->employer->verification_token]) }}" class="btn btn-danger w-50 py-3 rounded-pill mb-3">
                             {{ __('Complete Registration') }}
                         </a>
+                        
+                         
                     @endif
 
                     <!-- Jobs Section -->

@@ -17,8 +17,10 @@ class Employer extends Model
         'company_phone',
         'status',
         'company_description',
-        'website'
+        'website',
+        'verification_token'
     ];
+    
 
     protected $casts = [
         'status' => 'string',

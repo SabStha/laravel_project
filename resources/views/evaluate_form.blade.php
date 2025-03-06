@@ -20,28 +20,10 @@
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                    @endif
+                    
 
-                    <h4 class="mb-3">{{ __('Previous Evaluations') }}</h4>
-
-                    @if ($existingEvaluations->isNotEmpty())
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('Evaluation Axis') }}</th>
-                                    <th>{{ __('Rating') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($existingEvaluations as $evaluation)
-                                    <tr>
-                                        <td>{{ $evaluation->axis_name ?? 'Unknown' }}</td>
-                                        <td>{{ $evaluation->rating ?? 'N/A' }} / 5</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    @else
+                   
+                    
                         <p class="text-muted">{{ __('No evaluations yet. Please evaluate below.') }}</p>
                     @endif
 
@@ -54,16 +36,26 @@
                         <input type="hidden" name="jobseeker_id" value="{{ $jobseeker->id }}">
 
                         @foreach ($evaluation_axes as $axis)
-                            <div class="mb-3">
-                                <label class="form-label">{{ __($axis->name) }}</label>
-                                <div class="rating-container">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        <input type="radio" id="axis_{{ $axis->id }}_{{ $i }}" name="ratings[{{ $axis->id }}]" value="{{ $i }}" required>
-                                        <label for="axis_{{ $axis->id }}_{{ $i }}">{{ $i }}</label>
-                                    @endfor
-                                </div>
+                        <div class="mb-3">
+                            <label class="form-label">{{ __($axis->name) }}</label>
+                            <div class="rating-container">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @php
+                                        $previousRating = $existingEvaluations->where('axis_id', $axis->id)->first()->rating ?? null;
+                                        $highlightClass = ($previousRating == $i) ? 'highlighted' : '';
+                                    @endphp
+                    
+                                    <input type="radio" id="axis_{{ $axis->id }}_{{ $i }}" 
+                                           name="ratings[{{ $axis->id }}]" 
+                                           value="{{ $i }}" 
+                                           {{ $previousRating == $i ? 'checked' : '' }}>
+                                    <label for="axis_{{ $axis->id }}_{{ $i }}" class="{{ $highlightClass }}">{{ $i }}</label>
+                                @endfor
                             </div>
-                        @endforeach
+                        </div>
+                    @endforeach
+                    
+
 
                         <div class="text-center">
                             <button type="submit" class="btn btn-success">{{ __('Submit Evaluation') }}</button>
@@ -135,7 +127,59 @@
             font-size: 14px;
             min-width: 40px;
         }
+
+        .rating-container label {
+    background-color: #f1f1f1;
+    padding: 12px 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #ccc;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    min-width: 50px;
+    transition: all 0.3s ease-in-out;
+}
+
+.rating-container label:hover {
+    background-color: #e0e0e0;
+    border-color: #b5b5b5;
+}
+
+/* Style selected rating */
+.rating-container input[type="radio"]:checked + label {
+    background-color: #28a745; /* Green */
+    color: white;
+    border-color: #1e7e34;
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.5);
+}
+
+/* Highlight previous ratings */
+.rating-container .highlighted {
+    background-color: #ffcc00 !important; /* Yellow for previous ratings */
+    color: black !important;
+    font-weight: bold;
+    border-color: #ff9900;
+    box-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
+}
+
     }
 </style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let selectedRatings = document.querySelectorAll(".rating-container input:checked");
+    
+        selectedRatings.forEach(radio => {
+            let label = radio.nextElementSibling;
+            label.style.backgroundColor = "#28a745"; // Green background for preselected
+            label.style.color = "white"; // White text for contrast
+            label.style.borderColor = "#1e7e34";
+            label.style.boxShadow = "0 0 10px rgba(0, 128, 0, 0.5)";
+            label.style.transform = "scale(1.1)";
+        });
+    });
+    </script>
+    
 
 @endsection

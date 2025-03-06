@@ -12,7 +12,7 @@
 
                 <div class="card-body">
                     @if($jobs->isEmpty())
-                        <p class="text-center">No job listings found. <a href="{{ route('jobs.create') }}">Create a Job</a></p>
+                        <p class="text-center">No job listings found. <a href="{{ route('jobs_create') }}">Create a Job</a></p>
                     @else
                         <table class="table table-striped">
                             <thead class="bg-light">
@@ -29,7 +29,7 @@
                                     <tr>
                                         <td>{{ $job->title }}</td>
                                         <td>{{ $job->category->name ?? 'No Category' }}</td>
-                                        
+
                                         <td>{{ $job->location }}</td>
                                         <td>{{ $job->created_at->format('Y-m-d') }}</td>
                                         <td>

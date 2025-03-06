@@ -228,11 +228,19 @@ Route::middleware(['auth'])->group(function () {
 }); 
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/employer/complete-registration', [EmployerController::class, 'showCompleteRegistration'])
-        ->name('employer.completeRegistrationForm');
 
-    Route::post('/employer/complete-registration', [EmployerController::class, 'storeCompleteRegistration'])
-        ->name('employer.completeRegistration');
+    // Route::get('/employer/complete-registration/{token}', [EmployerController::class, 'showCompleteRegistration'])
+    // ->name('employer.completeRegistrationForm');
+
+
+
+
+
+    // Route::get('/employer/complete-registration', [EmployerController::class, 'showCompleteRegistration'])
+    //     ->name('employer.completeRegistrationForm');
+
+    // Route::post('/employer/complete-registration', [EmployerController::class, 'storeCompleteRegistration'])
+    //     ->name('employer.completeRegistration');
 
     Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
     Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
@@ -240,6 +248,22 @@ Route::middleware(['auth'])->group(function () {
 
 });
 
+// Employer clicks email link
+Route::get('/employer/complete-registration/{token}', [EmployerController::class, 'showCompleteRegistrationForm'])
+->name('employer.completeRegistrationForm');
 
+// Employer submits registration
+Route::post('/employer/complete-registration/{token}', [EmployerController::class, 'completeRegistration'])->name('employer.completeRegistration');
+
+
+
+
+// Route to display employer registration form (GET)
+Route::get('/admin/employer/register', [EmployerController::class, 'showRegistrationForm'])
+    ->name('admin.registerEmployerForm');
+
+
+
+// Admin registers employer & sends email
 
 
