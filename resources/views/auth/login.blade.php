@@ -11,6 +11,13 @@
                 </div>
 
                 <div class="card-body">
+                    <!-- Show Success Message After Registration -->
+                    @if (session('success'))
+                        <div class="alert alert-success text-center">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
@@ -72,6 +79,7 @@
     </div>
 </div>
 @endsection
+
 
 <!-- Custom Styles -->
 @section('styles')

@@ -37,21 +37,7 @@
                         </div>
 
                         <!-- Password -->
-                        <div class="form-group mb-4">
-                            <label for="password" class="form-label">{{ __('パスワード') }}</label> <!-- Password -->
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-                            @error('password')
-                                <div class="invalid-feedback d-block">
-                                    <strong>{{ $message }}</strong>
-                                </div>
-                            @enderror
-                        </div>
-
-                        <!-- Confirm Password -->
-                        <div class="form-group mb-4">
-                            <label for="password-confirm" class="form-label">{{ __('パスワード確認') }}</label> <!-- Confirm Password -->
-                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                        </div>
+                        
 
                         <!-- Additional fields for employer -->
                         <div class="form-group mb-4">
