@@ -27,8 +27,21 @@ class ImportUsersFromCsv extends Command
                 throw new \Exception('CSV file not found');
             }
 
-            // Đọc file CSV
+            // Đọc file CSV và xử lý header trùng lặp
             $csv = Reader::createFromPath($csvPath, 'r');
+            
+            // Đọc header và xử lý trùng lặp
+            $headers = $csv->fetchOne();
+            $uniqueHeaders = [];
+            foreach ($headers as $index => $header) {
+                if (isset($uniqueHeaders[$header])) {
+                    $uniqueHeaders[$header . '_' . $index] = $index;
+                } else {
+                    $uniqueHeaders[$header] = $index;
+                }
+            }
+            
+            // Đặt header mới
             $csv->setHeaderOffset(0);
             
             DB::beginTransaction();
@@ -37,32 +50,45 @@ class ImportUsersFromCsv extends Command
                 // Debug thông tin
                 $this->info('Processing record: ' . print_r($record, true));
                 
-                // Tạo mật khẩu ngẫu nhiên nếu không có
-                $password = $record['password'] ?: Str::random(10);
-                
-                // Tạo hoặc cập nhật user
-                $user = User::updateOrCreate(
-                    ['email' => trim($record['email'])], // Điều kiện kiểm tra trùng lặp
-                    [
-                        'name' => trim($record['name']),
-                        'password' => Hash::make($password),
-                        'user_type' => $record['user_type'] ?: 'jobseeker',
-                        'email_verified_at' => $record['email_verified_at'] ?: null,
-                        'remember_token' => $record['remember_token'] ?: null,
-                        'created_at' => $record['created_at'] ?: now(),
-                        'updated_at' => $record['updated_at'] ?: now()
-                    ]
-                );
-
-                // Tạo hoặc cập nhật jobseeker profile nếu là jobseeker
-                if ($user->user_type === 'jobseeker') {
-                    Jobseeker::updateOrCreate(
-                        ['user_id' => $user->id],
-                        ['survey_completed' => false]
-                    );
+                // Xử lý ngày tháng
+                $birthday = null;
+                if (!empty($record['birthday'])) {
+                    try {
+                        $birthday = Carbon::parse(trim($record['birthday']))->format('Y-m-d');
+                    } catch (\Exception $e) {
+                        $this->warn("Invalid birthday format for record: " . $record['id']);
+                    }
                 }
 
-                $this->info("Processed user: {$user->email} with password: {$password}");
+                $expectedToGraduate = null;
+                if (!empty($record['expected to graduate'])) {
+                    try {
+                        $expectedToGraduate = Carbon::parse(trim($record['expected to graduate']))->format('Y-m-d');
+                    } catch (\Exception $e) {
+                        $this->warn("Invalid expected graduation date format for record: " . $record['id']);
+                    }
+                }
+
+                // Tạo jobseeker profile với đầy đủ các trường
+                $jobseeker = Jobseeker::create([
+                    'user_id' => $record['user_id'] ?: null,
+                    'birthday' => $birthday,
+                    'gender' => trim($record['gender'] ?? ''),
+                    'citizenship' => trim($record['citizenship'] ?? ''),
+                    'school' => trim($record['school'] ?? ''),
+                    'jlpt' => trim($record['jlpt'] ?? ''),
+                    'expected_to_graduate' => $expectedToGraduate,
+                    'parttimejob' => trim($record['parttimejob'] ?? ''),
+                    'wage' => trim($record['wage'] ?? ''),
+                    'time' => trim($record['time'] ?? ''),
+                    'evaluation' => trim($record['evaluation'] ?? ''),
+                    'survey_completed' => true,
+                    'created_at' => !empty($record['created_at']) ? Carbon::parse(trim($record['created_at'])) : now(),
+                    'updated_at' => !empty($record['updated_at']) ? Carbon::parse(trim($record['updated_at'])) : now(),
+                    'deleted_at' => !empty($record['deleted_at']) ? Carbon::parse(trim($record['deleted_at'])) : null
+                ]);
+
+                $this->info("Created jobseeker record with ID: {$jobseeker->id}");
             }
             
             DB::commit();
