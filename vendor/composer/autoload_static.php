@@ -552,6 +552,7 @@ class ComposerStaticInit2230e0499df20693020bf15f5566c007
 
     public static $classMap = array (
         'App\\Console\\Commands\\GenerateUserPasswords' => __DIR__ . '/../..' . '/app/Console/Commands/GenerateUserPasswords.php',
+        'App\\Console\\Commands\\ImportUsersFromCsv' => __DIR__ . '/../..' . '/app/Console/Commands/ImportUsersFromCsv.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -3269,6 +3270,7 @@ class ComposerStaticInit2230e0499df20693020bf15f5566c007
         'League\\Config\\SchemaBuilderInterface' => __DIR__ . '/..' . '/league/config/src/SchemaBuilderInterface.php',
         'League\\Csv\\AbstractCsv' => __DIR__ . '/..' . '/league/csv/src/AbstractCsv.php',
         'League\\Csv\\Bom' => __DIR__ . '/..' . '/league/csv/src/Bom.php',
+        'League\\Csv\\Buffer' => __DIR__ . '/..' . '/league/csv/src/Buffer.php',
         'League\\Csv\\ByteSequence' => __DIR__ . '/..' . '/league/csv/src/ByteSequence.php',
         'League\\Csv\\CallbackStreamFilter' => __DIR__ . '/..' . '/league/csv/src/CallbackStreamFilter.php',
         'League\\Csv\\CannotInsertRecord' => __DIR__ . '/..' . '/league/csv/src/CannotInsertRecord.php',
@@ -3300,6 +3302,7 @@ class ComposerStaticInit2230e0499df20693020bf15f5566c007
         'League\\Csv\\Query\\Sort' => __DIR__ . '/..' . '/league/csv/src/Query/Sort.php',
         'League\\Csv\\Query\\SortCombinator' => __DIR__ . '/..' . '/league/csv/src/Query/SortCombinator.php',
         'League\\Csv\\RFC4180Field' => __DIR__ . '/..' . '/league/csv/src/RFC4180Field.php',
+        'League\\Csv\\RdbmsResult' => __DIR__ . '/..' . '/league/csv/src/RdbmsResult.php',
         'League\\Csv\\Reader' => __DIR__ . '/..' . '/league/csv/src/Reader.php',
         'League\\Csv\\ResultSet' => __DIR__ . '/..' . '/league/csv/src/ResultSet.php',
         'League\\Csv\\Serializer\\AfterMapping' => __DIR__ . '/..' . '/league/csv/src/Serializer/AfterMapping.php',
@@ -3327,6 +3330,7 @@ class ComposerStaticInit2230e0499df20693020bf15f5566c007
         'League\\Csv\\StreamFilter' => __DIR__ . '/..' . '/league/csv/src/StreamFilter.php',
         'League\\Csv\\SwapDelimiter' => __DIR__ . '/..' . '/league/csv/src/SwapDelimiter.php',
         'League\\Csv\\SyntaxError' => __DIR__ . '/..' . '/league/csv/src/SyntaxError.php',
+        'League\\Csv\\TabularData' => __DIR__ . '/..' . '/league/csv/src/TabularData.php',
         'League\\Csv\\TabularDataReader' => __DIR__ . '/..' . '/league/csv/src/TabularDataReader.php',
         'League\\Csv\\TabularDataWriter' => __DIR__ . '/..' . '/league/csv/src/TabularDataWriter.php',
         'League\\Csv\\UnableToProcessCsv' => __DIR__ . '/..' . '/league/csv/src/UnableToProcessCsv.php',

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'App\\Console\\Commands\\GenerateUserPasswords' => $baseDir . '/app/Console/Commands/GenerateUserPasswords.php',
+    'App\\Console\\Commands\\ImportUsersFromCsv' => $baseDir . '/app/Console/Commands/ImportUsersFromCsv.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Auth\\ConfirmPasswordController' => $baseDir . '/app/Http/Controllers/Auth/ConfirmPasswordController.php',
@@ -2724,6 +2725,7 @@ return array(
     'League\\Config\\SchemaBuilderInterface' => $vendorDir . '/league/config/src/SchemaBuilderInterface.php',
     'League\\Csv\\AbstractCsv' => $vendorDir . '/league/csv/src/AbstractCsv.php',
     'League\\Csv\\Bom' => $vendorDir . '/league/csv/src/Bom.php',
+    'League\\Csv\\Buffer' => $vendorDir . '/league/csv/src/Buffer.php',
     'League\\Csv\\ByteSequence' => $vendorDir . '/league/csv/src/ByteSequence.php',
     'League\\Csv\\CallbackStreamFilter' => $vendorDir . '/league/csv/src/CallbackStreamFilter.php',
     'League\\Csv\\CannotInsertRecord' => $vendorDir . '/league/csv/src/CannotInsertRecord.php',
@@ -2755,6 +2757,7 @@ return array(
     'League\\Csv\\Query\\Sort' => $vendorDir . '/league/csv/src/Query/Sort.php',
     'League\\Csv\\Query\\SortCombinator' => $vendorDir . '/league/csv/src/Query/SortCombinator.php',
     'League\\Csv\\RFC4180Field' => $vendorDir . '/league/csv/src/RFC4180Field.php',
+    'League\\Csv\\RdbmsResult' => $vendorDir . '/league/csv/src/RdbmsResult.php',
     'League\\Csv\\Reader' => $vendorDir . '/league/csv/src/Reader.php',
     'League\\Csv\\ResultSet' => $vendorDir . '/league/csv/src/ResultSet.php',
     'League\\Csv\\Serializer\\AfterMapping' => $vendorDir . '/league/csv/src/Serializer/AfterMapping.php',
@@ -2782,6 +2785,7 @@ return array(
     'League\\Csv\\StreamFilter' => $vendorDir . '/league/csv/src/StreamFilter.php',
     'League\\Csv\\SwapDelimiter' => $vendorDir . '/league/csv/src/SwapDelimiter.php',
     'League\\Csv\\SyntaxError' => $vendorDir . '/league/csv/src/SyntaxError.php',
+    'League\\Csv\\TabularData' => $vendorDir . '/league/csv/src/TabularData.php',
     'League\\Csv\\TabularDataReader' => $vendorDir . '/league/csv/src/TabularDataReader.php',
     'League\\Csv\\TabularDataWriter' => $vendorDir . '/league/csv/src/TabularDataWriter.php',
     'League\\Csv\\UnableToProcessCsv' => $vendorDir . '/league/csv/src/UnableToProcessCsv.php',
