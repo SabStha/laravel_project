@@ -19,7 +19,7 @@
     <form id="filterForm" class="row g-3 mb-4" method="GET" action="{{ route('operator.viewJobseekers') }}">
 
         <!-- 🏆 MAIN SEARCH FIELDS (Always Visible) -->
-        <div class="col-md-3">
+        <<div class="col-12 col-sm-6 col-md-3">>
             <label class="form-label">⚧ Gender</label>
             <select name="gender" class="form-control">
                 <option value="">All</option>
@@ -29,7 +29,7 @@
             </select>
         </div>
 
-        <div class="col-md-3">
+        <<div class="col-12 col-sm-6 col-md-3">>
             <label class="form-label">🌎 Citizenship</label>
             <select name="citizenship" class="form-control">
                 <option value="">Select Citizenship</option>
@@ -41,7 +41,7 @@
             </select>
         </div>
 
-        <div class="col-md-3">
+        <<div class="col-12 col-sm-6 col-md-3">>
             <label class="form-label">📜 JLPT Level</label>
             <select name="jlpt" class="form-control">
                 <option value="">Select Level</option>
@@ -51,19 +51,20 @@
             </select>
         </div>
 
-        <div class="col-md-3">
+        <<div class="col-12 col-sm-6 col-md-3">>
             <label for="wage" class="form-label">💰 Minimum Wage</label>
             <select name="wage" class="form-control">
                 <option value="">Select Min Wage</option>
                 @foreach($wages as $wage)
                     <option value="{{ $wage }}" {{ request('wage') == $wage ? 'selected' : '' }}>
-                        ¥{{ number_format($wage) }}
+                        ¥{{ number_format($wage) }} 以上
                     </option>
                 @endforeach
             </select>
         </div>
+        
 
-        <div class="col-md-3">
+        <<div class="col-12 col-sm-6 col-md-3">>
             <label for="wage" class="form-label">✨ Evaluation</label>
             <select name="wage" class="form-control">
                 <option value="">Select Min Wage</option>
@@ -85,17 +86,17 @@
         <!-- 🕵️‍♂️ DETAILED SEARCH FIELDS (Bootstrap Collapse) -->
         <div class="collapse mt-3" id="detailSearchFields">
             <div class="row g-3">
-                <div class="col-md-3">
+                <<div class="col-12 col-sm-6 col-md-3">>
                     <label class="form-label">🔍 Search by Name</label>
                     <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" value="{{ request('name') }}">
                 </div>
 
-                <div class="col-md-3">
+                <<div class="col-12 col-sm-6 col-md-3">>
                     <label class="form-label">📧 Search by Email</label>
                     <input type="text" name="email" class="form-control" placeholder="Enter email address" value="{{ request('email') }}">
                 </div>
 
-                <div class="col-md-3">
+                <<div class="col-12 col-sm-6 col-md-3">>
                     <label class="form-label">🏫 School</label>
                     <select name="school" class="form-control">
                         <option value="">Select School</option>
@@ -105,7 +106,7 @@
                     </select>
                 </div>
 
-                <div class="col-md-3">
+                <<div class="col-12 col-sm-6 col-md-3">>
                     <label class="form-label">🎓 Graduation Year</label>
                     <select name="graduation_date" class="form-control">
                         <option value="">Select Date</option>
