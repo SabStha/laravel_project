@@ -52,6 +52,8 @@ Route::middleware(['auth', 'checkUserType:jobseeker', 'ensure.survey.completed']
     Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->name('jobseeker.dashboard');
     Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->name('jobseeker.manageProfile');
     Route::get('/view-applications', [JobseekerController::class, 'viewApplications'])->name('jobseeker.viewApplications');
+
+    
 });
 //how Survey Form (For Jobseekers)
 Route::get('jobseeker/survey', [SurveyController::class, 'showSurvey'])
@@ -244,7 +246,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
     Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
-
+    Route::post('/logout', function () {
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('logout');
 
 });
 
