@@ -59,7 +59,7 @@
         
         </p>
 
-        <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">Back to Jobseekers</a>
+        <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">See all Jobseeker</a>
     </div>
 </div>
 @endsection
