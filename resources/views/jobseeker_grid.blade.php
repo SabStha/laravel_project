@@ -1,6 +1,7 @@
 @extends('layouts.header')
 
 @section('content')
+
 <div class="d-flex justify-content-between align-items-center my-3">
     <a href="{{ route('operator.dashboard') }}" class="btn btn-outline-dark btn-lg">
         ⬅ Back to Dashboard
@@ -9,6 +10,7 @@
 
 <div class="container text-center mb-4">
     <h2 class="fw-bold">🔍 Jobseeker Management</h2>
+    
     <p class="lead text-muted">View, search, and manage jobseeker details efficiently.</p>
 </div>
 

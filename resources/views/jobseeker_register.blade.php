@@ -6,8 +6,12 @@
         <div class="col-md-8">
             <div class="card shadow-lg">
                 <div class="card-header bg-primary text-white text-center">
+               
                     <h4>{{ __('Jobseeker Registration') }}</h4>
                 </div>
+                
+            </div>
+
 
                 <div class="card-body p-4">
                     <form method="POST" action="{{ route('jobseeker.register') }}" enctype="multipart/form-data">
