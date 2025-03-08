@@ -43,7 +43,11 @@
                 <select name="graduation_date" class="form-control">
                     <option value="">Select Date</option>
                     @foreach($graduationDates as $date)
-                        <option value="{{ $date }}" {{ request('graduation_date') == $date ? 'selected' : '' }}>{{ $date }}</option>
+                        @php
+                            $year = \Carbon\Carbon::parse($date)->format('Y'); // Extracts only the year
+                        @endphp
+                    
+                        <option value="{{ $date }}" {{ request('graduation_date') == $date ? 'selected' : '' }}>{{ $year }}</option>
                     @endforeach
                 </select>
             </div>
@@ -86,7 +90,7 @@
                     <option value="">Select Min Wage</option>
                     @foreach($wages as $wage)
                         <option value="{{ $wage }}" {{ request('wage') == $wage ? 'selected' : '' }}>
-                            ¥{{ number_format($wage) }}
+                            ¥{{ number_format($wage) }} 以上
                         </option>
                     @endforeach
                 </select>

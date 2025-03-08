@@ -105,10 +105,11 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/jobseekers', [OperatorController::class, 'viewJobseekers'])->name('operator.viewJobseekers');
 
 
-    Route::post('/logout', function () {
+    Route::match(['get', 'post'],'/logout', function () {
         Auth::logout();
         return redirect()->route('login');
-    })->name('operator.logout');
+    })->name('logout');
+
 });
 
 
@@ -246,7 +247,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
     Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
-    Route::post('/logout', function () {
+   
+    Route::match(['get', 'post'],'/logout', function () {
         Auth::logout();
         return redirect()->route('login');
     })->name('logout');
