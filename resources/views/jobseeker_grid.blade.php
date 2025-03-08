@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-md-3">
-            <label for="wage" class="form-label">  ✨ Evaluation</label>
+            <label for="wage" class="form-label">✨ Evaluation</label>
             <select name="wage" class="form-control">
                 <option value="">Select Min Wage</option>
                 @foreach($wages as $wage)

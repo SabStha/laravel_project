@@ -52,6 +52,8 @@ Route::middleware(['auth', 'checkUserType:jobseeker', 'ensure.survey.completed']
     Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->name('jobseeker.dashboard');
     Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->name('jobseeker.manageProfile');
     Route::get('/view-applications', [JobseekerController::class, 'viewApplications'])->name('jobseeker.viewApplications');
+
+    
 });
 //how Survey Form (For Jobseekers)
 Route::get('jobseeker/survey', [SurveyController::class, 'showSurvey'])
@@ -103,10 +105,11 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/jobseekers', [OperatorController::class, 'viewJobseekers'])->name('operator.viewJobseekers');
 
 
-    Route::post('/logout', function () {
+    Route::match(['get', 'post'],'/logout', function () {
         Auth::logout();
         return redirect()->route('login');
-    })->name('operator.logout');
+    })->name('logout');
+
 });
 
 
@@ -244,7 +247,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
     Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
-
+   
+    Route::match(['get', 'post'],'/logout', function () {
+        Auth::logout();
+        return redirect()->route('login');
+    })->name('logout');
 
 });
 
