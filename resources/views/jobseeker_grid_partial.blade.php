@@ -1,11 +1,11 @@
 @foreach($jobseekers as $jobseeker)
-    <div class="col-md-3">
+<div class="col-12 col-sm-6 col-md-4 col-lg-3">
         <div class="card shadow-lg border-0 rounded-lg p-3">
             <div class="card-body">
                 <!-- Profile Image (Still Centered) -->
                 <div class="text-center">
                     <img src="{{ $jobseeker->image && file_exists(public_path('images/' . $jobseeker->image)) ? asset('images/' . $jobseeker->image) : asset('images/placeholder-shadow.png') }}" 
-                        class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="120" height="120" alt="Profile Image">
+                        class="rounded-circle shadow-sm mb-3 d-block mx-auto img-fluid" width="100" height="100" alt="Profile Image">
 
                 </div>
 
@@ -38,5 +38,10 @@
 
 
 <div class="d-flex justify-content-center mt-4">
-    {{ $jobseekers->links('pagination::bootstrap-4') }}
+    <nav aria-label="Page navigation">
+        <ul class="pagination pagination-sm">
+            {{ $jobseekers->links('pagination::bootstrap-4') }}
+        </ul>
+    </nav>
 </div>
+
