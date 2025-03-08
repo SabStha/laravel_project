@@ -28,7 +28,7 @@
 
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
-                            <a href="{{ route('jobseeker.viewListings') }}" class="btn btn-primary w-100 py-3 rounded-pill">
+                        <a href="{{ route('jobseeker.viewListings') }}" class="btn btn-secondary w-100 py-3 rounded-pill">
                                 {{ __('Browse Job Listings') }}
                             </a>
                         </div>

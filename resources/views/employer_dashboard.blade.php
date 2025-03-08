@@ -20,19 +20,27 @@
                     <h4>Welcome, {{ Auth::user()->name }}!</h4>
                     <p>You're successfully logged in as an Employer.</p>
 
+                    <!-- 🚀 Display Job Application Notifications Here -->
+                    @if(auth()->user()->notifications->count() > 0)
+                        <div class="alert alert-warning text-start">
+                            <h5><strong>Job Application Alerts:</strong></h5>
+                            @foreach(auth()->user()->notifications as $notification)
+                                <p class="mb-2">
+                                    <strong>{{ $notification->data['message'] }}</strong>
+                                </p>
+                            @endforeach
+                        </div>
+                    @endif
+
                     <!-- Check if employer has completed registration -->
                     @if(Auth::user()->employer && Auth::user()->employer->status === 'registered')
-                        <!-- Show "Edit Registration" button if already registered -->
                         <a href="{{ route('employer.editRegistrationForm') }}" class="btn btn-warning w-50 py-3 rounded-pill mb-3">
                             {{ __('Edit Registration') }}
                         </a>
                     @else
-                        <!-- Show "Complete Registration" button if not registered -->
                         <a href="{{ route('employer.completeRegistrationForm', ['token' => Auth()->user()->employer->verification_token]) }}" class="btn btn-danger w-50 py-3 rounded-pill mb-3">
                             {{ __('Complete Registration') }}
                         </a>
-                        
-                         
                     @endif
 
                     <!-- Jobs Section -->

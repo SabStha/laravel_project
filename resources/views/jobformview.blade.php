@@ -14,6 +14,16 @@
 
     <!-- Job creation form -->
     <form action="{{ route('jobs.store') }}" method="POST" enctype="multipart/form-data">
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
         @csrf
 
         <!-- Image Upload -->
@@ -137,6 +147,29 @@
             <input type="checkbox" id="visa_required" name="visa_required" value="1" {{ old('visa_required') ? 'checked' : '' }}>
             @error('visa_required') <span class="text-danger">{{ $message }}</span> @enderror
         </div>
+        <!-- resources/views/jobformview.blade.php -->
+        <div class="form-group">
+            <label><strong>Evaluation Requirements</strong></label><br>
+            @foreach(App\Models\EvaluationAxis::all() as $axis)
+                <div class="mb-2">
+                    <label>{{ $axis->name }}</label>
+                    <select class="form-control" id="evaluation_axis_{{ $axis->id }}" name="evaluation[{{ $axis->id }}]" required>
+                        <option value="">Select Rating</option>
+                        @for($rating = 1; $rating <= 5; $rating++)
+                            <option value="{{ $rating }}" {{ old('evaluation.'.$axis->id) == $rating ? 'selected' : '' }}>
+                                {{ $rating }}
+                            </option>
+                        @endfor
+                    </select>
+                    @error('evaluation.'.$axis->id)
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endforeach
+        </div>
+
+
+
 
         
 
@@ -144,6 +177,7 @@
         <button type="submit" class="btn btn-primary">Create Job</button>
     </form>
 </div>
+
 @endsection
 
 <script>

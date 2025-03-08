@@ -16,11 +16,22 @@
                         <p>Manage jobseeker evaluations efficiently.</p>
                     </div>
 
+                    <!-- 🚀 Job Application Notifications -->
+                    @if(auth()->user()->notifications->count() > 0)
+                        <div class="alert alert-warning text-start">
+                            <h5><strong>Application Notifications:</strong></h5>
+                            @foreach(auth()->user()->notifications as $notification)
+                                <p class="mb-2">
+                                    <strong>{{ $notification->data['message'] }}</strong>
+                                </p>
+                            @endforeach
+                        </div>
+                    @endif
+
                     <div class="row mt-4">
-                        
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('View All JobseekerList') }}
+                                {{ __('View All Jobseeker List') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">
