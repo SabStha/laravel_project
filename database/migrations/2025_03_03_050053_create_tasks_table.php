@@ -11,7 +11,7 @@ return new class extends Migration {
     public function up(): void {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id(); // Auto-increment primary key
-            $table->string('task_name'); // Name of the job task (e.g., "Software Developer", "Chef")
+            // $table->string('task_name'); // Name of the job task (e.g., "Software Developer", "Chef")
             $table->text('description')->nullable(); // Optional description of the task
             $table->timestamps(); // Laravel created_at & updated_at
         });
