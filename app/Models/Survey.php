@@ -18,8 +18,5 @@ class Survey extends Model
             ->withTimestamps();
     }
 
-    public function survey()
-    {
-        return $this->belongsTo(Survey::class);
-    }
+  
 }

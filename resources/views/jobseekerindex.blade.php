@@ -6,16 +6,16 @@
 
     <div class="row">
         @foreach($jobseekers as $jobseeker)
-            <div class="col-md-4 mb-4">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card shadow-lg rounded-3">
                     <div class="card-body text-center">
                         <img src="{{ $jobseeker->image ? asset('storage/'.$jobseeker->image) : asset('images/default-profile.png') }}" 
-                             class="rounded-circle mb-3" width="100" height="100" alt="Profile Image">
+                             class="rounded-circle mb-3 img-fluid" style="max-width: 80px; height: auto;" alt="Profile Image">
 
                         <h5 class="card-title">{{ $jobseeker->user->name }}</h5>
                         <p class="text-muted">{{ $jobseeker->user->email }}</p>
 
-                        <a href="{{ route('chat.start', $jobseeker->user->id) }}" class="btn btn-info w-100 rounded-pill">
+                        <a href="{{ route('chat.start', $jobseeker->user->id) }}" class="btn btn-info btn-sm w-100 rounded-pill">
                             Message
                         </a>
                     </div>
