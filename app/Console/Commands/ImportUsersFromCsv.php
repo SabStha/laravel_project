@@ -112,9 +112,9 @@ class ImportUsersFromCsv extends Command
         $this->info('Processing wage update record: ' . print_r($record, true));
         
         // Kiểm tra jobseeker_id có tồn tại không
-        $jobseekerId = $record['jobseeker_id'] ?? null;
+        $jobseekerId = $record['id'] ?? null;
         if (!$jobseekerId) {
-            $this->warn("Missing jobseeker_id for record, skipping");
+            $this->warn("Missing id for record, skipping");
             continue;
         }
         
