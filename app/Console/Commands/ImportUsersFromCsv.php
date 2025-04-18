@@ -14,7 +14,7 @@ use Illuminate\Support\Str;
 
 class ImportUsersFromCsv extends Command
 {
-    protected $signature = 'data:import {csv_file} {--type=users : Type of data to import (users, jobseekers, surveys)}';
+    protected $signature = 'data:import {csv_file} {--type=users : Type of data to import (users, jobseekers, surveys, update-wages)}';
     protected $description = 'Import users from CSV file';
 
     public function handle()
@@ -55,6 +55,9 @@ class ImportUsersFromCsv extends Command
                 $this->importJobseekers($csv);
             } elseif ($type === 'surveys') {
                 $this->importSurveys($csv);
+            } 
+            elseif ($type === 'update-wages') {
+                $this->updateJobseekerWages($csv);
             } else {
                 throw new \Exception("Unknown import type: {$type}");
             }
@@ -98,6 +101,42 @@ class ImportUsersFromCsv extends Command
         }
     }
 
+    protected function updateJobseekerWages($csv)
+{
+    $this->info('Updating jobseeker wages...');
+    $updated = 0;
+    $notFound = 0;
+    
+    foreach ($csv as $record) {
+        // Debug thông tin
+        $this->info('Processing wage update record: ' . print_r($record, true));
+        
+        // Kiểm tra jobseeker_id có tồn tại không
+        $jobseekerId = $record['id'] ?? null;
+        if (!$jobseekerId) {
+            $this->warn("Missing id for record, skipping");
+            continue;
+        }
+        
+        // Tìm jobseeker theo ID
+        $jobseeker = Jobseeker::find($jobseekerId);
+        if (!$jobseeker) {
+            $this->warn("Jobseeker with ID {$jobseekerId} not found, skipping");
+            $notFound++;
+            continue;
+        }
+
+        // Cập nhật trường wage
+        $jobseeker->wage = trim($record['wage'] ?? '');
+        $jobseeker->updated_at = now();
+        $jobseeker->save();
+
+        $updated++;
+        $this->info("Updated wage for jobseeker ID: {$jobseeker->id}");
+    }
+
+    $this->info("Wage update completed. Updated: {$updated} records. Not found: {$notFound} records.");
+}
     protected function importJobseekers($csv)
     {
         $this->info('Importing jobseekers...');

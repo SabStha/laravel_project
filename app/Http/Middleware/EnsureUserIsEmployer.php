@@ -1,23 +1,18 @@
 <?php
 
-namespace App\Http\Middleware;
+// namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+// use Closure;
+// use Illuminate\Http\Request;
 
-class EnsureEmployerIsRegistered
-{
-    public function handle(Request $request, Closure $next)
-    {
-        $user = Auth::user();
+// class EnsureUserIsEmployer
+// {
+//     public function handle(Request $request, Closure $next)
+//     {
+//         if (auth()->check() && auth()->user()->isEmployer()) {
+//             return $next($request);
+//         }
 
-        // Ensure the user is an employer and has completed registration
-        if ($user->user_type === 'employer' && (!$user->employer || $user->employer->status !== 'registered')) {
-            return redirect()->route('employer.completeRegistrationForm')
-                ->with('error', 'You must complete your business registration before posting jobs.');
-        }
-
-        return $next($request);
-    }
-}
+//         return redirect('/'); // or any other route
+//     }
+// }
