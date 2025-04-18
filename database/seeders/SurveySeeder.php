@@ -23,7 +23,7 @@ class SurveySeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'question_text' => ' 静かな図書館で勉強していたら、隣の人が電話を始めました。あなたは？',
+                'question_text' => '図書館で勉強していたら、隣の人が電話を始めました。あなたは？',
                 'option_a' => '注意して電話をやめてもらう。',
                 'option_b' => '我慢して勉強を続ける。',
                 'option_c' => '場所を変えて勉強する。',
@@ -101,7 +101,7 @@ class SurveySeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'question_text' => '先輩がスピーチをしています。あなたはどうしますか？',
+                'question_text' => '会社の飲み会で、上司がスピーチをしています。あなたは？',
                 'option_a' => '熱心に話を聞き、共感する姿勢を見せる。',
                 'option_b' => '興味なさそうにしている。',
                 'option_c' => '他の参加者と話している。',
@@ -126,21 +126,6 @@ class SurveySeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-
-            [
-                'question_text' => '宝くじで10万円が当たりました。あなたはどうしますか？',
-                'option_a' => '一部を寄付し、残りは貯蓄する。',
-                'option_b' => '欲しいものを買う。',
-                'option_c' => '友達と遊ぶために使う。',
-                'option_d' => '家族のために使う。',
-                'explanation_a' => '思いやりがあり、計画的なタイプです。',
-                'explanation_b' => '自己投資を大切にするタイプです。',
-                'explanation_c' => '社交的で、楽しいことを重視するタイプです。',
-                'explanation_d' => '家族思いで、責任感のあるタイプです。',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            
             
         ]);
     }

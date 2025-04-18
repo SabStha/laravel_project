@@ -18,7 +18,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <!-- Custom Styles -->
-<style>
+<!-- <style>
     body {
         background-color: #FFF8E7; /* Pastel yellow */
         font-family: 'Poppins', sans-serif;
@@ -112,7 +112,63 @@
         font-size: 20px;
         cursor: pointer;
     }
-</style>
+    <style>
+    @media (max-width: 767px) {
+        .jobseeker-card {
+            padding: 1rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+    .jobseeker-image {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        margin: 0 auto 1rem;
+        object-fit: cover;
+    }
+
+    .jobseeker-name {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .view-details-btn,
+    .btn-outline-secondary {
+        padding: 10px 14px;
+        font-size: 15px;
+        border-radius: 30px;
+    }
+
+    .jobseeker-info,
+    .jobseeker-info p {
+        display: none !important;
+    }
+
+    .jobseeker-card .btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .chat-button {
+        padding: 10px 12px;
+        font-size: 16px;
+        border-radius: 50%;
+    }
+
+    .jobseeker-card .survey-completed,
+    .jobseeker-card .survey-not-completed {
+        font-size: 14px;
+        margin-top: 8px;
+        font-weight: 600;
+    }
+}
+</style> -->
+
+    
+
 
 </head>
 <body>

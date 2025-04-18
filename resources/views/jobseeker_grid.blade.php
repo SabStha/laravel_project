@@ -71,19 +71,18 @@
             </select>
         </div>
 
-        <!-- 🛠 DETAIL SEARCH BUTTON -->
-        <div class="col-md-12 text-center mt-3">
-            <button class="btn btn-outline-info btn-lg" type="button" data-bs-toggle="collapse" data-bs-target="#detailSearchFields" aria-expanded="false" aria-controls="detailSearchFields">
-                🔍 Detail Search
-            </button>
-        </div>
+        
+        @foreach($jobseekers as $jobseeker)
+            
 
-        <!-- 🕵️‍♂️ DETAILED SEARCH FIELDS -->
-        <div class="collapse mt-3" id="detailSearchFields">
-            <div class="row g-3">
-                <div class="col-12 col-sm-6 col-md-3">
-                    <label class="form-label">🔍 Search by Name</label>
-                    <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" value="{{ request('name') }}">
+
+
+                <!-- ✅ View Details Button — must be inside the loop -->
+                <div class="collapse mt-3" id="detailSearchFields">
+                    <div class="row g-3">
+                        <div class="col-12 col-sm-6 col-md-3">
+                            <label class="form-label">🔍 Search by Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" value="{{ request('name') }}">
                 </div>
 
                 <div class="col-12 col-sm-6 col-md-3">
@@ -117,6 +116,14 @@
             </div>
         </div>
 
+
+                </div>
+            </div>
+        @endforeach
+
+
+        <!-- 🕵️‍♂️ DETAILED SEARCH FIELDS -->
+        
         <!-- 🔎 SEARCH BUTTONS -->
         <div class="col-md-12 text-center mt-3">
             <button type="submit" class="btn btn-primary btn-lg">🔎 Search</button>
@@ -125,12 +132,60 @@
     </form>
 
     <!-- Jobseeker Cards -->
+    @if($jobseekers->count())
+    <p class="text-center text-muted fw-bold">=== {{ $jobseekers->count() }} results available ===</p>
+    @endif
+
     <div id="jobseekerContainer" class="row g-4">
         @include('jobseeker_grid_partial', ['jobseekers' => $jobseekers])
     </div>
+
+    <!-- ✅ Jobseeker Offcanvas Panel -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="jobseekerDetailsCanvas" aria-labelledby="jobseekerDetailsLabel">
+        <div class="offcanvas-header bg-primary text-white">
+            <h5 class="offcanvas-title fw-bold" id="jobseekerDetailsLabel">
+                <i class="fa-solid fa-user-circle me-2"></i> Jobseeker Details
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="jobseekerDetailContent">
+            <!-- JavaScript will inject the content here -->
+        </div>
+    </div>
+
+
     
     @if($jobseekers->isEmpty())
         <p class="text-center text-danger">No jobseekers found.</p>
     @endif
 </div>
+
+<script>
+document.querySelectorAll('.view-details-btn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const jobseeker = JSON.parse(this.getAttribute('data-jobseeker'));
+        const container = document.getElementById('jobseekerDetailContent');
+
+        container.innerHTML = `
+            <p><strong>Name:</strong> ${jobseeker.user.name}</p>
+            <p><strong>Email:</strong> ${jobseeker.user.email}</p>
+            <p><strong>School:</strong> ${jobseeker.school ?? 'N/A'}</p>
+            <p><strong>Graduation:</strong> ${jobseeker.expected_to_graduate ?? 'N/A'}</p>
+            <p><strong>JLPT:</strong> ${jobseeker.jlpt ?? 'N/A'}</p>
+            <p><strong>Wage:</strong> ¥${jobseeker.wage ?? 'N/A'}</p>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="/chat/${jobseeker.user.id}" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-comment-dots me-2"></i> Chat
+                </a>
+                <a href="/jobseekers/${jobseeker.id}/edit" class="btn btn-outline-success">
+                    <i class="fa-solid fa-pen-to-square me-2"></i> Edit
+                </a>
+            </div>
+        `;
+    });
+});
+</script>
+
+
 @endsection

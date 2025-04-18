@@ -2,6 +2,14 @@
 
 @section('content')
 <div class="container my-5">
+        <!-- resources/views/jobsShow.blade.php -->
+    <h4>Evaluation Requirements:</h4>
+    <ul>
+    @foreach($job->jobEvaluationAxes as $evaluation)
+        <li>{{ $evaluation->evaluationAxis->name }}: {{ $evaluation->rating }}/5</li>
+    @endforeach
+    </ul>
+
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow-lg rounded-4">

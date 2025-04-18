@@ -16,6 +16,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SurveyController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\JobApplicationController;
 
 
 // Home route
@@ -52,8 +53,6 @@ Route::middleware(['auth', 'checkUserType:jobseeker', 'ensure.survey.completed']
     Route::get('/jobseeker/dashboard', [DashboardController::class, 'jobseekerDashboard'])->name('jobseeker.dashboard');
     Route::get('/manage-profile', [JobseekerController::class, 'manageProfile'])->name('jobseeker.manageProfile');
     Route::get('/view-applications', [JobseekerController::class, 'viewApplications'])->name('jobseeker.viewApplications');
-
-    
 });
 //how Survey Form (For Jobseekers)
 Route::get('jobseeker/survey', [SurveyController::class, 'showSurvey'])
@@ -105,11 +104,10 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/jobseekers', [OperatorController::class, 'viewJobseekers'])->name('operator.viewJobseekers');
 
 
-    Route::match(['get', 'post'],'/logout', function () {
+    Route::post('/logout', function () {
         Auth::logout();
         return redirect()->route('login');
-    })->name('logout');
-
+    })->name('operator.logout');
 });
 
 
@@ -247,11 +245,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/employer/edit-registration', [EmployerController::class, 'edit'])->name('employer.editRegistrationForm');
     Route::post('/employer/update-registration', [EmployerController::class, 'update'])->name('employer.updateRegistration');
-   
-    Route::match(['get', 'post'],'/logout', function () {
-        Auth::logout();
-        return redirect()->route('login');
-    })->name('logout');
+
 
 });
 
@@ -273,4 +267,11 @@ Route::get('/admin/employer/register', [EmployerController::class, 'showRegistra
 
 // Admin registers employer & sends email
 
+Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'applyForJob'])->middleware('auth');
+
+
+
+Route::get('/view-listings', [JobseekerController::class, 'viewListings'])
+    ->name('jobseeker.viewListings')
+    ->middleware('auth');
 

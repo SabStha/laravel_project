@@ -7,8 +7,7 @@ use App\Models\User;
 use App\Models\Jobseeker;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use App\Models\Job; // Import Log at the top of your controller
+use Illuminate\Support\Facades\Log; // Import Log at the top of your controller
 
 class JobseekerController extends Controller
 {
@@ -101,23 +100,15 @@ class JobseekerController extends Controller
     {
         $jobseekers = JobSeeker::with('user')->get(); // Fetch job seekers with their associated user info
 
-            return view('jobseekerindex', compact('jobseekers'));
+        return view('jobseekerindex', compact('jobseekers'));
     }
 
     public function show($id)
-    {
-        $jobseeker = Jobseeker::with(['user'])->findOrFail($id);
+{
+    $jobseeker = Jobseeker::with(['user'])->findOrFail($id);
 
-            return view('jobseekersProfile', compact('jobseeker'));
-    }
-    public function viewListings()
-    {
-        // Fetch all jobs (you might want to filter for active jobs later)
-        $jobs = Job::with('jobEvaluationAxes.evaluationAxis')->latest()->paginate(10);
-
-            return view('jobseeker.viewListings', compact('jobs'));
-    }
-
+    return view('jobseekersProfile', compact('jobseeker'));
+}
 
 
 }
