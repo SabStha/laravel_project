@@ -1,5 +1,5 @@
 <style>
-/* ========== GLOBAL STYLES ========== */
+/* ========== グローバルスタイル ========== */
 body {
     background-color: #fdf7e4;
     font-family: 'Poppins', sans-serif;
@@ -125,7 +125,7 @@ body {
     border-radius: 50%;
 }
 
-/* ========== MOBILE-ONLY STYLES ========== */
+/* ========== モバイル専用スタイル ========== */
 @media (max-width: 767px) {
     html {
         font-size: 22px;
@@ -206,22 +206,21 @@ body {
 }
 </style>
 
-
 <div id="jobseekerContainer" class="row g-4">
     @foreach($jobseekers as $jobseeker)
         <div class="col-6 col-md-4 col-lg-3 d-flex">
             <div class="jobseeker-card w-100 position-relative">
 
-                {{-- ✅ Chat Buttons --}}
+                {{-- ✅ チャットボタン --}}
                 <div class="text-end mb-2">
-                    <!-- Mobile: Icon-only -->
+                    <!-- モバイル用：アイコンのみ -->
                     <a href="{{ route('chat.start', $jobseeker->user->id) }}" class="btn btn-outline-secondary d-inline-block d-md-none">
                         📩
                     </a>
 
-                    <!-- Desktop: Full Button -->
+                    <!-- デスクトップ用：フルボタン -->
                     <a href="{{ route('chat.start', $jobseeker->user->id) }}" class="btn btn-info w-100 rounded-pill d-none d-md-inline-block">
-                        📩 Chat
+                        📩 チャット
                     </a>
                 </div>
 
@@ -229,37 +228,37 @@ body {
                     <img src="{{ $jobseeker->image && file_exists(public_path('images/' . $jobseeker->image)) 
                         ? asset('images/' . $jobseeker->image) 
                         : asset('images/placeholder-shadow.png') }}" 
-                        class="jobseeker-image mb-3" alt="Profile Image">
+                        class="jobseeker-image mb-3" alt="プロフィール画像">
                 </div>
 
                 <h5 class="jobseeker-name">{{ ucfirst($jobseeker->user->name) }}</h5>
 
-                {{-- ✅ Main Info (Visible only on desktop) --}}
+                {{-- ✅ 主な情報（デスクトップでのみ表示） --}}
                 <div class="jobseeker-info d-none d-md-block">
-                    <p><strong>🎓 School:</strong> {{ $jobseeker->school ?? 'N/A' }}</p>
-                    <p><strong>📧 Email:</strong> {{ $jobseeker->user->email ?? 'N/A' }}</p>
-                    <p><strong>🌎 Citizenship:</strong> {{ $jobseeker->citizenship ?? 'N/A' }}</p>
-                    <p><strong>🎓 Graduation:</strong> {{ $jobseeker->expected_to_graduate ?? 'N/A' }}</p>
-                    <p><strong>⚧ Gender:</strong> {{ ucfirst($jobseeker->gender ?? 'N/A') }}</p>
-                    <p><strong>🎂 Age:</strong> 
+                    <p><strong>🎓 学校:</strong> {{ $jobseeker->school ?? 'N/A' }}</p>
+                    <p><strong>📧 メール:</strong> {{ $jobseeker->user->email ?? 'N/A' }}</p>
+                    <p><strong>🌎 国籍:</strong> {{ $jobseeker->citizenship ?? 'N/A' }}</p>
+                    <p><strong>🎓 卒業予定:</strong> {{ $jobseeker->expected_to_graduate ?? 'N/A' }}</p>
+                    <p><strong>⚧ 性別:</strong> {{ ucfirst($jobseeker->gender ?? 'N/A') }}</p>
+                    <p><strong>🎂 年齢:</strong> 
                         {{ $jobseeker->birthday ? \Carbon\Carbon::parse($jobseeker->birthday)->age : 'N/A' }}
                     </p>
                     <p><strong>📜 JLPT:</strong> {{ $jobseeker->jlpt ?? 'N/A' }}</p>
-                    <p><strong>💰 Wage:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
+                    <p><strong>💰 賃金:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
                 </div>
 
-                {{-- ✅ Survey Status --}}
+                {{-- ✅ サーベイの状態 --}}
                 <p class="{{ $jobseeker->survey_completed ? 'survey-completed' : 'survey-not-completed' }}">
-                    {{ $jobseeker->survey_completed ? '✅ Survey Completed' : '❌ Survey Not Completed' }}
+                    {{ $jobseeker->survey_completed ? '✅ サーベイ完了' : '❌ サーベイ未完了' }}
                 </p>
 
-                {{-- ✅ View Details Button --}}
+                {{-- ✅ 詳細表示ボタン --}}
                 <div class="text-center mt-2">
                     <button class="btn btn-outline-primary w-100 view-details-btn" 
                         data-bs-toggle="offcanvas"
                         data-bs-target="#jobseekerDetailsCanvas"
                         data-jobseeker='@json($jobseeker->load("user"))'>
-                        🔍 View Details
+                        🔍 詳細を見る
                     </button>
                 </div>
             </div>
@@ -267,7 +266,7 @@ body {
     @endforeach
 </div>
 
-<!-- Pagination -->
+<!-- ページネーション -->
 <div class="d-flex justify-content-center mt-4">
     {{ $jobseekers->links('pagination::bootstrap-4') }}
 </div>

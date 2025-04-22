@@ -6,8 +6,8 @@
         <div class="col-md-8">
             <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-primary text-white py-4">
-                    <h3>{{ __('Jobseeker Dashboard') }}</h3>
-                    <p class="lead">Welcome to your dashboard! Manage your job applications and profile.</p>
+                    <h3>{{ __(' 求職者ダッシュボード ') }}</h3>
+                    <p class="lead">ダッシュボードへようこそ！応募履歴とプロフィールを管理してください。</p>
                 </div>
 
                 <div class="card-body">
@@ -19,22 +19,22 @@
 
                     <div class="text-center">
                         @auth
-                            <h4>Welcome, {{ Auth::user()->name }}!</h4>
-                            <p>You're successfully logged in as a Jobseeker. Here you can view and manage your job applications.</p>
+                            <h4>ようこそ、 {{ Auth::user()->name }}!</h4>
+                            <p>求職者としてログインしました。ここから応募履歴を確認し、管理できます。</p>
                         @else
-                            <p>You need to log in to access this page.</p>
+                            <p>このページにアクセスするにはログインが必要です。</p>
                         @endauth
                     </div>
 
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
                         <a href="{{ route('jobseeker.viewListings') }}" class="btn btn-secondary w-100 py-3 rounded-pill">
-                                {{ __('Browse Job Listings') }}
+                                {{ __('求人情報を閲覧') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('jobseeker.viewApplications') }}" class="btn btn-secondary w-100 py-3 rounded-pill">
-                                {{ __('View My Applications') }}
+                                {{ __(' 応募状況を確認 ') }}
                             </a>
                         </div>
                     </div>
@@ -42,12 +42,12 @@
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('jobseeker.editProfile') }}" class="btn btn-warning w-100 py-3 rounded-pill">
-                                {{ __('Edit Profile') }}
+                                {{ __('プロフィールを編集 ') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('chat.index') }}" class="btn btn-info w-100 py-3 rounded-pill">
-                                {{ __('Chats') }}
+                                {{ __('チャット') }}
                             </a>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('jobseeker.saveJobs') }}" class="btn btn-success w-100 py-3 rounded-pill">
-                                {{ __('Saved Jobs') }}
+                                {{ __(' お気に入りの求人') }}
                             </a>
                         </div>
 
@@ -64,7 +64,7 @@
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-danger w-100 py-3 rounded-pill">
-                                    {{ __('Logout') }}
+                                    {{ __('ログアウト') }}
                                 </button>
                             </form>
                         </div>

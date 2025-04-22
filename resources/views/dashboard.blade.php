@@ -6,20 +6,20 @@
         <div class="col-md-8">
             <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-primary text-white py-4">
-                    <h3>{{ __('Operator Dashboard') }}</h3>
-                    <p class="lead">Welcome to your dashboard!</p>
+                    <h3>{{ __('オペレーターダッシュボード') }}</h3>
+                    <p class="lead">ダッシュボードへようこそ!</p>
                 </div>
 
                 <div class="card-body">
                     <div class="text-center">
-                        <h4>Welcome, {{ Auth::user()->name }}!</h4>
-                        <p>Manage jobseeker evaluations efficiently.</p>
+                        <h4>ようこそ、 {{ Auth::user()->name }}!</h4>
+                        <p>求職者の評価を効率的に管理します。</p>
                     </div>
 
                     <!-- 🚀 Job Application Notifications -->
                     @if(auth()->user()->notifications->count() > 0)
                         <div class="alert alert-warning text-start">
-                            <h5><strong>Application Notifications:</strong></h5>
+                            <h5><strong>アプリケーション通知:</strong></h5>
                             @foreach(auth()->user()->notifications as $notification)
                                 <p class="mb-2">
                                     <strong>{{ $notification->data['message'] }}</strong>
@@ -31,12 +31,12 @@
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('View All Jobseeker List') }}
+                                {{ __('すべての求職者リストを表示') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">
                             <a href="{{ route('operator.viewEvaluations') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                                {{ __('View Evaluation Jobseeker List') }}
+                                {{ __('評価求職者リストを見る') }}
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">

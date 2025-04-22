@@ -6,17 +6,17 @@
         <div class="col-md-8">
             <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-primary text-white py-4">
-                    <h3>{{ __('Operator Registration') }}</h3>
-                    <p class="lead">Sign up and start exploring job opportunities across the platform!</p>
+                    <h3>{{ __('オペレーター登録') }}</h3>
+                    <p class="lead">サインアップして、プラットフォーム上の仕事機会を探してみましょう！</p>
                 </div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('operator.register') }}">
                         @csrf
 
-                        <!-- Name -->
+                        <!-- 名前 -->
                         <div class="form-group mb-4">
-                            <label for="name" class="form-label">{{ __('Name') }}</label>
+                            <label for="name" class="form-label">{{ __('名前') }}</label>
                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
                             @error('name')
                                 <div class="invalid-feedback d-block">
@@ -25,9 +25,9 @@
                             @enderror
                         </div>
 
-                        <!-- Email -->
+                        <!-- メールアドレス -->
                         <div class="form-group mb-4">
-                            <label for="email" class="form-label">{{ __('Email Address') }}</label>
+                            <label for="email" class="form-label">{{ __('メールアドレス') }}</label>
                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                             @error('email')
                                 <div class="invalid-feedback d-block">
@@ -36,9 +36,9 @@
                             @enderror
                         </div>
 
-                        <!-- Password -->
+                        <!-- パスワード -->
                         <div class="form-group mb-4">
-                            <label for="password" class="form-label">{{ __('Password') }}</label>
+                            <label for="password" class="form-label">{{ __('パスワード') }}</label>
                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                             @error('password')
                                 <div class="invalid-feedback d-block">
@@ -47,22 +47,22 @@
                             @enderror
                         </div>
 
-                        <!-- Confirm Password -->
+                        <!-- パスワード確認 -->
                         <div class="form-group mb-4">
-                            <label for="password-confirm" class="form-label">{{ __('Confirm Password') }}</label>
+                            <label for="password-confirm" class="form-label">{{ __('パスワード確認') }}</label>
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                         </div>
 
-                        <!-- Submit Button -->
+                        <!-- 登録ボタン -->
                         <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary btn-lg w-100 py-3 rounded-pill">
-                                {{ __('Register') }}
+                                {{ __('登録する') }}
                             </button>
                         </div>
                     </form>
 
                     <div class="text-center mt-4">
-                        <p>Already have an account? <a href="{{ route('login') }}" class="text-primary">Login here</a></p>
+                        <p>すでにアカウントをお持ちですか？ <a href="{{ route('login') }}" class="text-primary">こちらからログイン</a></p>
                     </div>
                 </div>
             </div>
@@ -71,10 +71,10 @@
 </div>
 @endsection
 
-<!-- Custom Styles -->
+<!-- カスタムスタイル -->
 @section('styles')
 <style>
-    /* General Styles */
+    /* 一般的なスタイル */
     body {
         background: url('{{ asset('images/homeimg.jpg') }}') no-repeat center center/cover;
         background-size: cover;
@@ -112,7 +112,7 @@
 
     .card-body {
         padding: 30px 40px;
-        background-color: rgba(255, 255, 255, 0.85); /* Slight opacity to blend with background */
+        background-color: rgba(255, 255, 255, 0.85); /* 背景とのブレンドを軽くする */
         border-radius: 15px;
     }
 
@@ -122,7 +122,7 @@
         color: #333;
     }
 
-    /* Form Fields */
+    /* フォームフィールド */
     .form-control {
         border-radius: 10px;
         padding: 15px;
@@ -140,7 +140,7 @@
         font-size: 0.9rem;
     }
 
-    /* Submit Button */
+    /* 登録ボタン */
     .btn-primary {
         background-color: #007bff;
         border-color: #007bff;
@@ -155,7 +155,7 @@
         border-color: #0056b3;
     }
 
-    /* Link Styling */
+    /* リンクのスタイル */
     .text-primary {
         text-decoration: none;
         transition: color 0.3s ease;
@@ -165,7 +165,7 @@
         color: #0056b3;
     }
 
-    /* Responsive Design */
+    /* レスポンシブデザイン */
     @media (max-width: 768px) {
         .card {
             padding: 20px;

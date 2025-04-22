@@ -2,37 +2,35 @@
 
 @section('content')
 
-
-
 <div class="container text-center mb-4">
     <div class="d-flex justify-content-between align-items-center my-3">
-    <a href="{{ route('operator.dashboard') }}" class="btn btn-outline-dark btn-lg">
-        ⬅ Back
-    </a>
+        <a href="{{ route('operator.dashboard') }}" class="btn btn-outline-dark btn-lg">
+            ⬅ 戻る
+        </a>
     </div>
-    <h2 class="fw-bold">🔍 Jobseeker Management</h2>
-    <p class="lead text-muted">View, search, and manage jobseeker details efficiently.</p>
+    <h2 class="fw-bold">🔍 ジョブシーカー管理</h2>
+    <p class="lead text-muted">ジョブシーカーの詳細を効率的に閲覧、検索、管理します。</p>
 </div>
 
 <div class="container">
-    <!-- Search and Filter Form -->
+    <!-- 検索とフィルターフォーム -->
     <form id="filterForm" class="row g-3 mb-4" method="GET" action="{{ route('operator.viewJobseekers') }}">
 
-        <!-- 🏆 MAIN SEARCH FIELDS -->
+        <!-- 🏆 メイン検索項目 -->
         <div class="col-12 col-sm-6 col-md-3">
-            <label class="form-label">⚧ Gender</label>
+            <label class="form-label">⚧ 性別</label>
             <select name="gender" class="form-control">
-                <option value="">All</option>
-                <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                <option value="">すべて</option>
+                <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>男性</option>
+                <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>女性</option>
+                <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>その他</option>
             </select>
         </div>
 
         <div class="col-12 col-sm-6 col-md-3">
-            <label class="form-label">🌎 Citizenship</label>
+            <label class="form-label">🌎 国籍</label>
             <select name="citizenship" class="form-control">
-                <option value="">Select Citizenship</option>
+                <option value="">国籍を選択</option>
                 @foreach($citizenships as $citizenship)
                     <option value="{{ $citizenship }}" {{ request('citizenship') == $citizenship ? 'selected' : '' }}>
                         {{ $citizenship }}
@@ -42,9 +40,9 @@
         </div>
 
         <div class="col-12 col-sm-6 col-md-3">
-            <label class="form-label">📜 JLPT Level</label>
+            <label class="form-label">📜 JLPTレベル</label>
             <select name="jlpt" class="form-control">
-                <option value="">Select Level</option>
+                <option value="">レベルを選択</option>
                 @foreach($jlptLevels as $level)
                     <option value="{{ $level }}" {{ request('jlpt') == $level ? 'selected' : '' }}>{{ $level }}</option>
                 @endforeach
@@ -52,9 +50,9 @@
         </div>
 
         <div class="col-12 col-sm-6 col-md-3">
-            <label class="form-label">💰 Minimum Wage</label>
+            <label class="form-label">💰 最低賃金</label>
             <select name="wage" class="form-control">
-                <option value="">Select Min Wage</option>
+                <option value="">最低賃金を選択</option>
                 @foreach($wages as $wage)
                     <option value="{{ $wage }}" {{ request('wage') == $wage ? 'selected' : '' }}>
                         ¥{{ number_format($wage) }}以上
@@ -64,99 +62,85 @@
         </div>
 
         <div class="col-12 col-sm-6 col-md-3">
-            <label class="form-label">✨ Evaluation</label>
+            <label class="form-label">✨ 評価</label>
             <select name="evaluation" class="form-control">
-                <option value="">Select Evaluation</option>
-                
+                <option value="">評価を選択</option>
             </select>
         </div>
 
-        
         @foreach($jobseekers as $jobseeker)
-            
+            <!-- ✅ 詳細表示ボタン — ループ内に必ず配置 -->
+            <div class="collapse mt-3" id="detailSearchFields">
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label class="form-label">🔍 名前で検索</label>
+                        <input type="text" name="name" class="form-control" placeholder="ジョブシーカーの名前を入力" value="{{ request('name') }}">
+                    </div>
 
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label class="form-label">📧 メールで検索</label>
+                        <input type="text" name="email" class="form-control" placeholder="メールアドレスを入力" value="{{ request('email') }}">
+                    </div>
 
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label class="form-label">🏫 学校</label>
+                        <select name="school" class="form-control">
+                            <option value="">学校を選択</option>
+                            @foreach($schools as $school)
+                                <option value="{{ $school }}" {{ request('school') == $school ? 'selected' : '' }}>{{ $school }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                <!-- ✅ View Details Button — must be inside the loop -->
-                <div class="collapse mt-3" id="detailSearchFields">
-                    <div class="row g-3">
-                        <div class="col-12 col-sm-6 col-md-3">
-                            <label class="form-label">🔍 Search by Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" value="{{ request('name') }}">
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <label class="form-label">📧 Search by Email</label>
-                    <input type="text" name="email" class="form-control" placeholder="Enter email address" value="{{ request('email') }}">
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <label class="form-label">🏫 School</label>
-                    <select name="school" class="form-control">
-                        <option value="">Select School</option>
-                        @foreach($schools as $school)
-                            <option value="{{ $school }}" {{ request('school') == $school ? 'selected' : '' }}>{{ $school }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <label class="form-label">🎓 Graduation Year</label>
-                    <select name="graduation_date" class="form-control">
-                        <option value="">Select Year</option>
-                        @foreach($graduationDates as $date)
-                            @php
-                                $year=\Carbon\Carbon::parse($date)->format('Y');
-                            @endphp
-
-                            <option value="{{ $date }}" {{ request('graduation_date') == $date ? 'selected' : '' }}>{{ $year }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
-
-
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label class="form-label">🎓 卒業年</label>
+                        <select name="graduation_date" class="form-control">
+                            <option value="">年を選択</option>
+                            @foreach($graduationDates as $date)
+                                @php
+                                    $year = \Carbon\Carbon::parse($date)->format('Y');
+                                @endphp
+                                <option value="{{ $date }}" {{ request('graduation_date') == $date ? 'selected' : '' }}>{{ $year }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         @endforeach
 
+        <!-- 🕵️‍♂️ 詳細検索項目 -->
 
-        <!-- 🕵️‍♂️ DETAILED SEARCH FIELDS -->
-        
-        <!-- 🔎 SEARCH BUTTONS -->
+        <!-- 🔎 検索ボタン -->
         <div class="col-md-12 text-center mt-3">
-            <button type="submit" class="btn btn-primary btn-lg">🔎 Search</button>
-            <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-secondary btn-lg ms-2">🔄 Clear Search</a>
+            <button type="submit" class="btn btn-primary btn-lg">🔎 検索</button>
+            <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-secondary btn-lg ms-2">🔄 検索をリセット</a>
         </div>
     </form>
 
-    <!-- Jobseeker Cards -->
+    <!-- ジョブシーカーカード -->
     @if($jobseekers->count())
-    <p class="text-center text-muted fw-bold">=== {{ $jobseekers->count() }} results available ===</p>
+        <p class="text-center text-muted fw-bold">=== {{ $jobseekers->count() }} 件の結果 ===</p>
     @endif
 
     <div id="jobseekerContainer" class="row g-4">
         @include('jobseeker_grid_partial', ['jobseekers' => $jobseekers])
     </div>
 
-    <!-- ✅ Jobseeker Offcanvas Panel -->
+    <!-- ✅ ジョブシーカー詳細オフキャンバスパネル -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="jobseekerDetailsCanvas" aria-labelledby="jobseekerDetailsLabel">
         <div class="offcanvas-header bg-primary text-white">
             <h5 class="offcanvas-title fw-bold" id="jobseekerDetailsLabel">
-                <i class="fa-solid fa-user-circle me-2"></i> Jobseeker Details
+                <i class="fa-solid fa-user-circle me-2"></i> ジョブシーカー詳細
             </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
         </div>
         <div class="offcanvas-body" id="jobseekerDetailContent">
-            <!-- JavaScript will inject the content here -->
+            <!-- JavaScriptが内容をここに注入します -->
         </div>
     </div>
 
-
-    
     @if($jobseekers->isEmpty())
-        <p class="text-center text-danger">No jobseekers found.</p>
+        <p class="text-center text-danger">ジョブシーカーが見つかりませんでした。</p>
     @endif
 </div>
 
@@ -167,25 +151,24 @@ document.querySelectorAll('.view-details-btn').forEach(btn => {
         const container = document.getElementById('jobseekerDetailContent');
 
         container.innerHTML = `
-            <p><strong>Name:</strong> ${jobseeker.user.name}</p>
-            <p><strong>Email:</strong> ${jobseeker.user.email}</p>
-            <p><strong>School:</strong> ${jobseeker.school ?? 'N/A'}</p>
-            <p><strong>Graduation:</strong> ${jobseeker.expected_to_graduate ?? 'N/A'}</p>
+            <p><strong>名前:</strong> ${jobseeker.user.name}</p>
+            <p><strong>メール:</strong> ${jobseeker.user.email}</p>
+            <p><strong>学校:</strong> ${jobseeker.school ?? 'N/A'}</p>
+            <p><strong>卒業予定:</strong> ${jobseeker.expected_to_graduate ?? 'N/A'}</p>
             <p><strong>JLPT:</strong> ${jobseeker.jlpt ?? 'N/A'}</p>
-            <p><strong>Wage:</strong> ¥${jobseeker.wage ?? 'N/A'}</p>
+            <p><strong>賃金:</strong> ¥${jobseeker.wage ?? 'N/A'}</p>
 
             <div class="d-grid gap-2 mt-4">
                 <a href="/chat/${jobseeker.user.id}" class="btn btn-outline-primary">
-                    <i class="fa-solid fa-comment-dots me-2"></i> Chat
+                    <i class="fa-solid fa-comment-dots me-2"></i> チャット
                 </a>
                 <a href="/jobseekers/${jobseeker.id}/edit" class="btn btn-outline-success">
-                    <i class="fa-solid fa-pen-to-square me-2"></i> Edit
+                    <i class="fa-solid fa-pen-to-square me-2"></i> 編集
                 </a>
             </div>
         `;
     });
 });
 </script>
-
 
 @endsection

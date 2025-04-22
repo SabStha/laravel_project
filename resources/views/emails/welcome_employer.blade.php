@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Employer Registration Successful</title>
+    <title>雇用者登録完了</title>
 </head>
 <body>
-    <h2>Welcome, {{ $user->name }}!</h2>
-    <p>Thank you for registering as an employer on our platform.</p>
-    <p>Your account has been created successfully.</p>
-    <p>You can now login using the following details:</p>
+    <h2>ようこそ、{{ $user->name }} 様！</h2>
+    <p>プラットフォームに雇用者として登録いただき、ありがとうございます。</p>
+    <p>アカウントが正常に作成されました。</p>
+    <p>以下の情報でログインできます：</p>
     <ul>
-        <li><strong>Email:</strong> {{ $user->email }}</li>
-        <li><strong>Password:</strong> (the one you entered)</li>
+        <li><strong>メールアドレス:</strong> {{ $user->email }}</li>
+        <li><strong>パスワード:</strong> （ご自身で設定したものです）</li>
     </ul>
-    <p>Click <a href="{{ url('/login') }}">here</a> to log in.</p>
+    <p><a href="{{ url('/login') }}">こちら</a>をクリックして、ログインしてください。</p>
 </body>
 </html>
