@@ -127,12 +127,12 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}" class="w-48 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 text-lg font-semibold">
-                            Login
+                        ログイン
                         </a>
 
                         @if (Route::has('register'))
                         <a href="{{ route('jobseeker.register') }}" class="btn btn-primary">
-                                Register
+                        求職者として登録
                         </a>
                         @endif
                     @endauth
@@ -142,7 +142,7 @@
             <!-- Register as Employer Button -->
             <div class="mt-4">
                 <a href="{{ route('employer.register') }}" class="w-48 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold">
-                    Register as Employer
+                企業として登録
                 </a>
             </div>
         </div>

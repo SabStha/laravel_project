@@ -2,16 +2,16 @@
 
 @section('content')
 <div class="container">
-    <h2>Forgot Password</h2>
+    <h2>パスワードを忘れましたか？</h2>
 
-    <!-- Success Message -->
+    <!-- 成功メッセージ -->
     @if(session('success'))
         <div class="alert alert-success">
             {{ session('success') }}
         </div>
     @endif
 
-    <!-- Error Messages -->
+    <!-- エラーメッセージ -->
     @if($errors->any())
         <div class="alert alert-danger">
             @foreach($errors->all() as $error)
@@ -23,10 +23,10 @@
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
         <div class="mb-3">
-            <label for="email">Enter Your Registered Email</label>
+            <label for="email">登録済みのメールアドレスを入力してください</label>
             <input type="email" name="email" class="form-control" required>
         </div>
-        <button type="submit" class="btn btn-primary">Send Reset Link</button>
+        <button type="submit" class="btn btn-primary">リセットリンクを送信</button>
     </form>
 </div>
 @endsection

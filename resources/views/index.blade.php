@@ -3,9 +3,9 @@
 @section('content')
 <div class="container mt-4">
     <div class="chat-container row">
-        <!-- Conversations List -->
+        <!-- 会話リスト -->
         <div class="col-md-4">
-            <div class="chat-header">Chats</div>
+            <div class="chat-header">チャット一覧</div>
             <div class="chat-list p-3">
                 @foreach($conversations as $conversation)
                     <div class="chat-item d-flex justify-content-between align-items-center" 
@@ -27,18 +27,18 @@
             </div>
         </div>
 
-        <!-- Chat Messages -->
+        <!-- チャットメッセージ -->
         <div class="col-md-8 d-flex flex-column">
             <div class="chat-header d-flex justify-content-between">
-                <span id="chatTitle">Select a conversation</span>
+                <span id="chatTitle">会話を選択してください</span>
                 <button onclick="deleteConversation()" class="delete-btn"><i class="fas fa-trash-alt"></i></button>
             </div>
             <div class="chat-box d-flex flex-column" id="messages"></div>
 
-            <!-- Chat Input -->
+            <!-- メッセージ入力 -->
             <div class="chat-footer">
-                <input type="text" id="messageInput" class="form-control" placeholder="Type a message..." disabled>
-                <button onclick="sendMessage()" class="btn btn-danger ms-2" disabled id="sendBtn">Send</button>
+                <input type="text" id="messageInput" class="form-control" placeholder="メッセージを入力..." disabled>
+                <button onclick="sendMessage()" class="btn btn-danger ms-2" disabled id="sendBtn">送信</button>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
 
     function loadMessages(id) {
         conversationId = id;
-        document.getElementById('chatTitle').innerText = 'Chatting...';
+        document.getElementById('chatTitle').innerText = 'チャット中...';
         document.getElementById('messageInput').disabled = false;
         document.getElementById('sendBtn').disabled = false;
 

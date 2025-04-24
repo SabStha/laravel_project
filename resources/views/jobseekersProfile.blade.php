@@ -1,65 +1,63 @@
-
 @extends('layouts.header')
 
 @section('content')
 <div class="container">
     <div class="card shadow-lg border-0 rounded-lg p-4">
         <a href="{{ route('operator.viewJobseekers') }}" class="btn btn-primary">
-            ⬅ Back to Jobseekers
+            ⬅ 求職者一覧に戻る
         </a>
         <div class="text-center">
-            <!-- Profile Image -->
+            <!-- プロフィール画像 -->
             <img src="{{ $jobseeker->image ? asset('storage/' . $jobseeker->image) : asset('images/placeholder-shadow.png') }}" 
-                 class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="150" height="150" alt="Profile Image">
+                 class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="150" height="150" alt="プロフィール画像">
         </div>
 
         <h3 class="text-center fw-bold">{{ ucfirst($jobseeker->user->name ?? 'N/A') }}</h3>
         <p class="text-center text-muted">{{ $jobseeker->user->email ?? 'N/A' }}</p>
 
         <div class="row mt-4">
-            <!-- Left Column -->
+            <!-- 左側のカラム -->
             <div class="col-md-6">
-                <p><strong>🎓 School:</strong> {{ $jobseeker->school ?? 'N/A' }}</p>
-                <p><strong>🌎 Citizenship:</strong> {{ $jobseeker->citizenship ?? 'N/A' }}</p>
+                <p><strong>🎓 学校名:</strong> {{ $jobseeker->school ?? 'N/A' }}</p>
+                <p><strong>🌎 国籍:</strong> {{ $jobseeker->citizenship ?? 'N/A' }}</p>
                 <p><strong>📜 JLPT:</strong> {{ $jobseeker->jlpt ?? 'N/A' }}</p>
-                <p><strong>🎂 Age:</strong> {{ \Carbon\Carbon::parse($jobseeker->birthday)->age ?? 'N/A' }}</p>
+                <p><strong>🎂 年齢:</strong> {{ \Carbon\Carbon::parse($jobseeker->birthday)->age ?? 'N/A' }}</p>
             </div>
 
-            <!-- Right Column -->
+            <!-- 右側のカラム -->
             <div class="col-md-6">
-                <p><strong>🏠 Address:</strong> {{ $jobseeker->address ?? 'N/A' }}</p>
-                <p><strong>💰 Expected Wage:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
-                <p><strong>📅 Graduation Date:</strong> {{ $jobseeker->expected_to_graduate ?? 'N/A' }}</p>
-                <p><strong>📞 Phone:</strong> {{ $jobseeker->phone ?? 'N/A' }}</p>
+                <p><strong>🏠 住所:</strong> {{ $jobseeker->address ?? 'N/A' }}</p>
+                <p><strong>💰 希望時給:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
+                <p><strong>📅 卒業予定日:</strong> {{ $jobseeker->expected_to_graduate ?? 'N/A' }}</p>
+                <p><strong>📞 電話番号:</strong> {{ $jobseeker->phone ?? 'N/A' }}</p>
             </div>
         </div>
 
         <hr>
 
-        <!-- Evaluation -->
-        <h4>📝 Evaluation</h4>
-        <p>{{ $jobseeker->evaluation ?? 'No evaluation yet' }}</p>
+        <!-- 評価 -->
+        <h4>📝 評価</h4>
+        <p>{{ $jobseeker->evaluation ?? '評価はまだありません' }}</p>
 
-        <!-- Survey Completion Status -->
-        <h4>📊 Survey Status</h4>
+        <!-- アンケート完了状況 -->
+        <h4>📊 アンケート状況</h4>
         <p class="fw-bold">
             @if($jobseeker->surveyResponses->count() > 0)
             <ul>
                 @foreach($jobseeker->surveyResponses as $response)
                     <li>
                         <strong>Q:</strong> {{ $response->survey->question_text }} <br>
-                        <strong>Selected Answer:</strong> {{ $response->selected_option }} <br>
-                        <strong>Score:</strong> {{ $response->score }}
+                        <strong>選択された回答:</strong> {{ $response->selected_option }} <br>
+                        <strong>スコア:</strong> {{ $response->score }}
                     </li>
                 @endforeach
             </ul>
         @else
-            <p>No survey responses recorded.</p>
+            <p>アンケートの回答は記録されていません。</p>
         @endif
-        
         </p>
 
-        <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">See all Jobseeker</a>
+        <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">すべての求職者を見る</a>
     </div>
 </div>
 @endsection

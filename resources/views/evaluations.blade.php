@@ -6,8 +6,8 @@
         <div class="col-md-10">
             <div class="card shadow-lg rounded-3">
                 <div class="card-header text-center bg-warning text-white py-4">
-                    <h3>{{ __('Jobseeker Evaluations') }}</h3>
-                    <p class="lead">Manage and review evaluations for jobseekers.</p>
+                    <h3>{{ __('求職者の評価一覧') }}</h3>
+                    <p class="lead">求職者の評価を管理・確認できます。</p>
                 </div>
 
                 <div class="card-body">
@@ -21,10 +21,10 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th>{{ __('Jobseeker Name') }}</th>
-                                    <th>{{ __('Email') }}</th>
-                                    <th>{{ __('Evaluation Status') }}</th>
-                                    <th>{{ __('Action') }}</th>
+                                    <th>{{ __('求職者名') }}</th>
+                                    <th>{{ __('メールアドレス') }}</th>
+                                    <th>{{ __('評価状況') }}</th>
+                                    <th>{{ __('操作') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,21 +34,21 @@
                                         <td>{{ $jobseeker->email }}</td>
                                         <td>
                                             @if ($jobseeker->isEvaluated)
-                                                <span class="badge bg-success">{{ __('Evaluated') }}</span>
+                                                <span class="badge bg-success">{{ __('評価済み') }}</span>
                                             @else
-                                                <span class="badge bg-danger">{{ __('Not Evaluated') }}</span>
+                                                <span class="badge bg-danger">{{ __('未評価') }}</span>
                                             @endif
                                         </td>
                                         <td>
                                             @if ($jobseeker->isEvaluated)
                                                 <a href="{{ route('operator.editEvaluation', ['user_id' => $jobseeker->id]) }}" 
                                                 class="btn btn-warning btn-sm">
-                                                    {{ __('Edit Evaluation') }}
+                                                    {{ __('評価を編集') }}
                                                 </a>
                                             @else
                                                 <a href="{{ route('operator.evaluate', ['user_id' => $jobseeker->user_id]) }}" 
                                                 class="btn btn-primary btn-sm">
-                                                    {{ __('Evaluate Now') }}
+                                                    {{ __('今すぐ評価') }}
                                                 </a>
                                             @endif
                                         </td>
@@ -56,13 +56,11 @@
                                 @endforeach
 
                             </tbody>
-
-
                         </table>
                     </div>
                     <div class="text-center mt-4">
                         <a href="{{ route('operator.dashboard') }}" class="btn btn-primary w-100 py-3 rounded-pill">
-                            {{ __('Back to Dashboard') }}
+                            {{ __('ダッシュボードに戻る') }}
                         </a>
                     </div>
                 </div>
