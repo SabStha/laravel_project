@@ -13,6 +13,7 @@
 <div class="container">
     @php
         $hasAdvancedFilters = request()->filled('name') || request()->filled('email') || collect(request('surveys'))->filter()->isNotEmpty();
+        $surveys = $surveyQuestions;
     @endphp
 
     <form id="filterForm" class="row g-3 mb-3" method="GET" action="{{ route('operator.viewJobseekers') }}">
@@ -76,6 +77,48 @@
                 @endforeach
             </select>
         </div>
+
+
+{{-- 🔘 詳細検索：アンケート回答でフィルター --}}
+<div class="col-md-12">
+    <button
+        class="btn btn-outline-dark w-100"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#surveyAnswerFilters"
+        aria-expanded="{{ request()->has('survey_answers') ? 'true' : 'false' }}"
+        aria-controls="surveyAnswerFilters">
+        🧠 アンケート回答で絞り込み
+        @if(request()->has('survey_answers'))
+            <span class="badge bg-danger ms-2">使用中</span>
+        @endif
+    </button>
+
+    <div class="collapse mt-3 {{ request()->has('survey_answers') ? 'show' : '' }}" id="surveyAnswerFilters">
+        <div class="row">
+            @foreach($surveys as $survey)
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">{{ $survey->question_text }}</label>
+                    <select name="survey_answers[{{ $survey->id }}]" class="form-control">
+                        <option value="">-- 回答を選択 --</option>
+                        <option value="a" {{ request("survey_answers.{$survey->id}") == 'a' ? 'selected' : '' }}>
+                            A: {{ $survey->option_a }}
+                        </option>
+                        <option value="b" {{ request("survey_answers.{$survey->id}") == 'b' ? 'selected' : '' }}>
+                            B: {{ $survey->option_b }}
+                        </option>
+                        <option value="c" {{ request("survey_answers.{$survey->id}") == 'c' ? 'selected' : '' }}>
+                            C: {{ $survey->option_c }}
+                        </option>
+                        <option value="d" {{ request("survey_answers.{$survey->id}") == 'd' ? 'selected' : '' }}>
+                            D: {{ $survey->option_d }}
+                        </option>
+                    </select>
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
 
 
 
