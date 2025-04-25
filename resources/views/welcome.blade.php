@@ -11,88 +11,128 @@
 
     <!-- Styles -->
     <style>
-        /* Remove margin and padding to ensure full screen */
         body, html {
             margin: 0;
             padding: 0;
-            height: 100%; /* Ensure body and html take up full viewport height */
+            height: 100%;
         }
 
         body {
             font-family: 'Noto Sans JP', sans-serif;
             background: url('{{ asset('images/homeimg.jpg') }}') no-repeat center center/cover;
-            color: #333;
+            color: #fff;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Ensure the body covers full viewport height */
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
         }
 
         .container {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
-            padding: 20px;
-            flex-grow: 1; /* Ensures the container takes up remaining space */
         }
 
         .header {
-            margin-top: 50px;
+            margin-top: 30px;
         }
 
         .header h1 {
-            font-size: 3rem;
-            color: #fff;
+            font-size: 2.2rem;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
         }
 
         .header p {
-            font-size: 1.5rem;
-            color: #ddd;
-            margin: 10px 0 30px;
+            font-size: 1rem;
+            color: #ccc;
+            margin-bottom: 25px;
         }
 
         .search-bar {
             display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 50px;
+            gap: 10px;
+            max-width: 900px;
+            width: 100%;
+            margin-bottom: 40px;
         }
 
-        .search-bar select, .search-bar input, .search-bar button {
-            padding: 10px;
-            margin: 0 5px;
-            font-size: 1rem;
-        }
-
-        .search-bar input {
-            flex-grow: 1;
-            min-width: 300px;
-        }
-
+        .search-bar select,
+        .search-bar input,
         .search-bar button {
-            background-color: #000;
-            color: #fff;
-            border: none;
-            cursor: pointer;
+            padding: 10px 12px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background: #fff;
+            color: #000;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .search-bar select,
+            .search-bar input {
+                width: 200px;
+            }
+
+            .search-bar button {
+                width: 100px;
+            }
         }
 
         .auth-buttons {
+            text-align: center;
             margin-top: 20px;
         }
 
         .auth-buttons a {
-            text-decoration: none;
+            display: block;
+            width: 100%;
+            max-width: 300px;
+            margin: 10px auto;
+            background: rgba(0, 0, 0, 0.85);
             color: #fff;
-            background: #000;
-            padding: 10px 20px;
-            margin: 5px;
-            display: inline-block;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .auth-buttons a:hover {
+            background: rgba(255, 255, 255, 0.15);
         }
 
         footer {
-            color: #fff;
-            margin-top: auto; /* Ensures the footer stays at the bottom */
-            padding: 20px 0; /* Optional: adds padding to the footer */
             text-align: center;
+            color: #fff;
+            margin-top: auto;
+            padding: 20px 0;
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.6rem;
+            }
+
+            .search-bar input {
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -117,34 +157,20 @@
             <button>検索</button>
         </div>
 
-        <!-- Auth Links -->
+        <!-- Auth Buttons -->
         <div class="auth-buttons">
             @if (Route::has('login'))
-                <div class="flex flex-col items-center space-y-4">
-                    @auth
-                        <a href="{{ url('/home') }}" class="w-48 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 text-lg font-semibold">
-                            Dashboard
-                        </a>
-                    @else
-                        <a href="{{ route('login') }}" class="w-48 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300 text-lg font-semibold">
-                        ログイン
-                        </a>
-
-                        @if (Route::has('register'))
-                        <a href="{{ route('jobseeker.register') }}" class="btn btn-primary">
-                        求職者として登録
-                        </a>
-                        @endif
-                    @endauth
-                </div>
+                @auth
+                    <a href="{{ url('/home') }}">Dashboard</a>
+                @else
+                    <a href="{{ route('login') }}">ログイン</a>
+                    @if (Route::has('register'))
+                        <a href="{{ route('jobseeker.register') }}">求職者として登録</a>
+                    @endif
+                @endauth
             @endif
-            
-            <!-- Register as Employer Button -->
-            <div class="mt-4">
-                <a href="{{ route('employer.register') }}" class="w-48 px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition duration-300 text-lg font-semibold">
-                企業として登録
-                </a>
-            </div>
+
+            <a href="{{ route('employer.register') }}">企業として登録</a>
         </div>
 
         <footer>
