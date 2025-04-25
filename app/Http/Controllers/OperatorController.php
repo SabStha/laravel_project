@@ -118,24 +118,14 @@ class OperatorController extends Controller
         });
 
         $graduationDates = Jobseeker::whereNotNull('expected_to_graduate')
-        ->selectRaw("YEAR(expected_to_graduate) as grad_year")
-        ->distinct()
-        ->orderBy('grad_year', 'desc')
-        ->pluck('grad_year');
-    
+            ->selectRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') as grad_month")
+            ->distinct()
+            ->orderBy('grad_month', 'desc')
+            ->pluck('grad_month');
+
         $schools = Jobseeker::whereNotNull('school')->distinct()->pluck('school');
         $citizenships = Jobseeker::whereNotNull('citizenship')->distinct()->pluck('citizenship');
-        
-        $rawJlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt')->toArray();
-
-        // Desired fixed JLPT order
-        $desiredOrder = ['N1', 'N2', 'N3', 'N4', 'N5', 'なし'];
-
-        $jlptLevels = collect($desiredOrder)->filter(function ($level) use ($rawJlptLevels) {
-            return in_array($level, $rawJlptLevels);
-        });
-
-
+        $jlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt');
         $wages = Jobseeker::whereNotNull('wage')->distinct()->pluck('wage')->sort();
 
         $query = Jobseeker::with('user');
@@ -169,10 +159,9 @@ class OperatorController extends Controller
             $query->where('gender', $request->gender);
         }
 
-        if ($request->filled('graduation_year')) {
-            $query->whereYear('expected_to_graduate', $request->graduation_year);
+        if ($request->filled('graduation_date')) {
+            $query->whereRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') = ?", [$request->graduation_date]);
         }
-        
 
         if ($request->filled('age')) {
             $query->whereNotNull('birthday')
@@ -185,20 +174,20 @@ class OperatorController extends Controller
 
         if ($request->filled('wage')) {
             $query->whereNotNull('wage')
-                  ->where('wage', '>=', $request->wage);
+                ->where('wage', '>=', $request->wage);
         }
-        
-        
 
         // --- Survey answer filters ---
         // survey_answersパラメータが存在する場合、指定した回答を持つ求職者のみを絞り込みます。
         // 例: survey_answers[1]=a, survey_answers[2]=b
         if ($request->filled('survey_answers') && is_array($request->survey_answers)) {
             foreach ($request->survey_answers as $surveyId => $selectedOption) {
-                $query->whereHas('surveyResponses', function ($q) use ($surveyId, $selectedOption) {
-                    $q->where('survey_id', $surveyId)
-                      ->where('selected_option', $selectedOption);
-                });
+                if ($selectedOption !== null && $selectedOption !== '') {
+                    $query->whereHas('surveyResponses', function ($q) use ($surveyId, $selectedOption) {
+                        $q->where('survey_id', $surveyId)
+                          ->where('selected_option', $selectedOption);
+                    });
+                }
             }
             // 上記のループで、全ての条件を満たす求職者のみが抽出されます。
         }
@@ -332,13 +321,6 @@ class OperatorController extends Controller
             ->get();
 
         return view('survey_detail', compact('jobseeker', 'survey_responses'));
-    }
-
-
-    public function viewJobseekerDetails($id)
-    {
-        $jobseeker = Jobseeker::with(['user', 'surveyResponses.survey'])->findOrFail($id);
-        return view('jobseekersProfile', compact('jobseeker'));
     }
 
 
