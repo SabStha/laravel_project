@@ -8,8 +8,10 @@
         </a>
         <div class="text-center">
             <!-- プロフィール画像 -->
-            <img src="{{ $jobseeker->image ? asset('storage/' . $jobseeker->image) : asset('images/placeholder-shadow.png') }}" 
-                 class="rounded-circle shadow-sm mb-3 d-block mx-auto" width="150" height="150" alt="プロフィール画像">
+            <img src="{{ $jobseeker->image && file_exists(public_path('images/' . $jobseeker->image)) 
+                        ? asset('images/' . $jobseeker->image) 
+                        : asset('images/placeholder-shadow.png') }}" 
+                        class="jobseeker-image mb-3" alt="プロフィール画像">
         </div>
 
         <h3 class="text-center fw-bold">{{ ucfirst($jobseeker->user->name ?? 'N/A') }}</h3>

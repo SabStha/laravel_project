@@ -118,14 +118,24 @@ class OperatorController extends Controller
         });
 
         $graduationDates = Jobseeker::whereNotNull('expected_to_graduate')
-            ->selectRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') as grad_month")
-            ->distinct()
-            ->orderBy('grad_month', 'desc')
-            ->pluck('grad_month');
-
+        ->selectRaw("YEAR(expected_to_graduate) as grad_year")
+        ->distinct()
+        ->orderBy('grad_year', 'desc')
+        ->pluck('grad_year');
+    
         $schools = Jobseeker::whereNotNull('school')->distinct()->pluck('school');
         $citizenships = Jobseeker::whereNotNull('citizenship')->distinct()->pluck('citizenship');
-        $jlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt');
+        
+        $rawJlptLevels = Jobseeker::whereNotNull('jlpt')->distinct()->pluck('jlpt')->toArray();
+
+        // Desired fixed JLPT order
+        $desiredOrder = ['N1', 'N2', 'N3', 'N4', 'N5', 'なし'];
+
+        $jlptLevels = collect($desiredOrder)->filter(function ($level) use ($rawJlptLevels) {
+            return in_array($level, $rawJlptLevels);
+        });
+
+
         $wages = Jobseeker::whereNotNull('wage')->distinct()->pluck('wage')->sort();
 
         $query = Jobseeker::with('user');
@@ -159,9 +169,10 @@ class OperatorController extends Controller
             $query->where('gender', $request->gender);
         }
 
-        if ($request->filled('graduation_date')) {
-            $query->whereRaw("DATE_FORMAT(expected_to_graduate, '%Y-%m') = ?", [$request->graduation_date]);
+        if ($request->filled('graduation_year')) {
+            $query->whereYear('expected_to_graduate', $request->graduation_year);
         }
+        
 
         if ($request->filled('age')) {
             $query->whereNotNull('birthday')
@@ -174,8 +185,10 @@ class OperatorController extends Controller
 
         if ($request->filled('wage')) {
             $query->whereNotNull('wage')
-                ->where('wage', '>=', $request->wage);
+                  ->where('wage', '>=', $request->wage);
         }
+        
+        
 
         $jobseekers = $query->paginate(20);
 
@@ -304,6 +317,13 @@ class OperatorController extends Controller
             ->get();
 
         return view('survey_detail', compact('jobseeker', 'survey_responses'));
+    }
+
+
+    public function viewJobseekerDetails($id)
+    {
+        $jobseeker = Jobseeker::with(['user', 'surveyResponses.survey'])->findOrFail($id);
+        return view('jobseekersProfile', compact('jobseeker'));
     }
 
 

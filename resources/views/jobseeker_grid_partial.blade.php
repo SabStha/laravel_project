@@ -1,4 +1,6 @@
-<style>
+@extends('layouts.header')
+
+{{-- <style>
 /* ========== グローバルスタイル ========== */
 body {
     background-color: #fdf7e4;
@@ -204,7 +206,7 @@ body {
         display: none !important;
     }
 }
-</style>
+</style> --}}
 
 <div id="jobseekerContainer" class="row g-4">
     @foreach($jobseekers as $jobseeker)
@@ -254,12 +256,10 @@ body {
 
                 {{-- ✅ 詳細表示ボタン --}}
                 <div class="text-center mt-2">
-                    <button class="btn btn-outline-primary w-100 view-details-btn" 
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#jobseekerDetailsCanvas"
-                        data-jobseeker='@json($jobseeker->load("user"))'>
+                    <a href="{{ route('operator.jobseeker.details', $jobseeker->id) }}" class="btn btn-outline-primary w-100 view-details-btn">
                         🔍 詳細を見る
-                    </button>
+                    </a>
+                    
                 </div>
             </div>
         </div>

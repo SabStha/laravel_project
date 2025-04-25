@@ -144,6 +144,10 @@ Route::middleware(['auth', 'operator'])->prefix('operator')->group(function () {
     Route::get('/notifications', [OperatorController::class, 'notifications'])->name('operator.notifications');
     Route::get('/evaluations', [OperatorController::class, 'viewEvaluations'])->name('operator.viewEvaluations');
     Route::get('/unratedJobSeekers', [OperatorController::class, 'viewUnratedJobSeekers'])->name('operator.viewUnratedJobSeekers');
+
+    Route::get('/jobseeker/{id}/details', [OperatorController::class, 'viewJobseekerDetails'])->name('operator.jobseeker.details');
+
+
 }); // ✅ FIXED: Changed `);` to `}`
 //Edit ,Update
 Route::get('/profile/jobseeker/{user_id}',[JobseekerController::class,'profile']);
