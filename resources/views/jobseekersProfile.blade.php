@@ -59,7 +59,7 @@
                         <li class="mb-3">
                             <strong>Q:</strong> {{ $survey->question_text }}<br>
                             <strong>選択された回答:</strong> {{ strtoupper($selectedLetter) }} — {{ $optionText }}<br>
-                            <strong>スコア:</strong> {{ $response->score }}
+                            
                         </li>
                     @endforeach
                 </ul>
