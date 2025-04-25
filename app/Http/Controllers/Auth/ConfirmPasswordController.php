@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ConfirmsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class ConfirmPasswordController extends Controller
 {
@@ -17,8 +19,6 @@ class ConfirmPasswordController extends Controller
     | this trait and override any functions that require customization.
     |
     */
-
-    use ConfirmsPasswords;
 
     /**
      * Where to redirect users when the intended url fails.
@@ -35,5 +35,21 @@ class ConfirmPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function showConfirmForm()
+    {
+        return view('auth.passwords.confirm');
+    }
+
+    public function confirm(Request $request)
+    {
+        if (!Hash::check($request->password, Auth::user()->password)) {
+            return back()->withErrors(['password' => 'The provided password does not match our records.']);
+        }
+
+        $request->session()->passwordConfirmed();
+
+        return redirect()->intended();
     }
 }
