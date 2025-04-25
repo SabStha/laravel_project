@@ -246,7 +246,7 @@ body {
                         {{ $jobseeker->birthday ? \Carbon\Carbon::parse($jobseeker->birthday)->age : 'N/A' }}
                     </p>
                     <p><strong>📜 JLPT:</strong> {{ $jobseeker->jlpt ?? 'N/A' }}</p>
-                    <p><strong>💰 賃金:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
+                    <p><strong>💰 最低賃金:</strong> ¥{{ number_format($jobseeker->wage) ?? 'N/A' }}</p>
                 </div>
 
                 {{-- ✅ サーベイの状態 --}}

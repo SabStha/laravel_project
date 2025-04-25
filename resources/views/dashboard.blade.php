@@ -29,10 +29,10 @@
                             </a>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <<form method="POST" action="{{ route('logout') }}">
+                            <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <button type="submit" class="btn btn-danger w-50 py-3 rounded-pill">
-                                    {{ __('Logout') }}
+                                    {{ __('ログアウト') }}
                                 </button>
                             </form>
                         </div>
