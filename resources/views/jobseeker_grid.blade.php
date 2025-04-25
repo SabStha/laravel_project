@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center my-3">
-    <a href="{{ route('operator.dashboard') }}" class="btn btn-outline-dark btn-lg">⬅ Back</a>
+    <a href="{{ route('operator.dashboard') }}" class="btn btn-outline-dark btn-lg">⬅ 戻る</a>
 </div>
 
 <div class="container text-center mb-4">
-    <h2 class="fw-bold">🔍 Jobseeker Management</h2>
-    <p class="lead text-muted">View, search, and manage jobseeker details efficiently.</p>
+    <h2 class="fw-bold">🔍 求職者管理</h2>
+    <p class="lead text-muted">求職者情報の閲覧、検索、および管理を効率的に行えます。</p>
 </div>
 
 <div class="container">
@@ -20,17 +20,17 @@
         <div class="col-md-3">
             <label class="form-label">⚧ 性別</label>
             <select name="gender" class="form-control">
-                <option value="">All</option>
-                <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>Female</option>
-                <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                <option value="">すべて</option>
+                <option value="male" {{ request('gender') == 'male' ? 'selected' : '' }}>男</option>
+                <option value="female" {{ request('gender') == 'female' ? 'selected' : '' }}>女</option>
+                <option value="other" {{ request('gender') == 'other' ? 'selected' : '' }}>他</option>
             </select>
         </div>
 
         <div class="col-md-3">
             <label class="form-label">🎓 卒業年</label>
             <select name="graduation_year" class="form-control">
-                <option value="">Select</option>
+                <option value="">選択してください</option>
                 @foreach($graduationDates as $year)
                     <option value="{{ $year }}" {{ request('graduation_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                 @endforeach
@@ -40,7 +40,7 @@
         <div class="col-md-3">
             <label class="form-label">🏫 学校</label>
             <select name="school" class="form-control">
-                <option value="">Select</option>
+                <option value="">選択してください</option>
                 @foreach($schools as $school)
                     <option value="{{ $school }}" {{ request('school') == $school ? 'selected' : '' }}>{{ $school }}</option>
                 @endforeach
@@ -50,7 +50,7 @@
         <div class="col-md-3">
             <label class="form-label">🌎 国籍</label>
             <select name="citizenship" class="form-control">
-                <option value="">Select</option>
+                <option value="">選択してください</option>
                 @foreach($citizenships as $citizenship)
                     <option value="{{ $citizenship }}" {{ request('citizenship') == $citizenship ? 'selected' : '' }}>{{ $citizenship }}</option>
                 @endforeach
@@ -60,7 +60,7 @@
         <div class="col-md-3">
             <label class="form-label">📜 JLPT</label>
             <select name="jlpt" class="form-control">
-                <option value="">Select</option>
+                <option value="">選択してください</option>
                 @foreach($jlptLevels as $level)
                     <option value="{{ $level }}" {{ request('jlpt') == $level ? 'selected' : '' }}>{{ $level }}</option>
                 @endforeach
@@ -100,13 +100,13 @@
             <!-- 👤 名前 -->
             <div class="col-md-6">
                 <label class="form-label">🔍 名前</label>
-                <input type="text" name="name" class="form-control" placeholder="Enter jobseeker's name" value="{{ request('name') }}">
+                <input type="text" name="name" class="form-control" placeholder="求職者の名前を入力してください" value="{{ request('name') }}">
             </div>
 
             <!-- 📧 メール -->
             <div class="col-md-6">
                 <label class="form-label">📧 メール</label>
-                <input type="text" name="email" class="form-control" placeholder="Enter email address" value="{{ request('email') }}">
+                <input type="text" name="email" class="form-control" placeholder="メールアドレスをご入力ください" value="{{ request('email') }}">
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@
 
         {{-- 🔍 Submit --}}
         <div class="col-md-12 text-center mt-4">
-            <button type="submit" class="btn btn-primary btn-lg">🔎 Search</button>
+            <button type="submit" class="btn btn-primary btn-lg">🔎 検索</button>
         </div>
     </form>
 
@@ -126,7 +126,7 @@
     </div>
 
     @if($jobseekers->isEmpty())
-        <p class="text-center text-danger">No jobseekers found.</p>
+        <p class="text-center text-danger">求職者が見つかりませんでした</p>
     @endif
 </div>
 @endsection
