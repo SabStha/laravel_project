@@ -177,6 +177,19 @@ class OperatorController extends Controller
                 ->where('wage', '>=', $request->wage);
         }
 
+        // --- Survey answer filters ---
+        // survey_answersパラメータが存在する場合、指定した回答を持つ求職者のみを絞り込みます。
+        // 例: survey_answers[1]=a, survey_answers[2]=b
+        if ($request->filled('survey_answers') && is_array($request->survey_answers)) {
+            foreach ($request->survey_answers as $surveyId => $selectedOption) {
+                $query->whereHas('surveyResponses', function ($q) use ($surveyId, $selectedOption) {
+                    $q->where('survey_id', $surveyId)
+                      ->where('selected_option', $selectedOption);
+                });
+            }
+            // 上記のループで、全ての条件を満たす求職者のみが抽出されます。
+        }
+
         $jobseekers = $query->paginate(20);
 
         // Log final query before execution
@@ -186,7 +199,9 @@ class OperatorController extends Controller
             return view('jobseeker_grid_partial', compact('jobseekers'))->render();
         }
 
-        return view('jobseeker_grid', compact('jobseekers', 'schools', 'citizenships', 'jlptLevels', 'wages', 'graduationDates'));
+        // アンケート質問リストもビューに渡す
+        $surveyQuestions = \App\Models\Survey::all();
+        return view('jobseeker_grid', compact('jobseekers', 'schools', 'citizenships', 'jlptLevels', 'wages', 'graduationDates', 'surveyQuestions'));
     }
 
         

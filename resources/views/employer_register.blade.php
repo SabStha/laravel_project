@@ -92,18 +92,6 @@
 @section('styles')
 <style>
     /* General Styles */
-    body {
-        background: url('{{ asset('images/homeimg.jpg') }}') no-repeat center center/cover;
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        font-family: 'Noto Sans JP', sans-serif;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-    }
 
     .container {
         max-width: 1200px;

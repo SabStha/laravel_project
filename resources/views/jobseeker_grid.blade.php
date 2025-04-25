@@ -68,6 +68,23 @@
             </select>
         </div>
 
+        {{-- ▼ アンケート回答で絞り込む --}}
+        @if(isset($surveyQuestions) && count($surveyQuestions))
+            @foreach($surveyQuestions as $question)
+                <div class="col-12 col-md-4 mb-2">
+                    <label class="form-label">{{ $question->question_text }}</label>
+                    <select name="survey_answers[{{ $question->id }}]" class="form-control">
+                        <option value="">-- 選択してください --</option>
+                        <option value="a" {{ (request('survey_answers.' . $question->id) == 'a') ? 'selected' : '' }}>A</option>
+                        <option value="b" {{ (request('survey_answers.' . $question->id) == 'b') ? 'selected' : '' }}>B</option>
+                        <option value="c" {{ (request('survey_answers.' . $question->id) == 'c') ? 'selected' : '' }}>C</option>
+                        <option value="d" {{ (request('survey_answers.' . $question->id) == 'd') ? 'selected' : '' }}>D</option>
+                    </select>
+                </div>
+            @endforeach
+        @endif
+        {{-- ▲ アンケート回答で絞り込む --}}
+
         @foreach($jobseekers as $jobseeker)
             <!-- ✅ 詳細表示ボタン — ループ内に必ず配置 -->
             <div class="collapse mt-3" id="detailSearchFields">

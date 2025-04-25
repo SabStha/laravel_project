@@ -16,17 +16,6 @@
                         <p>求職者の評価を効率的に管理します。</p>
                     </div>
 
-                    <!-- 🚀 Job Application Notifications -->
-                    @if(auth()->user()->notifications->count() > 0)
-                        <div class="alert alert-warning text-start">
-                            <h5><strong>アプリケーション通知:</strong></h5>
-                            @foreach(auth()->user()->notifications as $notification)
-                                <p class="mb-2">
-                                    <strong>{{ $notification->data['message'] }}</strong>
-                                </p>
-                            @endforeach
-                        </div>
-                    @endif
 
                     <div class="row mt-4">
                         <div class="col-md-6 mb-3">
@@ -57,14 +46,6 @@
 
 @section('styles')
 <style>
-    body {
-        background: url('{{ asset('images/homeimg.jpg') }}') no-repeat center center/cover;
-        background-attachment: fixed;
-        font-family: 'Noto Sans JP', sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-    }
     .container {
         max-width: 1200px;
         width: 100%;
