@@ -81,6 +81,7 @@
     $hasAdvancedFilters = request()->filled('name') || request()->filled('email');
 @endphp
 
+<<<<<<< HEAD
 <div class="col-md-12">
     <!-- 📊 Toggle Button -->
     <button
@@ -95,6 +96,33 @@
             <span class="badge bg-danger ms-2">使用中</span>
         @endif
     </button>
+=======
+        {{-- ▼ アンケート回答で絞り込む --}}
+        @if(isset($surveyQuestions) && count($surveyQuestions))
+            @foreach($surveyQuestions as $question)
+                <div class="col-12 col-md-4 mb-2">
+                    <label class="form-label">{{ $question->question_text }}</label>
+                    <select name="survey_answers[{{ $question->id }}]" class="form-control">
+                        <option value="">-- 選択してください --</option>
+                        <option value="a" {{ (request('survey_answers.' . $question->id) == 'a') ? 'selected' : '' }}>A</option>
+                        <option value="b" {{ (request('survey_answers.' . $question->id) == 'b') ? 'selected' : '' }}>B</option>
+                        <option value="c" {{ (request('survey_answers.' . $question->id) == 'c') ? 'selected' : '' }}>C</option>
+                        <option value="d" {{ (request('survey_answers.' . $question->id) == 'd') ? 'selected' : '' }}>D</option>
+                    </select>
+                </div>
+            @endforeach
+        @endif
+        {{-- ▲ アンケート回答で絞り込む --}}
+
+        @foreach($jobseekers as $jobseeker)
+            <!-- ✅ 詳細表示ボタン — ループ内に必ず配置 -->
+            <div class="collapse mt-3" id="detailSearchFields">
+                <div class="row g-3">
+                    <div class="col-12 col-sm-6 col-md-3">
+                        <label class="form-label">🔍 名前で検索</label>
+                        <input type="text" name="name" class="form-control" placeholder="ジョブシーカーの名前を入力" value="{{ request('name') }}">
+                    </div>
+>>>>>>> 3340fc01635a5a7c0151d4bdf8b79e6a6f68500e
 
     <!-- 🔽 Collapsible Section -->
     <div class="collapse mt-3 {{ $hasAdvancedFilters ? 'show' : '' }}" id="advancedFiltersBox">
