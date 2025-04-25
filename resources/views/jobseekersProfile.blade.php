@@ -41,23 +41,33 @@
         <h4>📝 評価</h4>
         <p>{{ $jobseeker->evaluation ?? '評価はまだありません' }}</p>
 
-        <!-- アンケート完了状況 -->
-        <h4>📊 アンケート状況</h4>
         <p class="fw-bold">
             @if($jobseeker->surveyResponses->count() > 0)
-            <ul>
-                @foreach($jobseeker->surveyResponses as $response)
-                    <li>
-                        <strong>Q:</strong> {{ $response->survey->question_text }} <br>
-                        <strong>選択された回答:</strong> {{ $response->selected_option }} <br>
-                        <strong>スコア:</strong> {{ $response->score }}
-                    </li>
-                @endforeach
-            </ul>
-        @else
-            <p>アンケートの回答は記録されていません。</p>
-        @endif
-        </p>
+                <ul>
+                    @foreach($jobseeker->surveyResponses as $response)
+                        @php
+                            $selectedLetter = $response->selected_option;
+                            $survey = $response->survey;
+                            $optionText = match ($selectedLetter) {
+                                'a' => $survey->option_a,
+                                'b' => $survey->option_b,
+                                'c' => $survey->option_c,
+                                'd' => $survey->option_d,
+                                default => '不明な選択肢'
+                            };
+                        @endphp
+                        <li class="mb-3">
+                            <strong>Q:</strong> {{ $survey->question_text }}<br>
+                            <strong>選択された回答:</strong> {{ strtoupper($selectedLetter) }} — {{ $optionText }}<br>
+                            <strong>スコア:</strong> {{ $response->score }}
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p>アンケートの回答は記録されていません。</p>
+            @endif
+            </p>
+            
 
         <a href="{{ route('jobseekers.index') }}" class="btn btn-dark mt-3">すべての求職者を見る</a>
     </div>
