@@ -95,6 +95,14 @@ class OperatorController extends Controller
         return view('evaluations', compact('jobseekers'));
     }
 
+    public function viewJobseekerDetails($id)
+    {
+        $jobseeker = Jobseeker::with('user', 'surveyResponses.survey')->findOrFail($id);
+        
+        return view('jobseekersProfile', compact('jobseeker'));
+    }
+
+
 
 
 
